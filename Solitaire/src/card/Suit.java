@@ -4,8 +4,7 @@ public enum Suit {
 	SPADES(Color.BLACK),
     HEARTS(Color.RED),
     DIAMONDS(Color.RED),
-    CLUBS(Color.BLACK),
-    OTHERS(Color.BLACK);
+    CLUBS(Color.BLACK);
 
     private Color color;
 

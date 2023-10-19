@@ -1,9 +1,7 @@
 package Testing;
 
 import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
-
 import card.Card;
 import card.Suit;
 
@@ -46,12 +44,12 @@ public class TestCard {
 		assertEquals("♦K", result.print());
 	}
 	
-	@Test
-	public void testPrint5() {
-		Card result = new Card(13, Suit.OTHERS);
-		result.setShow(true);
-		assertEquals("ErrorK", result.print());
-	}
+//	@Test
+//	public void testPrint5() {
+//		Card result = new Card(13, Suit.OTHERS);
+//		result.setShow(true);
+//		assertEquals("ErrorK", result.print());
+//	}
 	
 	//Check rank
 	@Test

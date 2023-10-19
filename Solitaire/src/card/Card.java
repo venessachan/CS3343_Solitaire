@@ -9,7 +9,7 @@ public class Card {
 	public Card(Integer rankNum, Suit suit) {
 		this.rank = rankNum;
 		this.suit = suit;
-		this.show = false;
+		this.show = true;
 		
 	}
 	
