@@ -26,6 +26,7 @@ public class Card {
 	private String printSuit() {
 		String result;
 		
+		
 		switch(this.suit) {
 		  case SPADES:
 		    result = "\u2660"; // ♠
