@@ -3,13 +3,13 @@ package card;
 public class Card {
 	
 	private Integer rank;
-	private Integer suit;
+	private Suit suit;
 	private Boolean show;
 	
-	public Card(Integer rankNum, Integer SuitNum) {
+	public Card(Integer rankNum, Suit suit) {
 		this.rank = rankNum;
-		this.suit = SuitNum;
-		this.show = false;
+		this.suit = suit;
+		this.show = true;
 		
 	}
 	
@@ -27,16 +27,16 @@ public class Card {
 		String result;
 		
 		switch(this.suit) {
-		  case 1:
+		  case SPADES:
 		    result = "\u2660"; // ♠
 		    break;
-		  case 2:
+		  case HEARTS:
 		    result = "\u2665"; // ♥
 		    break;
-		  case 3:
+		  case DIAMONDS:
 			result = "\u2663"; // ♣
 			break;
-		  case 4:
+		  case CLUBS:
 			result = "\u2666"; // ♦
 			break;
 		  default:
@@ -82,10 +82,10 @@ public class Card {
 	public void setRank(Integer rank) {
 		this.rank = rank;
 	}
-	public Integer getSuit() {
+	public Suit getSuit() {
 		return suit;
 	}
-	public void setSuit(Integer suit) {
+	public void setSuit(Suit suit) {
 		this.suit = suit;
 	}
 	public Boolean getShow() {
