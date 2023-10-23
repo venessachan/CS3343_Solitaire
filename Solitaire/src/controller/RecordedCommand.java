@@ -24,7 +24,7 @@ public abstract class RecordedCommand implements Command {
     
     public static void undoOneCommand(){
         if(undoList.isEmpty())
-            System.out.println("Nothing to undo.");
+            System.out.println("Nothing to undo.\n");
         else 
         	undoList.pop().undoMe();
     }
@@ -32,7 +32,7 @@ public abstract class RecordedCommand implements Command {
     public static void redoOneCommand()
     {
         if(redoList.isEmpty())
-            System.out.println("Nothing to redo.");
+            System.out.println("Nothing to redo.\n");
         else
            redoList.pop().redoMe();
     }

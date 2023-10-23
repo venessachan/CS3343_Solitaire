@@ -25,7 +25,7 @@ public class Stock extends CardListAbstract{
 	
 	@Override
 	public void push(Card card) {
-		cardList.add(card);
+		cardList.add(0, card);
 	}
 	
 	@Override

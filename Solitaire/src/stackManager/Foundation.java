@@ -42,7 +42,7 @@ public class Foundation extends CardListAbstract{
 	
 	@Override
 	public Card pop() {
-		return null;
+		return cardList.remove(cardList.size()-1);
 	}
 	
 	@Override

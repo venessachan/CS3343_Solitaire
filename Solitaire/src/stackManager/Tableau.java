@@ -45,6 +45,8 @@ public class Tableau extends CardListAbstract{
 	
 	@Override
 	public void push(Card card) {
+		cardList.add(card);
+		topIndex++;
 	}
 	
 	//remove last card
