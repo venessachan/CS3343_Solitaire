@@ -3,82 +3,98 @@ package Testing;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import card.Card;
+import card.Color;
 import card.Rank;
 import card.Suit;
 
 public class TestCard {
 	
-	//Check flip
+	//Check flip + print
 	@Test
-	public void testtoString0() {
+	public void testDefault() {
 		Card result = new Card(Suit.SPADES, Rank.K);
-		result.setShow(false);
 		assertEquals("??", result.toString());
 	}
 	
-	//Check suit
 	@Test
-	public void testtoString1() {
+	public void testFlipTrue() { //?? -> ♠K
 		Card result = new Card(Suit.SPADES, Rank.K);
-		result.setShow(true);
+		result.flip();
 		assertEquals("♠K", result.toString());
 	}
 	
 	@Test
-	public void testtoString2() {
+	public void testFlipFalse() { //♠K -> ??
+		Card result = new Card(Suit.SPADES, Rank.K);
+		result.setShow(true);
+		result.flip();
+		assertEquals("??", result.toString());
+	}
+	
+	//Check show
+	@Test
+	public void testShowTrue() {
+		Card result = new Card(Suit.SPADES, Rank.K);
+		result.setShow(true);
+		assertEquals(true, result.getShow());
+	}
+	
+	@Test
+	public void testShowFalse() {
+		Card result = new Card(Suit.SPADES, Rank.K);
+		assertEquals(false, result.getShow());
+	}
+	
+	//Check suit colour
+	@Test
+	public void testColorBlack() {//black
+		Card result = new Card(Suit.SPADES, Rank.K);
+		assertEquals(Color.BLACK, result.getSuit().getColor());
+	}
+	
+	@Test
+	public void testColorRed() {//red
 		Card result = new Card(Suit.HEARTS, Rank.K);
-		result.setShow(true);
-		assertEquals("♥K", result.toString());
+		assertEquals(Color.RED, result.getSuit().getColor());
+	}
+	
+	//Check suit
+	@Test
+	public void testSuitSPADES() {//♠
+		Card result = new Card(Suit.SPADES, Rank.K);
+		assertEquals("♠", result.getSuit().getSign());
 	}
 	
 	@Test
-	public void testtoString3() {
-		Card result = new Card(Suit.DIAMONDS, Rank.K);
-		result.setShow(true);
-		assertEquals("♣K", result.toString());
+	public void testSuitHEARTS() {//♥
+		Card result = new Card(Suit.HEARTS, Rank.K);
+		assertEquals("♥", result.getSuit().getSign());
 	}
 	
 	@Test
-	public void testtoString4() {
+	public void testSuitCLUBS() {//♣
 		Card result = new Card(Suit.CLUBS, Rank.K);
-		result.setShow(true);
-		assertEquals("♦K", result.toString());
+		assertEquals("♣", result.getSuit().getSign());
 	}
 	
-//	@Test
-//	public void testtoString5() {
-//		Card result = new Card(13, Suit.OTHERS);
-//		result.setShow(true);
-//		assertEquals("ErrorK", result.toString());
-//	}
+	@Test
+	public void testSuitDIAMONDS() {//♦
+		Card result = new Card(Suit.DIAMONDS, Rank.K);
+		assertEquals("♦", result.getSuit().getSign());
+	}
 	
 	//Check rank
 	@Test
-	public void testtoString6() {
+	public void testRankSign() {
 		Card result = new Card(Suit.HEARTS, Rank.Q);
-		result.setShow(true);
-		assertEquals("♥Q", result.toString());
+		assertEquals("Q", result.getRank().getSign());
 	}
 	
 	@Test
-	public void testtoString7() {
-		Card result = new Card(Suit.HEARTS, Rank.J);
-		result.setShow(true);
-		assertEquals("♥J", result.toString());
-	}
-	
-	@Test
-	public void testtoString8() {
-		Card result = new Card(Suit.HEARTS, Rank.A);
-		result.setShow(true);
-		assertEquals("♥A", result.toString());
-	}
-	
-	@Test
-	public void testtoString9() {
-		Card result = new Card(Suit.HEARTS, Rank._2);
-		result.setShow(true);
-		assertEquals("♥2", result.toString());
+	public void testRankNum() {
+		Card result = new Card(Suit.HEARTS, Rank.Q);
+		Integer ans = 12;
+		assertEquals(ans, result.getRank().getNum());
 	}
 	
 }
