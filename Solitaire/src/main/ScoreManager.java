@@ -7,7 +7,7 @@ public class ScoreManager {
     private int comboCount;
     private int score;
     
-    private ScoreManager() {
+    public ScoreManager() {
     	score = 0;
     	comboCount = 0;
     	previousAction="";
@@ -15,9 +15,8 @@ public class ScoreManager {
 
     public void checkCombo() {
     	if (previousAction.equals("T")) {
-    		comboCount++;
     		if (comboCount >= 20) {
-    			setScore(50*5);
+    			setScore(50*10);
     		}
     		else if(comboCount >= 10) {
     			setScore(50*5);
@@ -28,8 +27,9 @@ public class ScoreManager {
     		}else {
     			setScore(50);
     		}
+    		comboCount++;
     	}else {
-    		comboCount = 0;
+    		setComboCount(0);
     	}
     }
     
@@ -48,6 +48,15 @@ public class ScoreManager {
 	
 	public int getScore() {
 		return score;
+	}
+	
+	
+	public void setComboCount(int comboCount) {
+		this.comboCount = comboCount;
+	}
+	
+	public int getComboCount() {
+		return comboCount;
 	}
 	
 	public static ScoreManager getInstance() {
