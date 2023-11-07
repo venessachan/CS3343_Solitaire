@@ -20,14 +20,24 @@ public class GameManager {
 	private Stock stock;
 	private Waste waste;
 	private List<Foundation> foundate;
+	private int move;
+	static ScoreManager scoreManager;
+	
 	
 	private GameManager(){
+//		if() {
+//			
+//		}else if(){
+//			start();
+//		}
 		start();
 	}
 	
 	private void start() {
+		scoreManager = ScoreManager.getInstance();
 		long seed = System.currentTimeMillis();		//every games have different see
 		
+		move = 0;
 		//Deck
 		deck = new Deck();
 		deck.shuffle(seed);//seed
@@ -74,12 +84,14 @@ public class GameManager {
 			&& foundate.get(3).full()) {
 			return true;
 		}
+		
 		return false;
 	}
 	
 	public void printboard() {
 
-		System.out.printf("Card Remaining: %d,  Waste: %s\n", stock.count(), waste.print());
+		System.out.printf("Card Remaining: %d,  Waste: %s, Socre: %d, Move: %d\n",
+					stock.count(), waste.print(), scoreManager.getScore(), getMove());
 		System.out.printf("Foundations: [%s] [%s] [%s] [%s]\n\n", foundate.get(0).print(), foundate.get(1).print(), foundate.get(2).print(), foundate.get(3).print());
 		for(int i=0; i<7 ;i++) {
 			System.out.printf("Tableau %d: [%s]\n", i+1, tab.get(i).print());
@@ -114,5 +126,25 @@ public class GameManager {
 	
 
 	
+	public void move() {
+		move++;
+	}
 	
+	public int getMove() {
+		return move;
+	}
+	
+	
+	public void setPreviousAction(String previousAction) {
+		scoreManager.setPreviousAction(previousAction);
+		
+	}
+	
+	public void setScore(int score) {
+		scoreManager.setScore(score);
+	}
+	
+	public void checkCombo() {
+		scoreManager.checkCombo();
+	}
 }

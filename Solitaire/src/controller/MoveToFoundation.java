@@ -16,11 +16,12 @@ public class MoveToFoundation extends RecordedCommand{
 	@Override
 	public void execute(String[] cmdParts) {
 		Card c;
-		GameManager g = GameManager.getInstance();
+		GameManager gameManager = GameManager.getInstance();
+		//try catch input
 		int moveFrom = Integer.parseInt(cmdParts[0]);
 		
-		List<Foundation> foundate = g.getFoundate();
-		List<Tableau> tab = g.getTab();
+		List<Foundation> foundate = gameManager.getFoundate();
+		List<Tableau> tab = gameManager.getTab();
 		
 		if(moveFrom -1 <0 || moveFrom-1 > 6) {
 			System.out.printf("Move invalid.\n\n");
@@ -28,9 +29,9 @@ public class MoveToFoundation extends RecordedCommand{
 		}
 		
 		//Check from waste or not
-		c= tab.get(moveFrom-1).peek();
+		c = tab.get(moveFrom-1).peek();
 		
-		boolean isPut =false;
+		boolean isPut = false;
 		if(foundate.get(0).checkValidAction(c)) {
 			founIndex = 0;
 			isPut = true;
@@ -57,7 +58,8 @@ public class MoveToFoundation extends RecordedCommand{
 			removedCard = tab.get(moveFrom-1).pop();
 			addUndoCommand(this);
 			clearRedoList();
-	
+			gameManager.checkCombo();
+			gameManager.setScore(50);
 			System.out.printf("Move successful.\n\n");
 		}else {
 			System.out.printf("Move invalid.\n\n");
@@ -67,18 +69,21 @@ public class MoveToFoundation extends RecordedCommand{
 
 	@Override
 	public void undoMe() {
-		GameManager g = GameManager.getInstance();
-		g.getFoundate().get(founIndex).pop();
-		g.getTab().get(tabIndex).push(removedCard);
+		GameManager gameManager = GameManager.getInstance();
+		gameManager.getFoundate().get(founIndex).pop();
+		gameManager.getTab().get(tabIndex).push(removedCard);
 		addRedoCommand(this);
 	}
 
 	@Override
 	public void redoMe() {
-		GameManager g = GameManager.getInstance();
-		g.getFoundate().get(founIndex).push(removedCard);
-		g.getTab().get(tabIndex).pop();
+		GameManager gameManager = GameManager.getInstance();
+		gameManager.getFoundate().get(founIndex).push(removedCard);
+		gameManager.getTab().get(tabIndex).pop();
 		addUndoCommand(this);	
 	}
 
+	public int getFoundIndex() {
+		return founIndex;
+	}
 }
