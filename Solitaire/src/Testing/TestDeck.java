@@ -10,6 +10,7 @@ import card.Deck;
 
 public class TestDeck {
 	
+	//Common method for testing
 	private static String printDeck(List<Card> cards) {
 		String result = "";
 		for(Card c: cards) 
@@ -91,6 +92,7 @@ public class TestDeck {
 		assertEquals(ans, result);
 	}
 	
+	@Test
 	public void testShuffleCards3() {//different seed give different result
 		
 		String ans =  "♦A ♠10 ♣A ♣6 ♠Q ♦4 ♦9 ♥2 ♣2 ♦8 ♦Q ♦3 ♣3 "
@@ -141,5 +143,13 @@ public class TestDeck {
 		assertEquals(ans, deckEquality(deck1.getCards(), deck2.getCards()));
 	}
 	
+	@Test
+	public void testShuffleCardsEquality4() {
+		Deck deck1 = new Deck();
+		Deck deck2 = new Deck();
+		deck2.getCards().remove(0);
+		boolean ans = false;
+		assertEquals(ans, deckEquality(deck1.getCards(), deck2.getCards()));
+	}
 	
 }
