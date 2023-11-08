@@ -68,13 +68,11 @@ public class Card {
 	}
 	
 	public void flip(){
-		if(this.show)
-			this.show = false;
+		if(getShow())
+			setShow(false);
 		else
-			this.show = true;
+			setShow(true);
 	};
-	
-	
 	
 	public Rank getRank() {
 		return rank;
@@ -87,6 +85,7 @@ public class Card {
 	public Boolean getShow() {
 		return show;
 	}
+	
 	public void setShow(Boolean show) {
 		this.show = show;
 	}

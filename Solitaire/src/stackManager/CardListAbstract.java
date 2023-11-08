@@ -11,6 +11,7 @@ public abstract class CardListAbstract implements CardList{
 	
 	public CardListAbstract() {
 		cardList = new ArrayList<Card>();
+		cardList.clear();
 	}
 	
 	@Override

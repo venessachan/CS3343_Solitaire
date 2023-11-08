@@ -107,9 +107,16 @@ public class TestScore {
 		assertEquals(20000, scoreManager.getScore());
 	}
 	
-	//Not fulfil combo requirement
+	//check score by each card adding
 	@Test
 	public void testCombo11() {
+		
+	}
+		
+		
+	//Not fulfil combo requirement
+	@Test
+	public void testNoCombo() {
 		ScoreManager scoreManager = new ScoreManager();
 		scoreManager.setPreviousAction("D");
 		scoreManager.checkCombo();

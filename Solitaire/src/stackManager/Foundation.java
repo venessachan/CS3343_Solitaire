@@ -5,11 +5,10 @@ import card.Suit;
 
 public class Foundation extends CardListAbstract{
 
-	private Suit suit;
-	
+	private Suit foundationSuit;
 	public Foundation(Suit suit) {
 		super();
-		this.suit = suit;
+		foundationSuit = suit;
 	}
 	
 	public boolean checkValidAction(Card card) {
@@ -17,19 +16,23 @@ public class Foundation extends CardListAbstract{
 			return checkValidAce(card);
 		else 
 			return checkValidNext(card);
-		
 	}
 	
-	private boolean checkValidAce(Card card){
-		if(suit == card.getSuit()) 
-			return card.getRank() == Rank.A? true: false;
-		else
+	public boolean checkValidAce(Card card){
+		if(getSuit() == card.getSuit()) {
+			if(card.getRank() == Rank.A) {
+				return true;
+			}else{
+				return false;
+			}
+		}else {
 			return false;
+		}
 	}
 	
-	private boolean checkValidNext(Card card) {
+	public boolean checkValidNext(Card card) {
 		if(getLastCard().getRank().getNum()+1 == card.getRank().getNum() 
-				&& getLastCard().getSuit() == card.getSuit()) {
+				&& getSuit() == card.getSuit()) {
 			return true;
 		}
 		return false;
@@ -51,11 +54,15 @@ public class Foundation extends CardListAbstract{
 		if(c != null)
 			return c.toString();
 		else
-			return suit.getSign();
+			return foundationSuit.getSign();
 	}
 	
 	public boolean full() {
-		return cardList.size() >= 13? true: false;
+		if(cardList.size() >= 13) {
+			return true;
+		}else{
+			return false;
+		}
 	}
 	
 	public Card getLastCard(){
@@ -66,7 +73,7 @@ public class Foundation extends CardListAbstract{
 	}
 
 	public Suit getSuit() {
-		return suit;
+		return foundationSuit;
 	}
 
 	
