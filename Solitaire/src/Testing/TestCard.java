@@ -9,13 +9,14 @@ import card.Suit;
 
 public class TestCard {
 	
-	//Check flip
+	//Initial
 	@Test
 	public void testDefault() {
 		Card result = new Card(Suit.SPADES, Rank.K);
 		assertEquals("??", result.toString());
 	}
 	
+	//Check flip
 	@Test
 	public void testFlipTrue() { //?? -> ♠K
 		Card result = new Card(Suit.SPADES, Rank.K);
