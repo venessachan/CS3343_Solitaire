@@ -76,7 +76,6 @@ public class GameManager {
 		}
 	}
 	
-	
 	public boolean isWin() {
 		if(foundate.get(0).full() 
 			&& foundate.get(1).full()
