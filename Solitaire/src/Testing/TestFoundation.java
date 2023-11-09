@@ -1,10 +1,6 @@
 package Testing;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import card.Card;
@@ -15,7 +11,7 @@ import stackManager.Foundation;
 public class TestFoundation {
 	//check card list after push
 	@Test
-	public void testPushCard() {
+	public void testFoundationPushCard() {
 		Foundation foundation = new Foundation(Suit.SPADES);
 		foundation.push(new Card(Suit.SPADES, Rank.A));
 		foundation.push(new Card(Suit.SPADES, Rank._2));
@@ -23,13 +19,12 @@ public class TestFoundation {
 		foundation.push(new Card(Suit.SPADES, Rank._4));
 		foundation.push(new Card(Suit.SPADES, Rank._5));
 		foundation.getCardList().forEach((c)->c.setShow(true));
-		String result = foundation.getCardList().toString();
-		assertEquals("[♠A, ♠2, ♠3, ♠4, ♠5]", result);
+		assertEquals("[♠A, ♠2, ♠3, ♠4, ♠5]", foundation.getCardList().toString());
 	}
 	
 	//check card list after pop
 	@Test
-	public void testPopCard1() {
+	public void testFoundationPopCard1() {
 		Foundation foundation = new Foundation(Suit.SPADES);
 		foundation.push(new Card(Suit.CLUBS, Rank.A));
 		foundation.push(new Card(Suit.CLUBS, Rank._2));
@@ -38,26 +33,23 @@ public class TestFoundation {
 		foundation.push(new Card(Suit.CLUBS, Rank._5));
 		foundation.getCardList().forEach((c)->c.setShow(true));
 		foundation.pop();
-		String result = foundation.getCardList().toString();
-		assertEquals("[♣A, ♣2, ♣3, ♣4]", result);
+		assertEquals("[♣A, ♣2, ♣3, ♣4]", foundation.getCardList().toString());
 	}
 	
 	@Test
-	public void testPopCard2() {
+	public void testFoundationPopCard2() {
 		Foundation foundation = new Foundation(Suit.SPADES);
 		foundation.push(new Card(Suit.SPADES, Rank.A));
 		foundation.pop();
-		String result = foundation.getCardList().toString();
-		assertEquals("[]", result);
+		assertEquals("[]", foundation.getCardList().toString());
 	}
 	
 	@Test//***********error
-	public void testPopCard3() {
+	public void testFoundationPopCard3() {
 		Foundation foundation = new Foundation(Suit.SPADES);
 		foundation.pop();
 		foundation.getCardList().forEach((c)->c.setShow(true));
-		String result = foundation.getCardList().toString();
-		assertEquals("[]", result);
+		assertEquals("[]", foundation.getCardList().toString());
 	}
 	
 	
@@ -79,7 +71,7 @@ public class TestFoundation {
 	}
 	//check full list
 	@Test
-	public void testFullList1() {
+	public void testFoundationFullList1() {
 		Foundation foundation = new Foundation(Suit.CLUBS);
 		foundation.push((new Card(Suit.CLUBS, Rank.A)));
 		foundation.push((new Card(Suit.CLUBS, Rank._2)));
@@ -99,7 +91,7 @@ public class TestFoundation {
 	
 	//not full
 	@Test
-	public void testFullList2() {
+	public void testFoundationFullList2() {
 		Foundation foundation = new Foundation(Suit.DIAMONDS);
 		foundation.push((new Card(Suit.DIAMONDS, Rank.A)));
 		foundation.push((new Card(Suit.DIAMONDS, Rank._2)));

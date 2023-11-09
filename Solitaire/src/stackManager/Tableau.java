@@ -16,17 +16,15 @@ public class Tableau extends CardListAbstract{
 			if(card.getRank().getNum() == 13)
 				return true;
 			else
-				return false;
-			
+				return false;	
 		}
 		else {					//if tableau is not empty, check whether the rank of (the last card - put card = 1) and have different color
 			return checkValidCard(card, peek());
 		}
-		
 	}
 	
 	//check correct rank and suit
-	private boolean checkValidCard(Card moveFromCard, Card moveToCard) {
+	public boolean checkValidCard(Card moveFromCard, Card moveToCard) {
 		if((moveToCard.getRank().getNum() - moveFromCard.getRank().getNum()) == 1 //Check difference is 1
 				&& (moveFromCard.getSuit().getColor() != moveToCard.getSuit().getColor())) {// Check not the same color
 			return true;
@@ -64,7 +62,6 @@ public class Tableau extends CardListAbstract{
 			results += " "+ c.toString() +" ";
 		}
 		return results;
-		
 	}
 	
 	public Card peek() {	//return the top card

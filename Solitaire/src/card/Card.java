@@ -16,9 +16,7 @@ public class Card {
 	@Override
 	public String toString() {
 		if(this.show) {
-			
 			return this.printSuit()+ this.printRank();
-			
 		}else {
 			return "??";
 		}
