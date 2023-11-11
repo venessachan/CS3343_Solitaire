@@ -32,6 +32,12 @@ public class MoveTableau extends RecordedCommand{
 			return;
 		}
 		
+		//Revised
+//		if(moveFrom == moveTo) {
+//			System.out.printf("Move invalid.\n\n");
+//			return;
+//		}
+		
 		Tableau tabFrom = tab.get(moveFrom-1);
 		Tableau tabTo = tab.get(moveTo-1);
 		

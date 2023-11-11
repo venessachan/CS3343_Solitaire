@@ -82,8 +82,8 @@ public class MoveToFoundation extends RecordedCommand{
 		gameManager.getTab().get(tabIndex).pop();
 		addUndoCommand(this);	
 	}
-
-	public int getFoundIndex() {
-		return founIndex;
-	}
+//
+//	public int getFoundIndex() {
+//		return founIndex;
+//	}
 }

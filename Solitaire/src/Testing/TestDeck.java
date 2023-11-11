@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import card.Card;
+import card.Color;
 import card.Deck;
 
 public class TestDeck {
@@ -15,8 +16,7 @@ public class TestDeck {
 			return false;
 		
 		for(int i=0; i<c1.size(); i++) {
-			if(!(c1.get(i).getSuit() == c2.get(i).getSuit() 
-					&& c1.get(i).getRank() == c2.get(i).getRank())) {
+			if(c1.get(i).getSuit() != c2.get(i).getSuit() || c1.get(i).getRank() != c2.get(i).getRank()) {
 				return false;
 			}
 		}
@@ -49,10 +49,10 @@ public class TestDeck {
 	@Test
 	public void testShuffleCardsEquality1() {
 		Deck deck1 = new Deck();
-		deck1.shuffle(0);
+		deck1.shuffle(1);
 		Deck deck2 = new Deck();
 		deck2.shuffle(0);
-		boolean ans = true;
+		boolean ans = false;
 		assertEquals(ans, deckEquality(deck1.getCards(), deck2.getCards()));
 	}
 	
@@ -70,7 +70,7 @@ public class TestDeck {
 	public void testShuffleCardsEquality3() {
 		Deck deck1 = new Deck();
 		Deck deck2 = new Deck();
-		deck2.shuffle(0);
+		deck2.shuffle(9);
 		boolean ans = false;
 		assertEquals(ans, deckEquality(deck1.getCards(), deck2.getCards()));
 	}
@@ -83,5 +83,6 @@ public class TestDeck {
 		boolean ans = false;
 		assertEquals(ans, deckEquality(deck1.getCards(), deck2.getCards()));
 	}
+	
 	
 }

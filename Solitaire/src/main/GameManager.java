@@ -35,7 +35,9 @@ public class GameManager {
 	
 	private void start() {
 		scoreManager = ScoreManager.getInstance();
-		long seed = System.currentTimeMillis();		//every games have different see
+		
+		long seed = 0;// for testing
+		//long seed = System.currentTimeMillis();		//every games have different seed
 		
 		move = 0;
 		//Deck
@@ -78,10 +80,7 @@ public class GameManager {
 	
 	
 	public boolean isWin() {
-		if(foundate.get(0).full() 
-			&& foundate.get(1).full()
-			&& foundate.get(2).full()
-			&& foundate.get(3).full()) {
+		if(foundate.get(0).full() && foundate.get(1).full()&& foundate.get(2).full()&& foundate.get(3).full()) {
 			return true;
 		}
 		
