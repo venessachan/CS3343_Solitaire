@@ -9,11 +9,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import controller.Deal;
 import controller.MoveTableau;
 import controller.MoveToFoundation;
 import controller.RecordedCommand;
-import controller.WasteToTableau;
 import main.GameManager;
 import main.ScoreManager;
 
@@ -84,7 +82,7 @@ public class TestMoveTableau {
     public void T06() {
         String[] parts = ("N" + " " + "5").split(" ");
         (new MoveTableau()).execute(parts);
-        String expectedOutput = "Move invalid.";
+        String expectedOutput = "Invalid input.";
 		assertEquals(expectedOutput, getConsoleOutput());
     }
     
@@ -92,7 +90,7 @@ public class TestMoveTableau {
     public void T07() {
         String[] parts = ("1" + " " + "N").split(" ");
         (new MoveTableau()).execute(parts);
-        String expectedOutput = "Move invalid.";
+        String expectedOutput = "Invalid input.";
 		assertEquals(expectedOutput, getConsoleOutput());
     }
     

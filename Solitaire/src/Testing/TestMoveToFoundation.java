@@ -9,9 +9,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import card.Card;
-import card.Rank;
-import card.Suit;
 import controller.MoveToFoundation;
 import controller.RecordedCommand;
 import main.GameManager;
@@ -60,7 +57,7 @@ public class TestMoveToFoundation {
     public void T03() {
         String[] parts = ("N" + " " + "0").split(" ");
         (new MoveToFoundation()).execute(parts);
-        String expectedOutput = "Move invalid.";
+        String expectedOutput = "Invalid input.";
 		assertEquals(expectedOutput, getConsoleOutput());
     }
     

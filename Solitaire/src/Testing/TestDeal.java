@@ -54,7 +54,7 @@ public class TestDeal {
 	}
 	
 	@Test
-    public void T04() {
+    public void T03() {
 		Card c = gameManager.getWaste().peak();
 		assertEquals(Suit.CLUBS, c.getSuit());
 		assertEquals(Rank.J, c.getRank());
@@ -62,14 +62,14 @@ public class TestDeal {
     }
 	
 	@Test
-	public void T05(){
+	public void T04(){
 		RecordedCommand.undoOneCommand();
 		assertEquals(24, gameManager.getStock().getCardList().size());
 		assertEquals(0, gameManager.getWaste().getCardList().size());
 	}
 	
 	@Test
-    public void T07() {
+    public void T05() {
 		Card c = gameManager.getStock().getCardList().get(0);
 		assertEquals(Suit.CLUBS, c.getSuit());
 		assertEquals(Rank.J, c.getRank());
@@ -78,21 +78,21 @@ public class TestDeal {
     }
 	
 	@Test
-	public void T09(){
+	public void T06(){
 		RecordedCommand.undoOneCommand();
 		String expectedOutput = "Nothing to undo.";
 		assertEquals(expectedOutput, getConsoleOutput());
 	}
 	
 	@Test
-	public void T10(){
+	public void T07(){
 		RecordedCommand.redoOneCommand();
 		assertEquals(23, gameManager.getStock().getCardList().size());
 		assertEquals(1, gameManager.getWaste().getCardList().size());
 	}
 	
 	@Test
-	public void T11(){
+	public void T08(){
 		Card c = gameManager.getWaste().peak();
 		assertEquals(Suit.CLUBS, c.getSuit());
 		assertEquals(Rank.J, c.getRank());
@@ -100,14 +100,14 @@ public class TestDeal {
 	}
 	
 	@Test
-	public void T12(){
+	public void T09(){
 		RecordedCommand.redoOneCommand();
 		String expectedOutput = "Nothing to redo.";
 		assertEquals(expectedOutput, getConsoleOutput());
 	}
 	
 	@Test
-	public void T13(){
+	public void T10(){
 		for(int i=0; i <24; i++) {
 			(new Deal()).execute(null);
 		}
@@ -116,7 +116,7 @@ public class TestDeal {
 	}
 	
 	@Test
-	public void T14(){
+	public void T11(){
 		Card c = gameManager.getWaste().peak();
 		assertEquals(Suit.CLUBS, c.getSuit());
 		assertEquals(Rank.J, c.getRank());

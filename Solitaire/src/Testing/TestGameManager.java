@@ -77,31 +77,31 @@ public class TestGameManager {
     }
     
     @Test
-    public void T07() {
+    public void T06() {
     	assertEquals(7, gameManager.getTab().size());
     }
     
     @Test
-    public void T08() {
+    public void T07() {
     	assertEquals(4, gameManager.getFoundate().size());
     }
     
     @Test
-    public void T09() {
+    public void T08() {
     	for (Tableau tableau : gameManager.getTab()) {
             Assertions.assertFalse(tableau.empty());
         }
     }
     
     @Test
-    public void T10() {
+    public void T09() {
     	for (Foundation foundate : gameManager.getFoundate()) {
             Assertions.assertTrue(foundate.empty());
         }
     }
     
     @Test
-    public void T11() {
+    public void T10() {
         gameManager.printboard();
         String expectedOutput = "Card Remaining: 24,  Waste: XX, Socre: 0, Move: 0\n"
         		+ "Foundations: [♠] [♥] [♣] [♦]\n"
@@ -118,7 +118,7 @@ public class TestGameManager {
     
     
     @Test
-    public void T12() {
+    public void T11() {
     	gameManager.tabAutoFlip();
         for (Tableau tableau : gameManager.getTab()) {
         	Assertions.assertTrue(tableau.peek().getShow());
@@ -126,26 +126,26 @@ public class TestGameManager {
     }
     
 	@Test
-	public void T13() {
-		Assertions.assertEquals(0, gameManager.getMove());
+	public void T12() {
+		assertEquals(0, gameManager.getMove());
 		gameManager.move();
 		assertEquals(1, gameManager.getMove());
 	}
     
     @Test
-    public void T14() {
+    public void T13() {
         assertEquals(false, gameManager.isWin());
     }
     
     @Test
-    public void T15() {
+    public void T14() {
     	fillFoundate(Suit.SPADES, gameManager.getFoundate().get(0));
         assertEquals(false, gameManager.isWin());
         clearFoundate(gameManager.getFoundate().get(0));
     }
     
     @Test
-    public void T16() {
+    public void T15() {
     	fillFoundate(Suit.SPADES, gameManager.getFoundate().get(0));
     	fillFoundate(Suit.HEARTS, gameManager.getFoundate().get(1));
     	fillFoundate(Suit.CLUBS, gameManager.getFoundate().get(2));
@@ -158,7 +158,7 @@ public class TestGameManager {
     }
     
     @Test
-    public void T17() {
+    public void T16() {
     	gameManager.setPreviousAction("T");
     	gameManager.setScore(0);
     	gameManager.checkCombo();
@@ -166,12 +166,12 @@ public class TestGameManager {
     }
     
 	@Test
-    public void T18() {
+    public void T17() {
 		assertEquals(24, gameManager.getStock().getCardList().size());
     }
 	
 	@Test
-    public void T19() {
+    public void T18() {
 		assertEquals(0, gameManager.getWaste().getCardList().size());
     }
     
