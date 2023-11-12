@@ -52,8 +52,7 @@ public class WasteToTableau extends RecordedCommand{
 				System.out.printf("Move invalid.\n\n");
 			}
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.printf("Invalid input.\n\n");
 		}
 		
 		
