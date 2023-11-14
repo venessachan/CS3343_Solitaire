@@ -14,10 +14,10 @@ public class WasteToFoundation extends RecordedCommand{
 	
 	@Override
 	public void execute(String[] cmdParts) {
-		Card c;
-		GameManager g = GameManager.getInstance();
-		Waste waste = g.getWaste();
-		List<Foundation> foundate = g.getFoundate();
+		Card card;
+		GameManager gameManager = GameManager.getInstance();
+		Waste waste = gameManager.getWaste();
+		List<Foundation> foundate = gameManager.getFoundate();
 		
 		
 		if(waste.empty()) {
@@ -25,22 +25,22 @@ public class WasteToFoundation extends RecordedCommand{
 			return;
 		}
 		
-		c= waste.peak();
+		card= waste.peak();
 		
 		boolean isPut =false;
-		if(foundate.get(0).checkValidAction(c)) {
+		if(foundate.get(0).checkValidAction(card)) {
 			founIndex = 0;
 			isPut = true;
 		}
-		else if(foundate.get(1).checkValidAction(c)) {
+		else if(foundate.get(1).checkValidAction(card)) {
 			founIndex = 1;
 			isPut = true;
 		}
-		else if(foundate.get(2).checkValidAction(c)) {
+		else if(foundate.get(2).checkValidAction(card)) {
 			founIndex = 2;
 			isPut = true;
 		}
-		else if(foundate.get(3).checkValidAction(c)) {
+		else if(foundate.get(3).checkValidAction(card)) {
 			founIndex = 3;
 			isPut = true;
 		}
@@ -49,7 +49,7 @@ public class WasteToFoundation extends RecordedCommand{
 			
 		
 		if(isPut) {
-			foundate.get(founIndex).push(c);
+			foundate.get(founIndex).push(card);
 			removedCard = waste.pop();
 			addUndoCommand(this);
 			clearRedoList();

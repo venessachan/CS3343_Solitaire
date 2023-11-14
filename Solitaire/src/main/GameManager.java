@@ -35,7 +35,9 @@ public class GameManager {
 	
 	private void start() {
 		scoreManager = ScoreManager.getInstance();
-		long seed = System.currentTimeMillis();		//every games have different see
+		
+		long seed = 0;// for testing
+		//long seed = System.currentTimeMillis();		//every games have different seed
 		
 		move = 0;
 		//Deck

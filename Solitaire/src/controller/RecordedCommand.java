@@ -27,11 +27,12 @@ public abstract class RecordedCommand implements Command {
     }
     
     public static void undoOneCommand(){
-        if(undoList.isEmpty())
+        if(undoList.isEmpty()) 
             System.out.println("Nothing to undo.\n");
-        else 
+        else //add  bracket
         	undoList.pop().undoMe();
         	gameManager.setScore(-50);
+        
     }
     
     public static void redoOneCommand()

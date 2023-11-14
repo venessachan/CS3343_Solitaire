@@ -17,67 +17,78 @@ public class MoveTableau extends RecordedCommand{
 	@Override
 	public void execute(String[] cmdParts) {
 		
-		int moveFrom = Integer.parseInt(cmdParts[0]);
-		int moveTo = Integer.parseInt(cmdParts[1]);
-		
-		GameManager g = GameManager.getInstance();
-		List<Tableau> tab = g.getTab();
-		
-		if(moveFrom -1 <0 || moveFrom-1 > 6) {
-			System.out.printf("Move invalid.\n\n");
-			return;
-		}
-		if(moveTo -1 <0 || moveTo-1 > 6) {
-			System.out.printf("Move invalid.\n\n");
-			return;
-		}
-		
-		Tableau tabFrom = tab.get(moveFrom-1);
-		Tableau tabTo = tab.get(moveTo-1);
-		
-		From = moveFrom-1;
-		To = moveTo-1;
-		
-		if(tabFrom.empty()) {
-			System.out.printf("Move invalid\n\n");
-			return;
-		}
-	
-		int tabIndex=0;
-		for(Card c: tabFrom.getCardList()) {
-			if(c.getShow())
-				break;
-			tabIndex++;
-		}
-		
-		boolean isPut = false;
-		while(tabIndex < tabFrom.getCardList().size()) {
-			Card cardFrom = tabFrom.getCardList().get(tabIndex);
-			if(tabTo.checkValidAction(cardFrom)) {
-				isPut = true;
-				break;
+		try { //Revised the input format error
+			int moveFrom = Integer.parseInt(cmdParts[0]);
+			int moveTo = Integer.parseInt(cmdParts[1]);
+
+			GameManager g = GameManager.getInstance();
+			List<Tableau> tab = g.getTab();
+			
+			if(moveFrom -1 <0 || moveFrom-1 > 6) {
+				System.out.printf("Move invalid.\n\n");
+				return;
 			}
-			tabIndex ++;
-		}
-		
-		if(isPut) {
-			List<Card> range = tabFrom.getCardList().subList(tabIndex, tabFrom.getCardList().size());
-			tabTo.put(range);
-			
-			times = range.size();
-			
-			for(int i=0; i<times;i++) {
-				tabFrom.pop();
+			if(moveTo -1 <0 || moveTo-1 > 6) {
+				System.out.printf("Move invalid.\n\n");
+				return;
 			}
 			
-			addUndoCommand(this);
-			clearRedoList();
-			System.out.printf("Move successful.\n\n");
+			//Revised
+			if(moveFrom == moveTo) {
+				System.out.printf("Move invalid.\n\n");
+				return;
+			}
 			
-		}else {
-			System.out.printf("Move invalid.\n\n");
+			Tableau tabFrom = tab.get(moveFrom-1);
+			Tableau tabTo = tab.get(moveTo-1);
+			
+			From = moveFrom-1;
+			To = moveTo-1;
+			
+			if(tabFrom.empty()) {
+				System.out.printf("Move invalid\n\n");
+				return;
+			}
+
+			int tabIndex=0;
+			for(Card c: tabFrom.getCardList()) {
+				if(c.getShow())
+					break;
+				tabIndex++;
+			}
+			
+			boolean isPut = false;
+			while(tabIndex < tabFrom.getCardList().size()) {
+				Card cardFrom = tabFrom.getCardList().get(tabIndex);
+				if(tabTo.checkValidAction(cardFrom)) {
+					isPut = true;
+					break;
+				}
+				tabIndex ++;
+			}
+			
+			if(isPut) {
+				List<Card> range = tabFrom.getCardList().subList(tabIndex, tabFrom.getCardList().size());
+				tabTo.put(range);
+				
+				times = range.size();
+				
+				for(int i=0; i<times;i++) {
+					tabFrom.pop();
+				}
+				
+				addUndoCommand(this);
+				clearRedoList();
+				System.out.printf("Move successful.\n\n");
+				
+			}else {
+				System.out.printf("Move invalid.\n\n");
+			}
+		} catch (NumberFormatException e) {
+			
+			System.out.printf("Invalid input.\n\n");
 		}
-		
+				
 	}
 
 	@Override

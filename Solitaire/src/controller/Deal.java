@@ -1,5 +1,9 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import card.Card;
 import main.GameManager;
 import stackManager.Stock;
@@ -16,9 +20,17 @@ public class Deal extends RecordedCommand{
 		Waste waste = g.getWaste();
 		
 		if(stock.empty()) {
+			//Error Part
+//			for(Card wastedCard: waste.getCardList()) {
+//				stock.push(wastedCard);
+//				wastedCard.setShow(false);
+//			}
+			
+			//Revised
+			Collections.reverse(waste.getCardList());
 			for(Card wastedCard: waste.getCardList()) {
-				stock.push(wastedCard);
 				wastedCard.setShow(false);
+				stock.push(wastedCard);
 			}
 			waste.getCardList().clear();
 		}
@@ -52,7 +64,7 @@ public class Deal extends RecordedCommand{
 		c.setShow(true);
 		stock.pop();
 		waste.push(c);
-		
+		addUndoCommand(this);
 	}
 
 }

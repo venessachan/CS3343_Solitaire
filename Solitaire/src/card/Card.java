@@ -72,6 +72,7 @@ public class Card {
 			setShow(true);
 	};
 	
+
 	public Rank getRank() {
 		return rank;
 	}
