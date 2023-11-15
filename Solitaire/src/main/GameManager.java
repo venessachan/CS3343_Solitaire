@@ -6,6 +6,11 @@ import java.util.List;
 import card.Card;
 import card.Deck;
 import card.Suit;
+import controller.DisplayController;
+import controller.MoveTableauController;
+import controller.RedoController;
+import controller.ScoreController;
+import controller.UndoController;
 import stackManager.Foundation;
 import stackManager.Stock;
 import stackManager.Tableau;
@@ -15,39 +20,56 @@ public class GameManager {
 	
 	private static GameManager instance = new GameManager();
 
+	private int move;
+	//private int score;
+	private List<Foundation> foundation;
+	private List<Tableau> tableaus;
 	private Deck deck;
-	private List<Tableau> tab;
 	private Stock stock;
 	private Waste waste;
-	private List<Foundation> foundate;
-	private int move;
-	static ScoreManager scoreManager;
-	
+	private UndoController undoController;
+	private RedoController redoController = RedoController.getInstance();
+	private DisplayController displayController;
+	private MoveTableauController moveTableauController;
+	static ScoreController scoreController = ScoreController.getInstance();
+	private String previousAction;
 	
 	private GameManager(){
-//		if() {
-//			
-//		}else if(){
-//			start();
-//		}
-		start();
+		foundation.clear();
+		tableaus.clear();
+		deck = null;
+		stock = null;
+		waste = null;
+		//should be change to singleton
+		undoController = null;
+		redoController = null;
+		displayController = null;
+		moveTableauController = null;
+		previousAction = "";
+		//score = 0;
 	}
 	
-	private void start() {
-		scoreManager = ScoreManager.getInstance();
+	
+	public void start() {
+		
+		//int level = sc.nextInt();
+		//displayController.printboard(level);
+		displayController.printboard();
+		
 		
 		long seed = 0;// for testing
 		//long seed = System.currentTimeMillis();		//every games have different seed
-		
+		previousAction = "";
+		scoreController.setScore(0);			//chock bug-> not set 0 here
 		move = 0;
 		//Deck
 		deck = new Deck();
 		deck.shuffle(seed);//seed
 		
 		//Foundation
-		foundate = new ArrayList<>();
+		foundation = new ArrayList<>();
 		for(Suit suit : Suit.values()) {
-			foundate.add(new Foundation (suit));
+			foundation.add(new Foundation (suit));
 		}
 		
 		//Stock
@@ -55,15 +77,15 @@ public class GameManager {
 		stock.setStock(deck.getCards());
 		
 		//Tableau
-		tab = new ArrayList<>();
+		tableaus = new ArrayList<>();
 		for(int i=1;i<=7;i++) {
-			Tableau t = new Tableau();
+			Tableau tableau = new Tableau();
 			List<Card> temp= new ArrayList<>();
 			for(int j=1; j<=i;j++) {
 				temp.add(stock.pop());
 			}
-			t.put(temp);
-			tab.add(t);
+			tableau.put(temp);
+			tableaus.add(tableau);
 		}
 		
 		//Waste
@@ -71,46 +93,98 @@ public class GameManager {
 		tabAutoFlip();
 	}
 	
+	public int commandExecute(String cmd) {
+		String[] cmdParts = cmd.split(" ");
+		String[] previousActionParts = previousAction.split(" ");
+		switch(cmdParts[0]) {
+		//case sensitive need to change -> chock bug
+			case "S":
+				start();
+				previousAction = "";
+				return 1;
+			case "U":
+				undoController = new UndoController();
+				undoController.undoOneCommand();
+				//move?
+				scoreController.addScore(-50);
+				previousAction = cmd;
+				return 2;
+			case "R":
+				//case sensitive
+				if(!previousActionParts[0].equals("U")) {
+					redoController.clearRedoList();
+					//can print message
+					return -1;
+				}else {
+					redoController.redoOneCommand();
+				}
+				//move?
+				//score?
+				previousAction = cmd;
+				return 3;
+			case "T":
+				return 4;	
+			//may need to adjust, affect undo/redo
+			case "TNext":
+				String moveFrom = cmdParts[1];
+				String moveTo = cmdParts[2];
+				if(moveTo.equals("0")) {
+					//moveToFoundation
+					scoreController.checkCombo(previousActionParts[2]);
+				}else {
+					//moveTableau
+				}
+				move();
+				previousAction = cmd;
+				return 5;
+			case "W":
+				displayController.printMoveToQ();
+				return 6;
+			case "WasteNext":
+				if(cmdParts[1].equals("0")) {
+					//wasteToFoundation
+					scoreController.checkCombo(previousActionParts[2]);
+				}else {
+					//wasteToTableau
+				}
+				move();
+				previousAction = cmd;
+				return 7;
+			case "D":
+				//deal
+				previousAction = cmd;
+				return 8;
+			case "Q":
+				displayController.printQuitMessage();
+				//quit? or restart
+				return -2;
+			default:
+				System.out.print("Please input a valid command.\n\n");
+				return 0;
+		}
+	}
+		
 	public void tabAutoFlip(){
-		for(Tableau t: tab) {
+		for(Tableau t: tableaus) {
 			if(!t.empty() && !(t.peek().getShow())) 
 				t.peek().setShow(true);
 		}
 	}
 	
-	public boolean isWin() {
-		if(foundate.get(0).full() 
-			&& foundate.get(1).full()
-			&& foundate.get(2).full()
-			&& foundate.get(3).full()) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public void printboard() {
-
-		System.out.printf("Card Remaining: %d,  Waste: %s, Socre: %d, Move: %d\n",
-					stock.count(), waste.print(), scoreManager.getScore(), getMove());
-		System.out.printf("Foundations: [%s] [%s] [%s] [%s]\n\n", foundate.get(0).print(), foundate.get(1).print(), foundate.get(2).print(), foundate.get(3).print());
-		for(int i=0; i<7 ;i++) {
-			System.out.printf("Tableau %d: [%s]\n", i+1, tab.get(i).print());
-		}
-		System.out.print("\n");
-	}
-	
-
 	public static GameManager getInstance() {
 		return instance;
 	}
 	
+	public List<Tableau> getTab() {
+		return tableaus;
+	}
+	
+	public List<Foundation> getFoundate() {
+		return foundation;
+	}
+	
 	public Deck getDeck() {
 		return deck;
-	}
-
-	public List<Tableau> getTab() {
-		return tab;
 	}
 
 	public Stock getStock() {
@@ -121,31 +195,35 @@ public class GameManager {
 		return waste;
 	}
 
-	public List<Foundation> getFoundate() {
-		return foundate;
-	}
-	
-
-	
 	public void move() {
-		move++;
+		move += 1;
 	}
+	
 	
 	public int getMove() {
 		return move;
 	}
 	
-	
 	public void setPreviousAction(String previousAction) {
-		scoreManager.setPreviousAction(previousAction);
+    	this.previousAction = previousAction;
+    }
+	
+    public String getPreviousAction() {
+    	return previousAction;
+    }
+    
+	public boolean isWin() {
+		if(foundation.get(0).full() && foundation.get(1).full()
+			&& foundation.get(2).full() && foundation.get(3).full()) {
+			return true;
+		}
 		
+		scoreController.addScore(1000000/getMove());
+		return false;
 	}
 	
 	public void setScore(int score) {
-		scoreManager.setScore(score);
+		scoreController.setScore(score);
 	}
 	
-	public void checkCombo() {
-		scoreManager.checkCombo();
-	}
 }

@@ -7,7 +7,7 @@ import main.GameManager;
 import stackManager.Foundation;
 import stackManager.Tableau;
 
-public class MoveToFoundation extends RecordedCommand{
+public class MoveToFoundationController extends ControlHandler{
 
 	private Card removedCard;
 	private int founIndex;

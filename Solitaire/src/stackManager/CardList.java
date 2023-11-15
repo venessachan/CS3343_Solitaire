@@ -6,9 +6,11 @@ import card.Card;
 
 public interface CardList {
 
-	public Card pop();
 	public void push(Card card);
-	public boolean empty();
+	public Card pop();
+	public Card peek();
+	public boolean isEmpty();
+	public void clear();
 	public List<Card> getCardList();
 	public String print();
 }

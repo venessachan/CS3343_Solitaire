@@ -7,14 +7,13 @@ import card.Card;
 import main.GameManager;
 import stackManager.Tableau;
 
-public class MoveTableau extends RecordedCommand{
+public class MoveTableauController extends ControlHandler{
 
 	private int From;
 	private int To;
 	private Stack<Card> cards = new Stack<>();
 	private int times;
 	
-	@Override
 	public void execute(String[] cmdParts) {
 		
 		try { //Revised the input format error

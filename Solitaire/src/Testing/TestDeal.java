@@ -13,7 +13,7 @@ import card.Card;
 import card.Rank;
 import card.Suit;
 import controller.Deal;
-import controller.RecordedCommand;
+import controller.ControlHandler;
 import main.GameManager;
 import main.ScoreManager;
 
@@ -63,7 +63,7 @@ public class TestDeal {
 	
 	@Test
 	public void T04(){
-		RecordedCommand.undoOneCommand();
+		ControlHandler.undoOneCommand();
 		assertEquals(24, gameManager.getStock().getCardList().size());
 		assertEquals(0, gameManager.getWaste().getCardList().size());
 	}
@@ -79,14 +79,14 @@ public class TestDeal {
 	
 	@Test
 	public void T06(){
-		RecordedCommand.undoOneCommand();
+		ControlHandler.undoOneCommand();
 		String expectedOutput = "Nothing to undo.";
 		assertEquals(expectedOutput, getConsoleOutput());
 	}
 	
 	@Test
 	public void T07(){
-		RecordedCommand.redoOneCommand();
+		ControlHandler.redoOneCommand();
 		assertEquals(23, gameManager.getStock().getCardList().size());
 		assertEquals(1, gameManager.getWaste().getCardList().size());
 	}
@@ -101,7 +101,7 @@ public class TestDeal {
 	
 	@Test
 	public void T09(){
-		RecordedCommand.redoOneCommand();
+		ControlHandler.redoOneCommand();
 		String expectedOutput = "Nothing to redo.";
 		assertEquals(expectedOutput, getConsoleOutput());
 	}

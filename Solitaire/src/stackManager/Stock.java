@@ -19,23 +19,8 @@ public class Stock extends CardListAbstract{
 //	}
 	
 	public void setStock(List<Card> cards) {
-		if(empty()) 
+		if(isEmpty()) 
 			cardList.addAll(cards);
 	}
-	
-	@Override
-	public void push(Card card) {
-		cardList.add(0, card);
-	}
-	
-	@Override
-	public Card pop() {
-		Card card = cardList.remove(0);
-		return card;
-	}
-	
-	@Override
-	public String print() {
-		return null;
-	}
+
 }

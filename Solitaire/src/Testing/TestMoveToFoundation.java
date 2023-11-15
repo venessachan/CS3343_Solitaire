@@ -10,7 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import controller.MoveToFoundation;
-import controller.RecordedCommand;
+import controller.ControlHandler;
 import main.GameManager;
 import main.ScoreManager;
 
@@ -79,26 +79,26 @@ public class TestMoveToFoundation {
     
     @Test
     public void T06() {
-    	RecordedCommand.undoOneCommand();
+    	ControlHandler.undoOneCommand();
         assertEquals(0, gameManager.getFoundate().get(1).getCardList().size());
     }
     
     @Test
 	public void T07(){
-		RecordedCommand.undoOneCommand();
+		ControlHandler.undoOneCommand();
 		String expectedOutput = "Nothing to undo.";
 		assertEquals(expectedOutput, getConsoleOutput());
 	}
     
     @Test
     public void T08() {
-    	RecordedCommand.redoOneCommand();
+    	ControlHandler.redoOneCommand();
         assertEquals(1, gameManager.getFoundate().get(1).getCardList().size());
     }
     
     @Test
 	public void T09(){
-		RecordedCommand.redoOneCommand();
+		ControlHandler.redoOneCommand();
 		String expectedOutput = "Nothing to redo.";
 		assertEquals(expectedOutput, getConsoleOutput());
 	}

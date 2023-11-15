@@ -20,7 +20,6 @@ public class Deck {
             int randNum = random.nextInt(52);
             Collections.swap(cards,randNum,i);
         }
-		
 	}
 	
 	public void setCard() {	

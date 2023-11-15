@@ -38,25 +38,6 @@ public class Foundation extends CardListAbstract{
 		return false;
 	}
 	
-	@Override
-	public void push(Card card) {
-		cardList.add(card);
-	}
-	
-	@Override
-	public Card pop() {
-		return cardList.remove(cardList.size()-1);
-	}
-	
-	@Override
-	public String print() {
-		Card c = getLastCard();
-		if(c != null)
-			return c.toString();
-		else
-			return foundationSuit.getSign();
-	}
-	
 	public boolean full() {
 		if(cardList.size() >= 13) {
 			return true;
@@ -74,6 +55,15 @@ public class Foundation extends CardListAbstract{
 
 	public Suit getSuit() {
 		return foundationSuit;
+	}
+	
+	@Override
+	public String print() {
+		Card card = getLastCard();
+		if(card != null)
+			return card.toString();
+		else
+			return foundationSuit.getSign();
 	}
 
 	

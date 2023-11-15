@@ -7,7 +7,7 @@ import main.GameManager;
 import stackManager.Foundation;
 import stackManager.Waste;
 
-public class WasteToFoundation extends RecordedCommand{
+public class WasteToFoundationController extends ControlHandler{
 
 	private Card removedCard;
 	private int founIndex;

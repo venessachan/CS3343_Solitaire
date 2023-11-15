@@ -7,7 +7,7 @@ import main.GameManager;
 import stackManager.Tableau;
 import stackManager.Waste;
 
-public class WasteToTableau extends RecordedCommand{
+public class WasteToTableauController extends ControlHandler{
 	
 	private Card removedCard;
 	private int tabIndex;

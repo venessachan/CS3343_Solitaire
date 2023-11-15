@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import controller.MoveTableau;
 import controller.MoveToFoundation;
-import controller.RecordedCommand;
+import controller.ControlHandler;
 import main.GameManager;
 import main.ScoreManager;
 
@@ -110,14 +110,14 @@ public class TestMoveTableau {
     
     @Test
     public void T10() {
-    	RecordedCommand.undoOneCommand();
+    	ControlHandler.undoOneCommand();
     	assertEquals(1, gameManager.getTab().get(0).getCardList().size());
 		assertEquals(6, gameManager.getTab().get(5).getCardList().size());
     }
     
     @Test
     public void T11() {
-    	RecordedCommand.redoOneCommand();
+    	ControlHandler.redoOneCommand();
     	assertEquals(2, gameManager.getTab().get(0).getCardList().size());
 		assertEquals(5, gameManager.getTab().get(5).getCardList().size());
     }
