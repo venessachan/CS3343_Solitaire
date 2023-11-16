@@ -9,7 +9,7 @@ public class Card {
 	public Card(Suit suit, Rank rank) {
 		this.suit = suit;
 		this.rank = rank;
-		this.show = false;
+		setShow(false);
 		
 	}
 	

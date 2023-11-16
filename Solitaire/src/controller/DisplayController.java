@@ -50,11 +50,19 @@ public class DisplayController {
 		System.out.print("Move invalid.\n\n");
 	}
 	
+	public void printValidMove() {
+		System.out.printf("Move successful.\n\n");
+	}
+	
 	public void printInputReminder1() {
 		System.out.print("Please input a valid command.\n\n");
 	}
 	
 	public void printInputReminder2() {
 		System.out.print("Please input a valid range 0-6.\n\n");
+	}
+	
+	public void printAddCardToWaste() {
+		System.out.print("A card added to Waste. \n\n");
 	}
 }

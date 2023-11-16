@@ -12,17 +12,19 @@ import stackManager.Waste;
 public class DealController extends ControlHandler{
 	private static DealController instance = new DealController();
 	
-	private DealController() {
-
+	private DealController() {}
+	
+	public static DealController getInstance() {
+		return instance;
 	}
+	
 	
 	//restart to reset the variable?
 	
-	public void execute(String[] cmdParts) {
-		Stock stock = gameManager.getStock();
-		Waste waste = gameManager.getWaste();
+	public void execute(Stock stock, Waste waste) {
+
 		
-		if(stock.isEmpty()) {
+		if(stock.isEmpty(stock.getCardList())) {
 			//Error Part cock bug
 //			for(Card wastedCard: waste.getCardList()) {
 //				stock.push(wastedCard);
@@ -35,20 +37,16 @@ public class DealController extends ControlHandler{
 //				wastedCard.setShow(false);
 //				stock.push(wastedCard);
 //			}
-			for(int i = 0; i < waste.getCardList().size(); i++) {
-				stock.push(waste.pop());
+			waste.peek(waste.getCardList()).flip();
+			while(!waste.isEmpty(waste.getCardList())) {
+				stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
 			}
-			
-			waste.clear();
+		}else {
+			waste.peek(waste.getCardList()).flip();
+			waste.push(waste.getCardList(), stock.pop(stock.getCardList()));
+			waste.peek(waste.getCardList()).flip();
 		}
 		
-		card = stock.pop();
-		card.setShow(true);
-		waste.push(card);
-		
-		addUndoCommand(this);
-		clearRedoList();
-		System.out.print("A card added to Waste. \n\n");
 	}
 
 }

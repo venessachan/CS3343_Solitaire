@@ -37,7 +37,10 @@ public class Tableau extends CardListAbstract{
 		return cardList;
 	}
 	
-
+	public void addAll(List<Card> cardList) {
+		Tableau.cardList.addAll(cardList);
+	}
+	
 	@Override
 	public String print() {
 		String results = "";

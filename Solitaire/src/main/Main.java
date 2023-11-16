@@ -29,8 +29,8 @@ public class Main {
 				controlHandler.execute("T" + " " + moveFrom + " " + moveTo);
 			}else if(cmdParts[0].equals("W")) {
 				displayController.printMoveToQ();
-				String moveFrom = sc.nextLine();
-				controlHandler.execute("W" + " " + moveFrom);
+				String moveTo = sc.nextLine();
+				controlHandler.execute("W" + " " + moveTo);
 			}
 			controlHandler.tabAutoFlip();
 		}

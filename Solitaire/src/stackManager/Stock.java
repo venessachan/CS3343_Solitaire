@@ -21,7 +21,7 @@ public class Stock extends CardListAbstract{
 //			cardList.addAll(cards);
 //	}
 
-	public List<Card> getStock() {
+	public List<Card> getCardList() {
 		return cardList;
 	}
 	

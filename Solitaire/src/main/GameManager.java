@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import card.Suit;
+import controller.DealController;
 import controller.DisplayController;
-import controller.MoveTableauController;
 import controller.MoveToFoundationController;
+import controller.MoveToTableauController;
 import controller.RedoController;
 import controller.ScoreController;
 import controller.UndoController;
@@ -32,11 +33,13 @@ public class GameManager {
 	private UndoController undoController;
 	private RedoController redoController = RedoController.getInstance();
 	private DisplayController displayController;
-	private MoveTableauController moveTableauController;
 	static ScoreController scoreController = ScoreController.getInstance();
 	static MoveToFoundationController moveToFoundationController = MoveToFoundationController.getInstance();
+	static MoveToTableauController moveToTableauController = MoveToTableauController.getInstance();
+	static DealController dealController = DealController.getInstance();
 	
 	private GameManager(){
+		previousAction = "";
 		foundation.clear();
 		tableaus.clear();
 		deck = null;
@@ -46,8 +49,10 @@ public class GameManager {
 		undoController = null;
 		redoController = null;
 		displayController = null;
-		moveTableauController = null;
-		previousAction = "";
+		scoreController = null;
+		dealController = null;
+		moveToFoundationController = null;
+		moveToTableauController = null;
 		//score = 0;
 	}
 	
@@ -90,7 +95,7 @@ public class GameManager {
 		//Stock
 		stock = new Stock();
 		while(!deck.isEmpty(deck.getCards())) {
-			stock.push(stock.getStock(), deck.pop(deck.getCards()));
+			stock.push(stock.getCardList(), deck.pop(deck.getCards()));
 		}
 				
 		//Waste
@@ -109,7 +114,7 @@ public class GameManager {
 			tableausPrint = tableausPrint + tableaus.get(i).print() + " ";
 		}
 		String[] tableausInfo = tableausPrint.split(" ");
-		displayController.printboard(stock.count(stock.getStock()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
+		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
 	}
 	
 	public int commandExecute(String cmd) {
@@ -124,9 +129,10 @@ public class GameManager {
 			case "U":
 				undoController = new UndoController();
 				undoController.undoOneCommand();
-				//move?
+				move();
 				scoreController.addScore(-50);
 				previousAction = cmd;
+				//add redo list
 				return 2;
 			case "R":
 				//case sensitive
@@ -137,79 +143,126 @@ public class GameManager {
 				}else {
 					redoController.redoOneCommand();
 				}
-				//move?
+				move();
 				//score?
 				previousAction = cmd;
 				return 3;
 			case "T":
-				int moveFrom = Integer.parseInt(cmdParts[1]);
-				int moveTo = Integer.parseInt(cmdParts[2]);
-				//Error checking
-				if(moveFrom < 0 || moveFrom > 6 || moveTo < 0 || moveTo > 6) {
-					//put to displayController
-					displayController.printInputReminder2();
-					return -1;
-				}
-				if(moveTo == 0) {
-					//moveToFoundation
-					//error checking
+				try{
+					int moveFrom = Integer.parseInt(cmdParts[1]);
+					int moveTo = Integer.parseInt(cmdParts[2]);
+					
+					//Error checking
+					if(moveFrom -1 < 0 || moveFrom -1 > 6 || moveTo -1 < 0 || moveTo -1 > 6 || moveFrom == moveTo) {
+						//put to displayController
+						displayController.printInputReminder2();
+						return -1;
+					}
+						
 					if(tableaus.get(moveFrom-1).isEmpty(tableaus.get(moveFrom-1).getCardList())) {
 						displayController.printInvalidMove();
 						return -1;
 					}
 					
-					int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
-					if(foundationIndex < 0 || foundation.get(foundationIndex).isFull()) {
-						displayController.printInvalidMove();
-						return -1;
+					//tableau to foundation
+					if(moveTo == 0) {
+						//error checking
+						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
+						if(foundationIndex < 0 || foundation.get(foundationIndex).isFull()) {
+							displayController.printInvalidMove();
+							return -1;
+						}
+							
+						//valid
+						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation);
+						scoreController.checkCombo(previousActionParts[2]);
+						
+					}else {
+						//move Tableau to Tableau
+						//error checking
+						int showCardCount = moveToTableauController.getShowCard(tableaus.get(moveFrom -1).getCardList());
+						if(showCardCount <= 0) {
+							displayController.printInvalidMove();
+							return -1;
+						}
+						
+						int validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom).getCardList(), tableaus.get(moveTo), showCardCount);
+						if(validCard <= 0) {
+							displayController.printInvalidMove();
+							return -1;
+						}
+						//valid
+						moveToTableauController.execute(tableaus.get(moveFrom), tableaus.get(moveTo), validCard);
+						displayController.printValidMove();
+						tabAutoFlip();
 					}
-					
-					//valid
-					moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation);
-					scoreController.checkCombo(previousActionParts[2]);
-//					addUndoCommand(this);
-//					clearRedoList();
-					
-				}else {
-					//moveTableau
+				}catch(NumberFormatException e) {
+					System.out.printf("Invalid input.\n\n");
+					return -1;
 				}
+				
 				move();
 				previousAction = cmd;
+//				addUndoCommand(this);
+//				clearRedoList();
 				return 4;	
 			case "W":
-				if(cmdParts[1].equals("0")) {
-					//wasteToFoundation
+				try{
+					int moveFrom = Integer.parseInt(cmdParts[1]);
+					int moveTo = Integer.parseInt(cmdParts[2]);
+					
 					//error checking
 					if(waste.isEmpty(waste.getCardList())) {
 						displayController.printInvalidMove();
 						return -1;
 					}
 					
-					int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
-					if(foundationIndex < 0 || foundation.get(foundationIndex).isFull()) {
-						displayController.printInvalidMove();
-						return -1;
+					if(moveTo == 0) {
+						//wasteToFoundation
+						//error checking
+						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
+						if(foundationIndex < 0 || foundation.get(foundationIndex).isFull()) {
+							displayController.printInvalidMove();
+							return -1;
+						}
+						//valid
+						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation);
+						scoreController.checkCombo(previousActionParts[2]);
+					}else {
+						//wasteToTableau
+						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo));
+						if(validCard <= 0) {
+							displayController.printInvalidMove();
+							return -1;
+						}
+						//valid
+						moveToTableauController.execute(waste, tableaus.get(moveTo), 1);
+						displayController.printValidMove();
+						waste.peek(waste.getCardList()).flip();
+						
 					}
-					//valid
-					moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation);
-					scoreController.checkCombo(previousActionParts[2]);
-//					addUndoCommand(this);
-//					clearRedoList();
-				}else {
-					//wasteToTableau
+				}catch(NumberFormatException e) {
+					System.out.printf("Invalid input.\n\n");
 				}
+			
 				move();
 				previousAction = cmd;
+//				addUndoCommand(this);
+//				clearRedoList();
 				return 5;
 			case "D":
-				//deal
+				dealController.execute(stock, waste);
 				previousAction = cmd;
+				displayController.printAddCardToWaste();
+//				addUndoCommand(this);
+//				clearRedoList();
 				return 6;
 			case "Q":
 				displayController.printQuitMessage();
 				//quit? or restart
 				return -2;
 			default:
+				//invalid command
 				displayController.printInputReminder1();
 				return 0;
 		}
