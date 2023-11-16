@@ -59,7 +59,7 @@ public class DisplayController {
 	}
 	
 	public void printInputReminder2() {
-		System.out.print("Please input a valid range 0-6.\n\n");
+		System.out.print("Please input a valid range 0-7.\n\n");
 	}
 	
 	public void printAddCardToWaste() {

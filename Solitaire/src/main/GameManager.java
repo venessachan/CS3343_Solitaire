@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import card.Suit;
+import controller.CommandHistory;
 import controller.DealController;
 import controller.DisplayController;
 import controller.MoveToFoundationController;
@@ -30,13 +31,16 @@ public class GameManager {
 	private Deck deck;
 	private Stock stock;
 	private Waste waste;
-	private UndoController undoController;
 	private RedoController redoController = RedoController.getInstance();
 	private DisplayController displayController;
+	
+	//****How to refresh static controller
 	static ScoreController scoreController = ScoreController.getInstance();
 	static MoveToFoundationController moveToFoundationController = MoveToFoundationController.getInstance();
 	static MoveToTableauController moveToTableauController = MoveToTableauController.getInstance();
 	static DealController dealController = DealController.getInstance();
+	static UndoController undoController = UndoController.getInstance();
+	private CommandHistory commandHistory;
 	
 	private GameManager(){
 		previousAction = "";
@@ -53,15 +57,17 @@ public class GameManager {
 		dealController = null;
 		moveToFoundationController = null;
 		moveToTableauController = null;
+		undoController = null;
+		
+		commandHistory = null;
 		//score = 0;
 	}
 	
 	
 	public void start() {
-		
 		//int level = sc.nextInt();
 		//displayController.printboard(level);
-		
+		commandHistory = new CommandHistory();
 		
 		
 		long seed = 0;// for testing
@@ -127,8 +133,8 @@ public class GameManager {
 				previousAction = "";
 				return 1;
 			case "U":
-				undoController = new UndoController();
-				undoController.undoOneCommand();
+//				undoController = new UndoController();
+//				undoController.undoOneCommand();
 				move();
 				scoreController.addScore(-50);
 				previousAction = cmd;
@@ -151,9 +157,9 @@ public class GameManager {
 				try{
 					int moveFrom = Integer.parseInt(cmdParts[1]);
 					int moveTo = Integer.parseInt(cmdParts[2]);
-					
+					int validCard = 0;
 					//Error checking
-					if(moveFrom -1 < 0 || moveFrom -1 > 6 || moveTo -1 < 0 || moveTo -1 > 6 || moveFrom == moveTo) {
+					if(moveFrom -1 < 0 || moveFrom -1 > 6 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
 						//put to displayController
 						displayController.printInputReminder2();
 						return -1;
@@ -176,7 +182,10 @@ public class GameManager {
 						//valid
 						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation);
 						scoreController.checkCombo(previousActionParts[2]);
-						
+						previousAction = cmd + " " + validCard;
+						undoController.addUndoCommand(commandHistory, previousAction);
+//						clearRedoList();
+						move();
 					}else {
 						//move Tableau to Tableau
 						//error checking
@@ -186,7 +195,7 @@ public class GameManager {
 							return -1;
 						}
 						
-						int validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom).getCardList(), tableaus.get(moveTo), showCardCount);
+						validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom).getCardList(), tableaus.get(moveTo), showCardCount);
 						if(validCard <= 0) {
 							displayController.printInvalidMove();
 							return -1;
@@ -195,24 +204,27 @@ public class GameManager {
 						moveToTableauController.execute(tableaus.get(moveFrom), tableaus.get(moveTo), validCard);
 						displayController.printValidMove();
 						tabAutoFlip();
+						previousAction = cmd + " " + validCard;
+						undoController.addUndoCommand(commandHistory, previousAction);
+//						clearRedoList();
+						move();
 					}
+					return 4;	
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
 					return -1;
 				}
-				
-				move();
-				previousAction = cmd;
-//				addUndoCommand(this);
-//				clearRedoList();
-				return 4;	
 			case "W":
-				try{
-					int moveFrom = Integer.parseInt(cmdParts[1]);
-					int moveTo = Integer.parseInt(cmdParts[2]);
+				try{					
+					int moveTo = Integer.parseInt(cmdParts[1]);
 					
 					//error checking
 					if(waste.isEmpty(waste.getCardList())) {
+						displayController.printInvalidMove();
+						return -1;
+					}
+					
+					if(moveTo  < 0 || moveTo > 7) {
 						displayController.printInvalidMove();
 						return -1;
 					}
@@ -228,6 +240,10 @@ public class GameManager {
 						//valid
 						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation);
 						scoreController.checkCombo(previousActionParts[2]);
+						undoController.addUndoCommand(commandHistory, cmd);
+						previousAction = cmd;
+						move();
+//						clearRedoList();
 					}else {
 						//wasteToTableau
 						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo));
@@ -239,22 +255,22 @@ public class GameManager {
 						moveToTableauController.execute(waste, tableaus.get(moveTo), 1);
 						displayController.printValidMove();
 						waste.peek(waste.getCardList()).flip();
-						
+						undoController.addUndoCommand(commandHistory, cmd);
+						previousAction = cmd;
+//						clearRedoList();
+						move();
 					}
+					return 5;
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
 				}
 			
-				move();
-				previousAction = cmd;
-//				addUndoCommand(this);
-//				clearRedoList();
-				return 5;
+
 			case "D":
 				dealController.execute(stock, waste);
 				previousAction = cmd;
 				displayController.printAddCardToWaste();
-//				addUndoCommand(this);
+				undoController.addUndoCommand(commandHistory, previousAction);
 //				clearRedoList();
 				return 6;
 			case "Q":
