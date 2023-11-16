@@ -1,16 +1,22 @@
-package card;
+package stackManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-public class Deck {
+import card.Card;
+import card.Rank;
+import card.Suit;
+
+public class Deck extends CardListAbstract{
 	
+	private static List<Card> cards = new ArrayList<Card>();
 	private final int totalNum = 52;
-	private List<Card> cards = new ArrayList<>();
+
 	
 	public Deck() {		//create and place the 52 different cards into cards[]
+		super(cards);
 		setCard();	
 	}
 	
@@ -30,7 +36,12 @@ public class Deck {
 	}
 	
 	public List<Card> getCards() {
-		return this.cards;
+		return Deck.cards;
+	}
+
+	@Override
+	public String print() {
+		return null;
 	}
 		
 }

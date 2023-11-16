@@ -1,16 +1,14 @@
 package stackManager;
+import java.util.ArrayList;
 import java.util.List;
 
 import card.Card;
 
 public class Stock extends CardListAbstract{
+	private static List<Card> cardList  = new ArrayList<Card>();
 	
 	public Stock() {
-		super();
-	}
-	
-	public int count() {
-		return cardList.size();
+		super(cardList);
 	}
 	
 //	public Card deal() {
@@ -18,9 +16,17 @@ public class Stock extends CardListAbstract{
 //		
 //	}
 	
-	public void setStock(List<Card> cards) {
-		if(isEmpty()) 
-			cardList.addAll(cards);
-	}
+//	public void setStock(List<Card> cards) {
+//		if(isEmpty()) 
+//			cardList.addAll(cards);
+//	}
 
+	public List<Card> getStock() {
+		return cardList;
+	}
+	
+	@Override
+	public String print() {
+		return null;
+	}
 }

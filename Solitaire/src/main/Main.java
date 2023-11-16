@@ -11,23 +11,26 @@ public class Main {
 		ControlHandler controlHandler = ControlHandler.getInstance();
 		DisplayController displayController = DisplayController.getInstance();
 		while(true) {
-			displayController.printLevel();
+			//displayController.printLevel();
+			//print start? if-else
 			Scanner sc = new Scanner(System.in);
 			
 			String cmd = sc.nextLine();
 			//-2 (Q)
 			if(controlHandler.execute(cmd) == -2) {
 				break;
-			}else if(controlHandler.execute(cmd) == 4) {
+			}
+			String[] cmdParts = cmd.split(" ");
+			if(cmdParts[0].equals("T")) {
 				displayController.printMoveFromQ();
 				String moveFrom = sc.nextLine();
 				displayController.printMoveToQ();
 				String moveTo = sc.nextLine();
-				controlHandler.execute("TNext" + " " + moveFrom + " " + moveTo);
-			}else if(controlHandler.execute(cmd) == 5) {
+				controlHandler.execute("T" + " " + moveFrom + " " + moveTo);
+			}else if(cmdParts[0].equals("W")) {
 				displayController.printMoveToQ();
 				String moveFrom = sc.nextLine();
-				controlHandler.execute("WNext" + " " + moveFrom);
+				controlHandler.execute("W" + " " + moveFrom);
 			}
 			controlHandler.tabAutoFlip();
 		}

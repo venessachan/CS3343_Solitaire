@@ -10,23 +10,29 @@ public class DisplayController {
 		return instance;
 	}
 	
-	public void printboard() {
+	public void printboard(int stockCount, String wasteCard, int score, int move, String[] foundations, String[] tableaus) {
 
 		System.out.printf("Card Remaining: %d,  Waste: %s, Socre: %d, Move: %d\n",
-					stock.count(), waste.print(), scoreManager.getScore(), getMove());
-		System.out.printf("Foundations: [%s] [%s] [%s] [%s]\n\n", foundate.get(0).print(), foundate.get(1).print(), foundate.get(2).print(), foundate.get(3).print());
+					stockCount, wasteCard, score, move);
+		
+		System.out.print("Foundations: ");
+		for(int i = 0; i < 4; i++) {
+			System.out.printf("[%s] ", foundations[i]);
+		}
+		System.out.print("\n\n");
+		
 		for(int i=0; i<7 ;i++) {
-			System.out.printf("Tableau %d: [%s]\n", i+1, tab.get(i).print());
+			System.out.printf("Tableau %d: [%s]\n", i+1, tableaus[i]);
 		}
 		System.out.print("\n");
 	}
 
-	public void printLevel() {
-		System.out.println("Please input the number to select the level:");
-		System.out.println("1-Level 1");
-		System.out.println("2-Level 2");
-		System.out.println("3-Level 3");
-	}
+//	public void printLevel() {
+//		System.out.println("Please input the number to select the level:");
+//		System.out.println("1-Level 1");
+//		System.out.println("2-Level 2");
+//		System.out.println("3-Level 3");
+//	}
 	
 	public void printMoveFromQ() {
 		System.out.print("Move From? ");
@@ -35,7 +41,20 @@ public class DisplayController {
 	public void printMoveToQ() {
 		System.out.print("Move To(0 for foundation)? ");
 	}
+	
 	public void printQuitMessage() {
 		System.out.println("Quited. Thank you for playing.");
+	}
+	
+	public void printInvalidMove() {
+		System.out.print("Move invalid.\n\n");
+	}
+	
+	public void printInputReminder1() {
+		System.out.print("Please input a valid command.\n\n");
+	}
+	
+	public void printInputReminder2() {
+		System.out.print("Please input a valid range 0-6.\n\n");
 	}
 }

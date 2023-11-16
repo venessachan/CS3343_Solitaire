@@ -5,88 +5,50 @@ import java.util.List;
 import card.Card;
 import main.GameManager;
 import stackManager.Foundation;
-import stackManager.Tableau;
+import stackManager.Waste;
 
 public class MoveToFoundationController extends ControlHandler{
 
 	private Card removedCard;
 	private int founIndex;
-	private int tabIndex;
+	private static MoveToFoundationController instance = new MoveToFoundationController();
 	
-	@Override
-	public void execute(String[] cmdParts) {
-		try {
-			Card c;
-			GameManager gameManager = GameManager.getInstance();
-			int moveFrom = Integer.parseInt(cmdParts[0]);
-			
-			List<Foundation> foundate = gameManager.getFoundate();
-			List<Tableau> tab = gameManager.getTab();
-			
-			if(moveFrom -1 <0 || moveFrom-1 > 6) {
-				System.out.printf("Move invalid.\n\n");
-				return;
-			}
-			
-			//Check from waste or not
-			c = tab.get(moveFrom-1).peek();
-			
-			boolean isPut = false;
-			if(foundate.get(0).checkValidAction(c)) {
-				founIndex = 0;
-				isPut = true;
-			}
-			else if(foundate.get(1).checkValidAction(c)) {
-				founIndex = 1;
-				isPut = true;
-			}
-			else if(foundate.get(2).checkValidAction(c)) {
-				founIndex = 2;
-				isPut = true;
-			}
-			else if(foundate.get(3).checkValidAction(c)) {
-				founIndex = 3;
-				isPut = true;
-			}
-			else
-				isPut = false;
-				
-			
-			if(isPut) {
-				tabIndex = moveFrom-1;
-				foundate.get(founIndex).push(c);
-				removedCard = tab.get(moveFrom-1).pop();
-				addUndoCommand(this);
-				clearRedoList();
-				gameManager.checkCombo();
-				gameManager.setScore(50);
-				System.out.printf("Move successful.\n\n");
-			}else {
-				System.out.printf("Move invalid.\n\n");
-			}
-		} catch (NumberFormatException e) {
-			System.out.printf("Invalid input.\n\n");
-		}
+	private MoveToFoundationController() {}
+	
+	public static MoveToFoundationController getInstance() {
+		return instance;
+	}
+	
+	public void execute(Card card, List<Foundation> foundation) {
+		int foundationIndex = getListIndex(card, foundation);
 		
+		if(foundationIndex >=0) {
+			foundation.get(founIndex).push(foundation.get(founIndex).getCardList(), card);
+			
+
+			
+			System.out.printf("Move successful.\n\n");
+		}else {
+			System.out.printf("Move invalid.\n\n");
+		}	
+	}
+	
+	public int getListIndex(Card card, List<Foundation> foundation) {
+		if(foundation.get(0).checkValidAction(card)) {
+			return 0;
+		}
+		else if(foundation.get(1).checkValidAction(card)) {
+			return 1;
+		}
+		else if(foundation.get(2).checkValidAction(card)) {
+			return 2;
+		}
+		else if(foundation.get(3).checkValidAction(card)) {
+			return 3;
+		}
+		else
+			return -1;
 	}
 
-	@Override
-	public void undoMe() {
-		GameManager gameManager = GameManager.getInstance();
-		gameManager.getFoundate().get(founIndex).pop();
-		gameManager.getTab().get(tabIndex).push(removedCard);
-		addRedoCommand(this);
-	}
 
-	@Override
-	public void redoMe() {
-		GameManager gameManager = GameManager.getInstance();
-		gameManager.getFoundate().get(founIndex).push(removedCard);
-		gameManager.getTab().get(tabIndex).pop();
-		addUndoCommand(this);	
-	}
-//
-//	public int getFoundIndex() {
-//		return founIndex;
-//	}
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import card.Card;
 import card.Color;
-import card.Deck;
+import stackManager.Deck;
 
 public class TestDeck {
 	

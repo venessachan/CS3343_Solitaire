@@ -22,24 +22,6 @@ public class ControlHandler {
     
     public void tabAutoFlip() {
     	gameManager.tabAutoFlip();
-    }
-    
-    
-    
-    
-	
-    
-	
-    
-    
-
-	
-    
-    
-    
-    
-    
-   
-    
+    } 
     
 }
