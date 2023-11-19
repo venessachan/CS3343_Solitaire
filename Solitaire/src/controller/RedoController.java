@@ -7,31 +7,31 @@ import main.GameManager;
 public class RedoController {
 	private static RedoController instance = new RedoController();
 
-	private RedoData redoData;
-	
-	private RedoController() {
-		redoData = new RedoData();
-	}
-	
-	public void redoMe() {}
-	
-	protected void addRedoCommand(ControlHandler cmd){
-        redoList.push(cmd);
-    }
-	
-	public void clearRedoList(){
-    	redoList.clear();
-    }
-	
-	public static void redoOneCommand()
-    {
-        if(redoList.isEmpty())
-            System.out.println("Nothing to redo.\n");
-        else
-           redoList.pop().redoMe();
-    }
-	
+	private RedoController() {}
+
 	public static RedoController getInstance() {
 		return instance;
 	}
+	
+	public void addRedoCommand(CommandHistory commandHistory, String undoCmd){
+		commandHistory.push(commandHistory.getRedoCommandList(), undoCmd);
+    }
+	
+	public void clearRedoList(CommandHistory commandHistory){
+		commandHistory.clear(commandHistory.getRedoCommandList());
+    }
+	
+	public String popRedoCommand(CommandHistory commandHistory){
+		return commandHistory.pop(commandHistory.getRedoCommandList());
+    }
+	
+	public boolean isEmpty(CommandHistory commandHistory){
+		return commandHistory.isEmpty(commandHistory.getRedoCommandList());
+    }
+
+	public void execute() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }

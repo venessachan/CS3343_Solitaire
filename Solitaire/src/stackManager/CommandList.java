@@ -25,4 +25,8 @@ public class CommandList {
 		return history.isEmpty();
 	}
 	
+	public void clear(List<String> history) {
+		history.clear();
+	}
+	
 }

@@ -1,11 +1,5 @@
 package controller;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import card.Card;
-import main.GameManager;
 import stackManager.Stock;
 import stackManager.Waste;
 
@@ -21,7 +15,7 @@ public class DealController extends ControlHandler{
 	
 	//restart to reset the variable?
 	
-	public void execute(Stock stock, Waste waste) {
+	public int deal(Stock stock, Waste waste) {
 
 		
 		if(stock.isEmpty(stock.getCardList())) {
@@ -37,14 +31,27 @@ public class DealController extends ControlHandler{
 //				wastedCard.setShow(false);
 //				stock.push(wastedCard);
 //			}
-			waste.peek(waste.getCardList()).flip();
-			while(!waste.isEmpty(waste.getCardList())) {
-				stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
+			
+			
+			//push all the card back to stock from waste
+			if(!waste.isEmpty(waste.getCardList())) {
+				waste.peek(waste.getCardList()).flip();	//hide the top card
+				while(!waste.isEmpty(waste.getCardList())) {
+					stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
+				}
+				return 1;
+			}else {
+				//stock and waste are empty
+				//error
+				return -1;
 			}
+			
 		}else {
-			waste.peek(waste.getCardList()).flip();
+			//deal 1 card from stock to waste
+			waste.peek(waste.getCardList()).flip();	//hide the top card
 			waste.push(waste.getCardList(), stock.pop(stock.getCardList()));
-			waste.peek(waste.getCardList()).flip();
+			waste.peek(waste.getCardList()).flip();	//show the new top card
+			return 1;
 		}
 		
 	}

@@ -31,7 +31,7 @@ public class GameManager {
 	private Deck deck;
 	private Stock stock;
 	private Waste waste;
-	private RedoController redoController = RedoController.getInstance();
+	
 	private DisplayController displayController;
 	
 	//****How to refresh static controller
@@ -40,6 +40,7 @@ public class GameManager {
 	static MoveToTableauController moveToTableauController = MoveToTableauController.getInstance();
 	static DealController dealController = DealController.getInstance();
 	static UndoController undoController = UndoController.getInstance();
+	static RedoController redoController = RedoController.getInstance();
 	private CommandHistory commandHistory;
 	
 	private GameManager(){
@@ -135,24 +136,34 @@ public class GameManager {
 			case "U":
 //				undoController = new UndoController();
 //				undoController.undoOneCommand();
-				move();
-				scoreController.addScore(-50);
-				previousAction = cmd;
-				//add redo list
-				return 2;
-			case "R":
-				//case sensitive
-				if(!previousActionParts[0].equals("U")) {
-					redoController.clearRedoList();
-					//can print message
+				if(undoController.execute(commandHistory, stock, waste, tableaus, foundation) < 0) {
+					displayController.printInvalidUndo();
 					return -1;
 				}else {
-					redoController.redoOneCommand();
+					move();
+					scoreController.addScore(-50);
+					String undoAction = undoController.popUndoCommand(commandHistory);
+					previousAction = undoController.peekUndoCommand(commandHistory);
+					redoController.addRedoCommand(commandHistory, undoAction);
+					return 2;
 				}
-				move();
-				//score?
-				previousAction = cmd;
-				return 3;
+				
+				
+			case "R":
+				//case sensitive
+				if(redoController.isEmpty(commandHistory)) {
+					//error: no redo action
+					displayController.printInvalidRedo();
+					return -1;
+				}else {
+					redoController.execute();
+					undoController.addUndoCommand(commandHistory, redoController.popRedoCommand(commandHistory));
+					move();
+					//score?
+					previousAction = cmd;
+					return 3;
+				}
+				
 			case "T":
 				try{
 					int moveFrom = Integer.parseInt(cmdParts[1]);
@@ -174,18 +185,19 @@ public class GameManager {
 					if(moveTo == 0) {
 						//error checking
 						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
-						if(foundationIndex < 0 || foundation.get(foundationIndex).isFull()) {
+						if(foundationIndex < 0 || foundationIndex > 3 || foundation.get(foundationIndex).isFull()) {
 							displayController.printInvalidMove();
 							return -1;
 						}
 							
 						//valid
-						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation);
+						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation.get(foundationIndex));
 						scoreController.checkCombo(previousActionParts[2]);
-						previousAction = cmd + " " + validCard;
+						previousAction = cmd + " " + foundationIndex;	//index 3
 						undoController.addUndoCommand(commandHistory, previousAction);
-//						clearRedoList();
+						redoController.clearRedoList(commandHistory);
 						move();
+						
 					}else {
 						//move Tableau to Tableau
 						//error checking
@@ -204,9 +216,9 @@ public class GameManager {
 						moveToTableauController.execute(tableaus.get(moveFrom), tableaus.get(moveTo), validCard);
 						displayController.printValidMove();
 						tabAutoFlip();
-						previousAction = cmd + " " + validCard;
+						previousAction = cmd + " " + validCard;		//index 3
 						undoController.addUndoCommand(commandHistory, previousAction);
-//						clearRedoList();
+						redoController.clearRedoList(commandHistory);
 						move();
 					}
 					return 4;	
@@ -233,20 +245,21 @@ public class GameManager {
 						//wasteToFoundation
 						//error checking
 						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
-						if(foundationIndex < 0 || foundation.get(foundationIndex).isFull()) {
+						if(foundationIndex < 0 || foundationIndex > 3 || foundation.get(foundationIndex).isFull()) {
 							displayController.printInvalidMove();
 							return -1;
 						}
 						//valid
-						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation);
+						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation.get(foundationIndex));
 						scoreController.checkCombo(previousActionParts[2]);
 						undoController.addUndoCommand(commandHistory, cmd);
-						previousAction = cmd;
+						previousAction = cmd + " " + foundationIndex;	//index 2
 						move();
-//						clearRedoList();
+						redoController.clearRedoList(commandHistory);
 					}else {
 						//wasteToTableau
 						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo));
+						//No card is valid
 						if(validCard <= 0) {
 							displayController.printInvalidMove();
 							return -1;
@@ -256,8 +269,8 @@ public class GameManager {
 						displayController.printValidMove();
 						waste.peek(waste.getCardList()).flip();
 						undoController.addUndoCommand(commandHistory, cmd);
-						previousAction = cmd;
-//						clearRedoList();
+						previousAction = cmd;	//index 2
+						redoController.clearRedoList(commandHistory);
 						move();
 					}
 					return 5;
@@ -267,12 +280,18 @@ public class GameManager {
 			
 
 			case "D":
-				dealController.execute(stock, waste);
-				previousAction = cmd;
-				displayController.printAddCardToWaste();
-				undoController.addUndoCommand(commandHistory, previousAction);
-//				clearRedoList();
-				return 6;
+				if(dealController.deal(stock, waste) > 0) {
+					previousAction = cmd;
+					displayController.printAddCardToWaste();
+					undoController.addUndoCommand(commandHistory, previousAction);
+					redoController.clearRedoList(commandHistory);
+					return 6;
+				}else {
+					displayController.printNoCardDeal();
+					return -1;
+				}
+				
+				
 			case "Q":
 				displayController.printQuitMessage();
 				//quit? or restart

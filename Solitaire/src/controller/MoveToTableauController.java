@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import card.Card;
+import stackManager.Foundation;
 import stackManager.Tableau;
 import stackManager.Waste;
 
@@ -39,6 +40,12 @@ public class MoveToTableauController extends ControlHandler{
 	public void execute(Waste moveFrom, Tableau moveTo, int cardMove) {
 		moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
 	}
+	
+	//Foundation to tableau
+	public void execute(Foundation moveFrom, Tableau moveTo, int cardMove) {
+		moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
+	}
+	
 	
 	//Move 1 card
 	public int getMoveCardCount(Card moveFrom, Tableau target) {

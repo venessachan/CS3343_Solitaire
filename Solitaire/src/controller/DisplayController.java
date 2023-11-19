@@ -46,12 +46,20 @@ public class DisplayController {
 		System.out.println("Quited. Thank you for playing.");
 	}
 	
-	public void printInvalidMove() {
-		System.out.print("Move invalid.\n\n");
-	}
-	
 	public void printValidMove() {
 		System.out.printf("Move successful.\n\n");
+	}
+	
+	public void printInvalidMove() {
+		System.out.print("Invalid move.\n\n");
+	}
+	
+	public void printInvalidUndo() {
+		System.out.print("Invalid undo.\n\n");
+	}
+	
+	public void printInvalidRedo() {
+		System.out.print("Nothing redo can execute.\n\n");
 	}
 	
 	public void printInputReminder1() {
@@ -64,5 +72,9 @@ public class DisplayController {
 	
 	public void printAddCardToWaste() {
 		System.out.print("A card added to Waste. \n\n");
+	}
+	
+	public void printNoCardDeal() {
+		System.out.print("There is no card can be deal. \n\n");
 	}
 }
