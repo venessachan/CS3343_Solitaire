@@ -19,10 +19,14 @@ public class Waste extends CardListAbstract{
 	
 	@Override
 	public String print(){
-		if(!isEmpty(cardList)) 
-			return cardList.get(cardList.size()-1).toString();
-		else 
+		if(!isEmpty(cardList)){
+			if(!peek(cardList).getShow()) {
+				peek(cardList).flip();
+			}
+			return peek(cardList).toString();
+		}else {
 			return "XX";
+		}	
 	}
 	
 }
