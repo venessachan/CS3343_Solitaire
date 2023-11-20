@@ -76,21 +76,20 @@ public class TestWaste {
 		assertEquals(expectedResult, waste.getCardList());
 	}
 	
-
 	@Test
 	public void testPeek1() {
+		Waste waste = new Waste();
+		assertEquals(null, waste.peek(waste.getCardList()));
+	}
+	
+	@Test
+	public void testPeek2() {
 		Waste waste = new Waste();
 		Card card1 = new Card(Suit.CLUBS, Rank.K);
 		Card card2 = new Card(Suit.SPADES, Rank._3);
 		waste.push(waste.getCardList(), card1);
 		waste.push(waste.getCardList(), card2);
 		assertEquals(card2, waste.peek(waste.getCardList()));
-	}
-	
-	@Test
-	public void testPeek2() {
-		Waste waste = new Waste();
-		assertEquals(null, waste.peek(waste.getCardList()));
 	}
 	
 	@Test
@@ -151,7 +150,7 @@ public class TestWaste {
 	}
 	
 	@Test
-	public void testWasteCount() {
+	public void testCount() {
 		Waste waste = new Waste();
 		Card card1 = new Card(Suit.SPADES, Rank.A);
 		Card card2 = new Card(Suit.DIAMONDS, Rank._2);

@@ -13,7 +13,7 @@ public class Foundation extends CardListAbstract{
 	
 	public Foundation(Suit suit) {
 		super(cardList);
-		foundationSuit = suit;
+		setSuit(suit);
 	}
 	
 	public boolean checkValidAction(Card card) {
@@ -45,6 +45,10 @@ public class Foundation extends CardListAbstract{
 	
 	public Suit getSuit() {
 		return foundationSuit;
+	}
+	
+	public void setSuit(Suit suit) {
+		foundationSuit = suit;
 	}
 	
 	
