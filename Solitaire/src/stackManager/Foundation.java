@@ -8,11 +8,12 @@ import card.Suit;
 
 public class Foundation extends CardListAbstract{
 	
-	private static List<Card> cardList  = new ArrayList<Card>();
+	private List<Card> cardList  = new ArrayList<Card>();
 	private Suit foundationSuit;
 	
 	public Foundation(Suit suit) {
-		super(cardList);
+		super();
+		cardList.clear();
 		setSuit(suit);
 	}
 	

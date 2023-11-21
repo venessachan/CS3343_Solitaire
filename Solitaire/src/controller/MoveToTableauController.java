@@ -11,18 +11,24 @@ import stackManager.Waste;
 
 public class MoveToTableauController extends ControlHandler{
 
-	private int times;
+	//private int times;
 	private static MoveToTableauController instance = new MoveToTableauController();
 	
 	private MoveToTableauController() {}
 	
 	public static MoveToTableauController getInstance() {
-		return instance;
-	}
-	
+		  if (instance == null) {
+			  instance = new MoveToTableauController();
+		  }
+		  return instance;
+		}
+			
+		public static void resetInstance() {
+	        instance = null;
+	    }
 	//Tableau to tableau
 	public void execute(Tableau moveFrom, Tableau moveTo, int cardMove) {
-		if(cardMove >1) {
+		if(cardMove >1) {	//more than 1 card to move
 			List<Card> temp = new ArrayList<Card>();
 			temp.clear();
 			for(int i = 0; i < cardMove; i++) {

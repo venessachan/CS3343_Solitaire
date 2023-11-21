@@ -9,9 +9,7 @@ public abstract class CardListAbstract implements CardList{
 	
 	public abstract String print();
 	
-	public CardListAbstract(List<Card> cardList) {
-		cardList.clear();
-	}
+	public CardListAbstract() {}
 
 	public Card pop(List<Card> cardList) {
     	return cardList.remove(cardList.size()-1);

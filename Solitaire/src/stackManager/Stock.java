@@ -8,7 +8,8 @@ public class Stock extends CardListAbstract{
 	private static List<Card> cardList  = new ArrayList<Card>();
 	
 	public Stock() {
-		super(cardList);
+		super();
+		cardList.clear();
 	}
 	
 //	public Card deal() {

@@ -14,9 +14,16 @@ public class MoveToFoundationController extends ControlHandler{
 	private MoveToFoundationController() {}
 	
 	public static MoveToFoundationController getInstance() {
-		return instance;
+	  if (instance == null) {
+		  instance = new MoveToFoundationController();
+	  }
+	  return instance;
 	}
-	
+		
+	public static void resetInstance() {
+        instance = null;
+    }
+
 	public void execute(Card moveFromCard, Foundation foundation) {
 		foundation.push(foundation.getCardList(), moveFromCard);
 	}

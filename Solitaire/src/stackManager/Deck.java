@@ -16,7 +16,8 @@ public class Deck extends CardListAbstract{
 
 	
 	public Deck() {		//create and place the 52 different cards into cards[]
-		super(cards);
+		super();
+		cards.clear();
 		setCard();	
 	}
 	

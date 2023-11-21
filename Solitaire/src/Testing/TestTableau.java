@@ -10,7 +10,6 @@ import org.junit.Test;
 import card.Card;
 import card.Rank;
 import card.Suit;
-import stackManager.Foundation;
 import stackManager.Tableau;
 
 public class TestTableau {

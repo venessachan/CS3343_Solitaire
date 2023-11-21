@@ -3,27 +3,42 @@ package controller;
 import main.GameManager;
 
 public class ScoreController {
-    public static ScoreController ScoreController = new ScoreController();
+    //private static ScoreController ScoreController = new ScoreController();
+	private static ScoreController instance;
+    
     GameManager gameManager = GameManager.getInstance();
     private int comboCount;
     private int score;
     
     private ScoreController() {
-    	score = 0;
+    	setScore(0);
     	comboCount = 0;
     }
     
+    public static ScoreController getInstance() {
+  	  if (instance == null) {
+          instance = new ScoreController();
+      }
+      return instance;
+  	}
+  	
+  	public static void resetInstance() {
+      instance = null;
+  	}
+    
     public void checkCombo(String previousAction) {
-    	if (previousAction.equals("0")) {
+    	String[] previousActionParts = previousAction.split(" ");
+    	if ((previousActionParts[0].equals("W") && previousActionParts[1].equals("0"))
+    			|| (previousActionParts[0].equals("T") && previousActionParts[2].equals("0"))) {
     		if (comboCount >= 20) {
-    			addScore(50*10);
+    			addScore(50*32);
     		}
     		else if(comboCount >= 10) {
-    			addScore(50*5);
+    			addScore(50*16);
     		}else if(comboCount >= 7) {
-    			addScore(50*3);
+    			addScore(50*8);
     		}else if(comboCount >= 3) {
-    			addScore(50*2);
+    			addScore(50*4);
     		}else {
     			addScore(50);
     		}
@@ -51,9 +66,5 @@ public class ScoreController {
 	
 	public int getComboCount() {
 		return comboCount;
-	}
-	
-	public static ScoreController getInstance() {
-		return ScoreController;
 	}
 }

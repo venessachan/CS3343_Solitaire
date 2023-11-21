@@ -9,12 +9,16 @@ public class DealController extends ControlHandler{
 	private DealController() {}
 	
 	public static DealController getInstance() {
-		return instance;
+	  if (instance == null) {
+		  instance = new DealController();
+	  }
+	  return instance;
 	}
-	
-	
-	//restart to reset the variable?
-	
+		
+	public static void resetInstance() {
+        instance = null;
+    }
+
 	public int deal(Stock stock, Waste waste) {
 
 		

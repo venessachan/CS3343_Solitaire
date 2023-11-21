@@ -32,40 +32,45 @@ public class GameManager {
 	private Stock stock;
 	private Waste waste;
 	
-	private DisplayController displayController;
+	
 	
 	//****How to refresh static controller
-	static ScoreController scoreController = ScoreController.getInstance();
-	static MoveToFoundationController moveToFoundationController = MoveToFoundationController.getInstance();
-	static MoveToTableauController moveToTableauController = MoveToTableauController.getInstance();
-	static DealController dealController = DealController.getInstance();
-	static UndoController undoController = UndoController.getInstance();
-	static RedoController redoController = RedoController.getInstance();
+	static DisplayController displayController;
+	static ScoreController scoreController;
+	static MoveToFoundationController moveToFoundationController;
+	static MoveToTableauController moveToTableauController;
+	static DealController dealController;
+	static UndoController undoController;
+	static RedoController redoController;
 	private CommandHistory commandHistory;
 	
 	private GameManager(){
-		previousAction = "";
-		foundation.clear();
-		tableaus.clear();
-		deck = null;
-		stock = null;
-		waste = null;
-		//should be change to singleton
-		undoController = null;
-		redoController = null;
-		displayController = null;
-		scoreController = null;
-		dealController = null;
-		moveToFoundationController = null;
-		moveToTableauController = null;
-		undoController = null;
-		
-		commandHistory = null;
+		reset();
 		//score = 0;
 	}
 	
+
+	public static GameManager getInstance() {
+	  if (instance == null) {
+		  instance = new GameManager();
+	  }
+	  return instance;
+	}
+	
+	public static void resetInstance() {
+        instance = null;
+    }
 	
 	public void start() {
+		reset();
+		DisplayController.getInstance();
+		ScoreController.getInstance();
+		MoveToFoundationController.getInstance();
+		MoveToTableauController.getInstance();
+		DealController.getInstance();
+		UndoController.getInstance();
+		RedoController.getInstance();
+		commandHistory = new CommandHistory();
 		//int level = sc.nextInt();
 		//displayController.printboard(level);
 		commandHistory = new CommandHistory();
@@ -74,7 +79,7 @@ public class GameManager {
 		long seed = 0;// for testing
 		//long seed = System.currentTimeMillis();		//every games have different seed
 		previousAction = "";
-		scoreController.setScore(0);			//chock bug-> not set 0 here
+		//scoreController.setScore(0);			//chock bug-> not set 0 here
 		setMove(0);
 		
 		//Deck
@@ -95,7 +100,7 @@ public class GameManager {
 		 
 		for(int i=1;i<=7;i++) {
 			for(int j=1; j<=i;j++) {
-				tableaus.get(i).push(tableaus.get(i).getCardList(), deck.pop(deck.getCards()));
+				tableaus.get(i-1).push(tableaus.get(i-1).getCardList(), deck.pop(deck.getCards()));		//chock bug: i have not -1
 			}
 		}
 		
@@ -121,12 +126,12 @@ public class GameManager {
 			tableausPrint = tableausPrint + tableaus.get(i).print() + " ";
 		}
 		String[] tableausInfo = tableausPrint.split(" ");
-		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
+		printBoard(foundationsInfo, tableausInfo);
+		//displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
 	}
 	
 	public int commandExecute(String cmd) {
 		String[] cmdParts = cmd.split(" ");
-		String[] previousActionParts = previousAction.split(" ");
 		switch(cmdParts[0]) {
 		//case sensitive need to change -> chock bug
 			case "S":
@@ -191,9 +196,9 @@ public class GameManager {
 						}
 							
 						//valid
-						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation.get(foundationIndex));
-						scoreController.checkCombo(previousActionParts[2]);
+						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation.get(foundationIndex));	
 						previousAction = cmd + " " + foundationIndex;	//index 3
+						scoreController.checkCombo(previousAction);
 						undoController.addUndoCommand(commandHistory, previousAction);
 						redoController.clearRedoList(commandHistory);
 						move();
@@ -251,9 +256,10 @@ public class GameManager {
 						}
 						//valid
 						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation.get(foundationIndex));
-						scoreController.checkCombo(previousActionParts[2]);
+						
 						undoController.addUndoCommand(commandHistory, cmd);
 						previousAction = cmd + " " + foundationIndex;	//index 2
+						scoreController.checkCombo(previousAction);
 						move();
 						redoController.clearRedoList(commandHistory);
 					}else {
@@ -294,6 +300,8 @@ public class GameManager {
 				
 			case "Q":
 				displayController.printQuitMessage();
+				reset();
+				resetInstance();
 				//quit? or restart
 				return -2;
 			default:
@@ -309,10 +317,6 @@ public class GameManager {
 			if(!t.isEmpty(t.getCardList()) && !(t.peek(t.getCardList()).getShow())) 
 				t.peek(t.getCardList()).setShow(true);
 		}
-	}
-	
-	public static GameManager getInstance() {
-		return instance;
 	}
 	
 	public List<Tableau> getTab() {
@@ -367,6 +371,28 @@ public class GameManager {
 	
 	public void setScore(int score) {
 		scoreController.setScore(score);
+	}
+	
+	public void printBoard(String[] foundationsInfo, String[] tableausInfo ) {
+		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
+	}
+	
+	public void reset() {
+		previousAction = "";
+		foundation.clear();
+		tableaus.clear();
+		deck = null;
+		stock = null;
+		waste = null;
+		undoController = null;
+		redoController = null;
+		displayController = null;
+		scoreController = null;
+		dealController = null;
+		moveToFoundationController = null;
+		moveToTableauController = null;
+		undoController = null;
+		commandHistory = null;
 	}
 	
 }

@@ -10,7 +10,8 @@ public class Waste extends CardListAbstract{
 	private static List<Card> cardList  = new ArrayList<Card>();
 	
 	public Waste() {
-		super(cardList);
+		super();
+		cardList.clear();
 	}
 	
 	public List<Card> getCardList(){

@@ -8,7 +8,8 @@ public class Tableau extends CardListAbstract{
 	private static List<Card> cardList  = new ArrayList<Card>();
 	
 	public Tableau() {
-		super(cardList);
+		super();
+		cardList.clear();
 	}
 	
 	public boolean checkValidAction(Card card) {	//check if the card fulfil the requirement to push into tableau
