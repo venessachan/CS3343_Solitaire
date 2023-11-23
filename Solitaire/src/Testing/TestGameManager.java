@@ -116,11 +116,15 @@ public class TestGameManager {
     public void testDealCommand1() {
     	gameManager.start();
     	assertEquals(6,gameManager.commandExecute("D"));
-    	
     }
     
     
-    
+    @Test
+    public void testDealCommand2() {
+    	gameManager.start();
+    	gameManager.getStock().clear(gameManager.getStock().getCardList());
+    	assertEquals(-14,gameManager.commandExecute("D"));
+    }
     
     
 //    @Test
@@ -170,13 +174,21 @@ public class TestGameManager {
   @Test
   public void testToWasteCommand1() {
 	gameManager.start();
-  	assertEquals(-1,gameManager.commandExecute("W 0"));
+  	assertEquals(-9,gameManager.commandExecute("W 0"));
   }
   
   @Test
   public void testToWasteCommand2() {
 	gameManager.start();
-  	assertEquals(-1,gameManager.commandExecute("W 0"));
+	gameManager.commandExecute("D");
+  	assertEquals(-10,gameManager.commandExecute("W -1"));
+  }
+  
+  @Test
+  public void testToWasteCommand3() {
+	gameManager.start();
+	gameManager.commandExecute("D");
+  	assertEquals(-10,gameManager.commandExecute("W 8"));
   }
     
     @Test

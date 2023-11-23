@@ -58,6 +58,10 @@ public class DisplayController {
 		System.out.print("Invalid move.\n\n");
 	}
 	
+	public void printInvalidWaste() {
+		System.out.print("No card can be wasted.\n\n");
+	}
+	
 	public void printInvalidUndo() {
 		System.out.print("Invalid undo.\n\n");
 	}

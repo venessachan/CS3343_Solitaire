@@ -155,7 +155,7 @@ public class GameManager {
 				if(redoController.isEmpty(commandHistory)) {
 					//error: no redo action
 					displayController.printInvalidRedo();
-					return -1;
+					return -2;
 				}else {
 					redoController.execute();
 					undoController.addUndoCommand(commandHistory, redoController.popRedoCommand(commandHistory));
@@ -174,12 +174,12 @@ public class GameManager {
 					if(moveFrom -1 < 0 || moveFrom -1 > 6 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
 						//put to displayController
 						displayController.printInputReminder2();
-						return -1;
+						return -3;
 					}
 						
 					if(tableaus.get(moveFrom-1).isEmpty(tableaus.get(moveFrom-1).getCardList())) {
 						displayController.printInvalidMove();
-						return -1;
+						return -4;
 					}
 					
 					//tableau to foundation
@@ -188,7 +188,7 @@ public class GameManager {
 						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
 						if(foundationIndex < 0 || foundationIndex > 3 || foundation.get(foundationIndex).isFull()) {
 							displayController.printInvalidMove();
-							return -1;
+							return -5;
 						}
 							
 						//valid
@@ -205,13 +205,13 @@ public class GameManager {
 						int showCardCount = moveToTableauController.getShowCard(tableaus.get(moveFrom -1).getCardList());
 						if(showCardCount <= 0) {
 							displayController.printInvalidMove();
-							return -1;
+							return -6;
 						}
 						
 						validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom).getCardList(), tableaus.get(moveTo), showCardCount);
 						if(validCard <= 0) {
 							displayController.printInvalidMove();
-							return -1;
+							return -7;
 						}
 						//valid
 						moveToTableauController.execute(tableaus.get(moveFrom), tableaus.get(moveTo), validCard);
@@ -225,7 +225,7 @@ public class GameManager {
 					return 4;	
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
-					return -1;
+					return -8;
 				}
 			case "W":
 				try{					
@@ -234,12 +234,12 @@ public class GameManager {
 					//error checking
 					if(waste.isEmpty(waste.getCardList())) {
 						displayController.printInvalidMove();
-						return -1;
-					}
-					
+						displayController.printInvalidWaste();
+						return -9;
+					}					
 					if(moveTo  < 0 || moveTo > 7) {
 						displayController.printInvalidMove();
-						return -1;
+						return -10;
 					}
 					
 					if(moveTo == 0) {
@@ -248,7 +248,7 @@ public class GameManager {
 						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
 						if(foundationIndex < 0 || foundationIndex > 3 || foundation.get(foundationIndex).isFull()) {
 							displayController.printInvalidMove();
-							return -1;
+							return -11;
 						}
 						//valid
 						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation.get(foundationIndex));
@@ -264,7 +264,7 @@ public class GameManager {
 						//No card is valid
 						if(validCard <= 0) {
 							displayController.printInvalidMove();
-							return -1;
+							return -12;
 						}
 						//valid
 						moveToTableauController.execute(waste, tableaus.get(moveTo), 1);
@@ -278,6 +278,7 @@ public class GameManager {
 					return 5;
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
+					return -13;
 				}
 			
 
@@ -290,7 +291,7 @@ public class GameManager {
 					return 6;
 				}else {
 					displayController.printNoCardDeal();
-					return -1;
+					return -14;
 				}
 				
 				
@@ -299,7 +300,7 @@ public class GameManager {
 				reset();
 				resetInstance();
 				//quit? or restart
-				return -2;
+				return -15;
 			default:
 				//invalid command
 				displayController.printInputReminder1();

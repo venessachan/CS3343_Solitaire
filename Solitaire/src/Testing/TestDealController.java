@@ -84,7 +84,7 @@ public class TestDealController {
 		waste.peek(waste.getCardList()).setShow(true);
 		
 		dealController.deal(stock, waste);
-		assertEquals("[??, ??, ??, ??, ??, ??]",stock.getCardList().toString());
+		assertEquals("[]",waste.getCardList().toString());
 	}
 		
 	//check return value of deal() with empty stock and empty waste
@@ -152,7 +152,7 @@ public class TestDealController {
 		
 	//check waste after deal with !empty stock and !empty waste
 	@Test
-	public void testDeal8() {
+	public void testDeal7() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		
@@ -172,6 +172,73 @@ public class TestDealController {
 		waste.push(waste.getCardList(), card5);
 		waste.push(waste.getCardList(), card6);
 		
+		
+		dealController.deal(stock, waste);
+		assertEquals("[??, ??, ??, ♦2]",waste.getCardList().toString());
+	}
+	
+	
+	//check waste after deal with !empty stock and empty waste
+	@Test
+	public void testDeal8() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		
+		Card card1 = new Card(Suit.HEARTS, Rank.A);
+		Card card2 = new Card(Suit.CLUBS, Rank._10);
+		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
+
+		stock.push(stock.getCardList(), card1);
+		stock.push(stock.getCardList(), card2);
+		stock.push(stock.getCardList(), card3);
+		
+		dealController.deal(stock, waste);
+		assertEquals("[♦2]",waste.getCardList().toString());
+	}
+	
+	//check stock after deal with !empty stock and empty waste
+	@Test
+	public void testDeal9() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		
+		Card card1 = new Card(Suit.HEARTS, Rank.A);
+		Card card2 = new Card(Suit.CLUBS, Rank._10);
+		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
+		
+		stock.push(stock.getCardList(), card1);
+		stock.push(stock.getCardList(), card2);
+		stock.push(stock.getCardList(), card3);
+		
+		
+		dealController.deal(stock, waste);
+		stock.getCardList().forEach((c)->c.flip());
+		assertEquals("[♥A, ♣10]",stock.getCardList().toString());
+	}
+	
+	
+	//check waste after deal with !empty stock and !empty waste
+	@Test
+	public void testDeal10() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		
+		Card card1 = new Card(Suit.HEARTS, Rank.A);
+		Card card2 = new Card(Suit.CLUBS, Rank._10);
+		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
+		Card card4 = new Card(Suit.DIAMONDS, Rank._8);
+		Card card5 = new Card(Suit.SPADES, Rank.J);
+		Card card6 = new Card(Suit.CLUBS, Rank._6);
+		
+		
+		stock.push(stock.getCardList(), card1);
+		stock.push(stock.getCardList(), card2);
+		stock.push(stock.getCardList(), card3);
+		
+		waste.push(waste.getCardList(), card4);
+		waste.push(waste.getCardList(), card5);
+		waste.push(waste.getCardList(), card6);
+		card6.setShow(true);
 		
 		dealController.deal(stock, waste);
 		assertEquals("[??, ??, ??, ♦2]",waste.getCardList().toString());
