@@ -1,35 +1,43 @@
 package Testing;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
-import card.Card;
-import card.Rank;
-import card.Suit;
 import main.GameManager;
-import stackManager.Foundation;
-import stackManager.Tableau;
 
 public class TestGameManager {
 
-//    private GameManager gameManager;
-//    private ScoreManager scoreManager;
-//    private ByteArrayOutputStream outputStream;
+    private GameManager gameManager;
+    private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 //
-//    @BeforeEach
-//    public void setup() {
-//        gameManager = GameManager.getInstance();
+    @Test
+    public void testCardAllocation() {
+    	gameManager = GameManager.getInstance();
+        gameManager.start();
+        assertEquals(0,gameManager.getDeck().getCards().size());
+        assertEquals(1,gameManager.getTableaus().get(0).getCardList().size());
+        assertEquals(2,gameManager.getTableaus().get(1).getCardList().size());
+        assertEquals(3,gameManager.getTableaus().get(2).getCardList().size());
+        assertEquals(4,gameManager.getTableaus().get(3).getCardList().size());
+        assertEquals(5,gameManager.getTableaus().get(4).getCardList().size());
+        assertEquals(6,gameManager.getTableaus().get(5).getCardList().size());
+        assertEquals(7,gameManager.getTableaus().get(6).getCardList().size());
+        assertEquals(24,gameManager.getStock().getCardList().size());
+    }
+    
+    @Before
+    public void setup() {
+    	GameManager.resetInstance();
+    	gameManager = GameManager.getInstance();
 //        scoreManager = scoreManager.getInstance();
 //        outputStream = new ByteArrayOutputStream();
-//        System.setOut(new PrintStream(outputStream));
-//    }
+        System.setOut(new PrintStream(outputStream));
+    }
 //    
 //    @AfterEach
 //    public void tearDown() {
@@ -99,21 +107,97 @@ public class TestGameManager {
 //        }
 //    }
 //    
+    @Test
+    public void testStartCommand() {
+    	assertEquals(1,gameManager.commandExecute("S"));
+    }
+    
+    @Test
+    public void testDealCommand1() {
+    	gameManager.start();
+    	assertEquals(6,gameManager.commandExecute("D"));
+    	
+    }
+    
+    
+    
+    
+    
 //    @Test
-//    public void T10() {
-//        gameManager.printboard();
-//        String expectedOutput = "Card Remaining: 24,  Waste: XX, Socre: 0, Move: 0\n"
-//        		+ "Foundations: [♠] [♥] [♣] [♦]\n"
-//        		+ "\n"
-//        		+ "Tableau 1: [ ♥3 ]\n"
-//        		+ "Tableau 2: [ ??  ♥A ]\n"
-//        		+ "Tableau 3: [ ??  ??  ♠10 ]\n"
-//        		+ "Tableau 4: [ ??  ??  ??  ♦4 ]\n"
-//        		+ "Tableau 5: [ ??  ??  ??  ??  ♦5 ]\n"
-//        		+ "Tableau 6: [ ??  ??  ??  ??  ??  ♣2 ]\n"
-//        		+ "Tableau 7: [ ??  ??  ??  ??  ??  ??  ♦Q ]";
-//        assertEquals(expectedOutput, getConsoleOutput());
+//    public void testUndoCommand1() {
+//    	assertEquals(-1,gameManager.commandExecute("U"));
 //    }
+//    
+//    @Test
+//    public void testUndoCommand2() {
+//    	assertEquals(2,gameManager.commandExecute("U"));
+//    }
+//    @Test
+//    public void testRedoCommand1() {
+//    	assertEquals(-1,gameManager.commandExecute("R"));
+//    }
+//    
+//    @Test
+//    public void testRedoCommand2() {
+//    	assertEquals(3,gameManager.commandExecute("R"));
+//    }
+    
+//  @Test
+//  public void testToTableauCommand1() {
+//  	assertEquals(-1,gameManager.commandExecute("T"));
+//  }
+    
+//  @Test
+//  public void testToTableauCommand2() {
+//  	assertEquals(-1,gameManager.commandExecute("T"));
+//  }
+    
+//  @Test
+//  public void testToTableauCommand3() {
+//  	assertEquals(-1,gameManager.commandExecute("T"));
+//  }
+    
+//  @Test
+//  public void testToTableauCommand4() {
+//  	assertEquals(-1,gameManager.commandExecute("T"));
+//  }
+    
+//  @Test
+//  public void testToTableauCommand5() {
+//  	assertEquals(4,gameManager.commandExecute("T"));
+//  }
+    
+  @Test
+  public void testToWasteCommand1() {
+	gameManager.start();
+  	assertEquals(-1,gameManager.commandExecute("W 0"));
+  }
+  
+  @Test
+  public void testToWasteCommand2() {
+	gameManager.start();
+  	assertEquals(-1,gameManager.commandExecute("W 0"));
+  }
+    
+    @Test
+    public void testPrintBoard1() {
+        //gameManager.commandExecute("S");
+        String expectedOutput = "Card Remaining: 24,  Waste: XX, Socre: 0, Move: 0\n"
+        		+ "Foundations: [♠] [♥] [♣] [♦] \n"
+        		+ "\n"
+        		+ "Tableau 1: [ ♦7 ]\n"
+        		+ "Tableau 2: [ ??  ♠9 ]\n"
+        		+ "Tableau 3: [ ??  ??  ♦8 ]\n"
+        		+ "Tableau 4: [ ??  ??  ??  ♥6 ]\n"
+        		+ "Tableau 5: [ ??  ??  ??  ??  ♦K ]\n"
+        		+ "Tableau 6: [ ??  ??  ??  ??  ??  ♦2 ]\n"
+        		+ "Tableau 7: [ ??  ??  ??  ??  ??  ??  ♥9 ]";
+        gameManager.commandExecute("S");
+        assertEquals(expectedOutput, outputStream.toString().trim());
+    }
+    
+    
+    
 //    
 //    
 //    @Test

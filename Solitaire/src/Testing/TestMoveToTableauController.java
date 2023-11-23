@@ -2,7 +2,8 @@ package Testing;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 
 import card.Card;
 import card.Rank;
@@ -11,9 +12,11 @@ import controller.MoveToTableauController;
 import stackManager.Tableau;
 
 public class TestMoveToTableauController {
+	private MoveToTableauController moveToTableauController;
+	
 	@Test
-	public void testExecute1(){
-		MoveToTableauController moveToTableauController = MoveToTableauController.getInstance();
+	public void testMoveToTableau1(){
+		moveToTableauController = MoveToTableauController.getInstance();
 		Tableau moveFromT = new Tableau();
 		Tableau moveToT = new Tableau();
 		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank.K));
@@ -25,15 +28,20 @@ public class TestMoveToTableauController {
 		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._3));
 		
 		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._2));
-		moveToT.push(moveToT.getCardList(), new Card(Suit.SPADES, Rank._8));
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._8));
 		
 		moveToTableauController.execute(moveFromT, moveToT, 5);
 		assertEquals(false,moveToT.getCardList().equals(moveFromT.getCardList()));
 	}
 	
+	@Before
+	public void setup() {
+		MoveToTableauController.resetInstance();
+		moveToTableauController = MoveToTableauController.getInstance();
+	}
+	
 	@Test
-	public void testExecute2(){
-		MoveToTableauController moveToTableauController = MoveToTableauController.getInstance();
+	public void testMoveToTableau2() {
 		Tableau moveFromT = new Tableau();
 		Tableau moveToT = new Tableau();
 		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank.K));
@@ -45,11 +53,91 @@ public class TestMoveToTableauController {
 		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._3));
 		
 		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._2));
-		moveToT.push(moveToT.getCardList(), new Card(Suit.SPADES, Rank._8));
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._8));
 		
 		moveToTableauController.execute(moveFromT, moveToT, 5);
 		moveToT.getCardList().forEach((c)->c.setShow(true));
-		assertEquals("[♦2, ♠8, ♣7, ♦6, ♠5, ♥4, ♣3]",moveToT.getCardList().toString());
+		assertEquals("[♦2, ♦8, ♣7, ♦6, ♠5, ♥4, ♣3]",moveToT.getCardList().toString());
+	}
+	
+	@Test
+	public void testMoveToTableau3(){
+		Tableau moveFromT = new Tableau();
+		Tableau moveToT = new Tableau();
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank.K));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._2));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._7));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.DIAMONDS, Rank._6));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.SPADES, Rank._5));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._4));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._3));
+		
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._2));
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._8));
+		
+		moveToTableauController.execute(moveFromT, moveToT, 5);
+		moveFromT.getCardList().forEach((c)->c.setShow(true));
+		assertEquals("[♣K, ♥2]",moveFromT.getCardList().toString());
+	}
+	
+	@Test
+	public void testMoveToTableau4(){
+		Tableau moveFromT = new Tableau();
+		Tableau moveToT = new Tableau();
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank.K));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._2));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.DIAMONDS, Rank._6));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.SPADES, Rank._5));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._4));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._3));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._7));
+		
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._2));
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._8));
+		
+		moveToTableauController.execute(moveFromT, moveToT, 1);
+		moveToT.getCardList().forEach((c)->c.setShow(true));
+		assertEquals("[♦2, ♦8, ♣7]",moveToT.getCardList().toString());
+	}
+	
+	@Test
+	public void testMoveToTableau5(){
+		Tableau moveFromT = new Tableau();
+		Tableau moveToT = new Tableau();
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank.K));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._2));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.DIAMONDS, Rank._6));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.SPADES, Rank._5));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._4));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._3));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._7));
+		
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._2));
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._8));
+		
+		moveToTableauController.execute(moveFromT, moveToT, 1);
+		moveFromT.getCardList().forEach((c)->c.setShow(true));
+		assertEquals("[♣K, ♥2, ♦6, ♠5, ♥4, ♣3]",moveFromT.getCardList().toString());
+	}
+	
+	@Test
+	public void testMoveToTableau6(){
+		Tableau moveFromT = new Tableau();
+		Tableau moveToT = new Tableau();
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank.K));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._2));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.DIAMONDS, Rank._6));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.SPADES, Rank._5));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.HEARTS, Rank._4));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._3));
+		moveFromT.push(moveFromT.getCardList(), new Card(Suit.CLUBS, Rank._7));
+		
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._2));
+		moveToT.push(moveToT.getCardList(), new Card(Suit.DIAMONDS, Rank._8));
+		
+		moveToTableauController.execute(moveFromT, moveToT, 1);
+		moveFromT.getCardList().forEach((c)->c.setShow(true));
+		assertEquals("[♣K, ♥2, ♦6, ♠5, ♥4, ♣3]",moveFromT.getCardList().toString());
 	}
 //    private ScoreManager scoreManager;
 //    private ByteArrayOutputStream outputStream;

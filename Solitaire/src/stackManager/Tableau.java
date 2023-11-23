@@ -5,7 +5,7 @@ import java.util.List;
 import card.Card;
 
 public class Tableau extends CardListAbstract{
-	private static List<Card> cardList  = new ArrayList<Card>();
+	private List<Card> cardList  = new ArrayList<Card>();
 	
 	public Tableau() {
 		super();
@@ -39,7 +39,7 @@ public class Tableau extends CardListAbstract{
 	}
 	
 	public void addAll(List<Card> cardList) {
-		Tableau.cardList.addAll(cardList);
+		this.cardList.addAll(cardList);
 	}
 	
 	@Override

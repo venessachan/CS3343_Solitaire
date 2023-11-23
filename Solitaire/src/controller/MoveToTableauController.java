@@ -39,7 +39,7 @@ public class MoveToTableauController extends ControlHandler{
 		}else if(cardMove == 1) {
 			moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
 		}
-		
+		//else invalid move
 	}
 	
 	//Waste to tableau

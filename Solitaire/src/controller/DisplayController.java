@@ -1,6 +1,10 @@
 package controller;
 
+import java.util.List;
+
 import main.GameManager;
+import stackManager.Foundation;
+import stackManager.Tableau;
 
 public class DisplayController {
 	static GameManager gameManager = GameManager.getInstance();  
@@ -10,19 +14,19 @@ public class DisplayController {
 		return instance;
 	}
 	
-	public void printboard(int stockCount, String wasteCard, int score, int move, String[] foundations, String[] tableaus) {
+	public void printboard(int stockCount, String wasteCard, int score, int move, List<Foundation> foundations, List<Tableau> tableaus) {
 
 		System.out.printf("Card Remaining: %d,  Waste: %s, Socre: %d, Move: %d\n",
 					stockCount, wasteCard, score, move);
 		
 		System.out.print("Foundations: ");
 		for(int i = 0; i < 4; i++) {
-			System.out.printf("[%s] ", foundations[i]);
+			System.out.printf("[%s] ", foundations.get(i).print());
 		}
 		System.out.print("\n\n");
 		
 		for(int i=0; i<7 ;i++) {
-			System.out.printf("Tableau %d: [%s]\n", i+1, tableaus[i]);
+			System.out.printf("Tableau %d: [%s]\n", i+1, tableaus.get(i).print());
 		}
 		System.out.print("\n");
 	}

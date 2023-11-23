@@ -1,5 +1,6 @@
 package controller;
 
+import card.Card;
 import stackManager.Stock;
 import stackManager.Waste;
 
@@ -23,7 +24,7 @@ public class DealController extends ControlHandler{
 
 		
 		if(stock.isEmpty(stock.getCardList())) {
-			//Error Part cock bug
+			//Error Part chock bug
 //			for(Card wastedCard: waste.getCardList()) {
 //				stock.push(wastedCard);
 //				wastedCard.setShow(false);
@@ -35,7 +36,6 @@ public class DealController extends ControlHandler{
 //				wastedCard.setShow(false);
 //				stock.push(wastedCard);
 //			}
-			
 			
 			//push all the card back to stock from waste
 			if(!waste.isEmpty(waste.getCardList())) {

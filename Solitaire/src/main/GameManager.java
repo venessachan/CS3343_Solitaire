@@ -25,16 +25,12 @@ public class GameManager {
 	private int move;
 	//private int score;
 	private List<Foundation> foundation = new ArrayList<>();
-	//private List<Tableau> tableaus;
 	private List<Tableau> tableaus = new ArrayList<>();
 	private String previousAction;
 	private Deck deck;
 	private Stock stock;
 	private Waste waste;
 	
-	
-	
-	//****How to refresh static controller
 	static DisplayController displayController;
 	static ScoreController scoreController;
 	static MoveToFoundationController moveToFoundationController;
@@ -63,14 +59,14 @@ public class GameManager {
 	
 	public void start() {
 		reset();
-		DisplayController.getInstance();
-		ScoreController.getInstance();
-		MoveToFoundationController.getInstance();
-		MoveToTableauController.getInstance();
-		DealController.getInstance();
-		UndoController.getInstance();
-		RedoController.getInstance();
-		commandHistory = new CommandHistory();
+	    displayController = DisplayController.getInstance();
+	    scoreController = ScoreController.getInstance();
+	    moveToFoundationController = MoveToFoundationController.getInstance();
+	    moveToTableauController = MoveToTableauController.getInstance();
+	    dealController = DealController.getInstance();
+	    undoController = UndoController.getInstance();
+	    redoController = RedoController.getInstance();
+	    commandHistory = new CommandHistory();
 		//int level = sc.nextInt();
 		//displayController.printboard(level);
 		commandHistory = new CommandHistory();
@@ -119,14 +115,14 @@ public class GameManager {
 		for(int i = 0; i < 4; i++) {
 			foundationPrint = foundationPrint + foundation.get(i).print() + " ";
 		}
-		String[] foundationsInfo = foundationPrint.split(" ");
+//		String[] foundationsInfo = foundationPrint.split(" ");
 		
-		String tableausPrint = "";
-		for(int i = 0; i < 7; i++) {
-			tableausPrint = tableausPrint + tableaus.get(i).print() + " ";
-		}
-		String[] tableausInfo = tableausPrint.split(" ");
-		printBoard(foundationsInfo, tableausInfo);
+//		String tableausPrint = "";
+//		for(int i = 0; i < 7; i++) {
+//			tableausPrint = tableausPrint + tableaus.get(i).print() + " ";
+//		}
+//		String[] tableausInfo = tableausPrint.split(" ");
+		printBoard();
 		//displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
 	}
 	
@@ -319,11 +315,11 @@ public class GameManager {
 		}
 	}
 	
-	public List<Tableau> getTab() {
+	public List<Tableau> getTableaus() {
 		return tableaus;
 	}
 	
-	public List<Foundation> getFoundate() {
+	public List<Foundation> getFoundation() {
 		return foundation;
 	}
 	
@@ -373,8 +369,8 @@ public class GameManager {
 		scoreController.setScore(score);
 	}
 	
-	public void printBoard(String[] foundationsInfo, String[] tableausInfo ) {
-		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
+	public void printBoard() {
+		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundation, tableaus);
 	}
 	
 	public void reset() {
