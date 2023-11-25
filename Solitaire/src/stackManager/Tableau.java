@@ -19,7 +19,7 @@ public class Tableau extends CardListAbstract{
 			else
 				return false;	
 		}
-		else {					//if tableau is not empty, check whether the rank of (the last card - put card = 1) and have different color
+		else {//if tableau is not empty, check whether the rank of (the last card - put card = 1) and have different color
 			return checkValidCard(card, peek(cardList));
 		}
 	}

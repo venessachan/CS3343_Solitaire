@@ -19,6 +19,7 @@ public class TestFoundation {
 		assertEquals("♠", foundation.getSuit().getSign());
 	}
 	
+	
 	//check card list after push
 	@Test
 	public void testPush1() {
@@ -200,7 +201,7 @@ public class TestFoundation {
 		foundation.push(foundation.getCardList(), card13);
 		
 		assertEquals(true, foundation.isFull());
-	}
+	} 
 	
 	//check valid card
 	@Test
@@ -265,6 +266,8 @@ public class TestFoundation {
 		Card card = new Card(Suit.HEARTS, Rank._4);
 		assertEquals(true, foundation.checkValidAction(card));
 	}
+	
+	//------------------------------------------
 	
 	
 //	@Test

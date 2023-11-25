@@ -20,20 +20,29 @@ public class Foundation extends CardListAbstract{
 	public boolean checkValidAction(Card card) {
 		if(isEmpty(cardList)) 
 			return checkValidAce(card);
-		else 
-			return checkValidNext(card);
+		if(isFull())
+			return false;
+		
+		return checkValidNext(card);
 	}
 	
 	public boolean checkValidAce(Card card){
-		if(getSuit() == card.getSuit()) {
-			if(card.getRank() == Rank.A) {
-				return true;
-			}else{
-				return false;
-			}
-		}else {
-			return false;
+//		if(getSuit() == card.getSuit()) {
+//			if(card.getRank() == Rank.A) {
+//				return true;
+//			}else{
+//				return false;
+//			}
+//		}else {
+//			return false;
+//		}
+		
+		if(getSuit() == card.getSuit() 
+				&& card.getRank() == Rank.A) {
+			return true;
 		}
+		
+		return false;
 	}
 	
 	public boolean checkValidNext(Card card) {
@@ -41,6 +50,7 @@ public class Foundation extends CardListAbstract{
 				&& getSuit() == card.getSuit()) {
 			return true;
 		}
+		
 		return false;
 	}
 	

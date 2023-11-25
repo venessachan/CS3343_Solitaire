@@ -164,8 +164,8 @@ public class GameManager {
 					previousAction = cmd;
 					return 3;
 				}
-				
-			case "T":
+				 
+			case "T": 
 				try{
 					int moveFrom = Integer.parseInt(cmdParts[1]);
 					int moveTo = Integer.parseInt(cmdParts[2]);

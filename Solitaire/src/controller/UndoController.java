@@ -17,7 +17,7 @@ public class UndoController {
 	public static UndoController getInstance() {
 		return instance;
 	}
-	
+	 
 	public void addUndoCommand(CommandHistory commandHistory, String previousCmd){
 		commandHistory.push(commandHistory.getUndoCommandList(), previousCmd);
     }
