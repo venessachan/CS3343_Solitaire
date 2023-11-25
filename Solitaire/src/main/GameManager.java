@@ -75,8 +75,9 @@ public class GameManager {
 		long seed = 0;// for testing
 		//long seed = System.currentTimeMillis();		//every games have different seed
 		previousAction = "";
-		//scoreController.setScore(0);			//chock bug-> not set 0 here
-		setMove(0);
+		setScore(0);			//chock bug-> not set 0 here
+		//setMove(0);
+		//scoreController.setComboCount(0);
 		
 		//Deck
 		deck = new Deck();
@@ -171,7 +172,7 @@ public class GameManager {
 					int moveTo = Integer.parseInt(cmdParts[2]);
 					int validCard = 0;
 					//Error checking
-					if(moveFrom -1 < 0 || moveFrom -1 > 6 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
+					if(moveFrom < 0 || moveFrom > 7 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
 						//put to displayController
 						displayController.printInputReminder2();
 						return -3;
@@ -186,7 +187,7 @@ public class GameManager {
 					if(moveTo == 0) {
 						//error checking
 						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
-						if(foundationIndex < 0 || foundationIndex > 3 || foundation.get(foundationIndex).isFull()) {
+						if(foundationIndex < 0) {
 							displayController.printInvalidMove();
 							return -5;
 						}
@@ -198,7 +199,8 @@ public class GameManager {
 						undoController.addUndoCommand(commandHistory, previousAction);
 						redoController.clearRedoList(commandHistory);
 						move();
-						
+						tabAutoFlip();
+						return 4;
 					}else {
 						//move Tableau to Tableau
 						//error checking
@@ -208,21 +210,22 @@ public class GameManager {
 							return -6;
 						}
 						
-						validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom).getCardList(), tableaus.get(moveTo), showCardCount);
+						validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom-1), tableaus.get(moveTo-1), showCardCount);
 						if(validCard <= 0) {
 							displayController.printInvalidMove();
 							return -7;
 						}
 						//valid
-						moveToTableauController.execute(tableaus.get(moveFrom), tableaus.get(moveTo), validCard);
+						moveToTableauController.execute(tableaus.get(moveFrom-1), tableaus.get(moveTo-1), validCard);
 						displayController.printValidMove();
 						tabAutoFlip();
 						previousAction = cmd + " " + validCard;		//index 3
 						undoController.addUndoCommand(commandHistory, previousAction);
 						redoController.clearRedoList(commandHistory);
 						move();
+						return 5;
 					}
-					return 4;	
+						
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
 					return -8;
@@ -258,10 +261,10 @@ public class GameManager {
 						scoreController.checkCombo(previousAction);
 						move();
 						redoController.clearRedoList(commandHistory);
-						return 5;
+						return 6;
 					}else {
 						//wasteToTableau
-						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo));
+						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo-1));	//chock bug get(moveTo)
 						//No card is valid
 						if(validCard <= 0) {
 							displayController.printInvalidMove();
@@ -275,7 +278,7 @@ public class GameManager {
 						previousAction = cmd;	//index 2
 						redoController.clearRedoList(commandHistory);
 						move();
-						return 6;
+						return 7;
 					}
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
@@ -289,7 +292,7 @@ public class GameManager {
 					displayController.printAddCardToWaste();
 					undoController.addUndoCommand(commandHistory, previousAction);
 					redoController.clearRedoList(commandHistory);
-					return 7;
+					return 8;
 				}else {
 					displayController.printNoCardDeal();
 					return -14;
@@ -307,6 +310,7 @@ public class GameManager {
 				displayController.printInputReminder1();
 				return 0;
 		}
+		
 	}
 	
 	//may be need to refactor
@@ -361,7 +365,10 @@ public class GameManager {
 
 		if(foundation.get(0).isFull() && foundation.get(1).isFull()
 			&& foundation.get(2).isFull() && foundation.get(3).isFull()) {
-			scoreController.addScore(1000000/getMove());
+			if(getMove() > 0) {
+				scoreController.addScore(1000000/getMove());
+			}
+			
 			return true;
 		}
 		return false;
@@ -369,6 +376,10 @@ public class GameManager {
 	
 	public void setScore(int score) {
 		scoreController.setScore(score);
+	}
+	
+	public int getScore() {
+		return scoreController.getScore();
 	}
 	
 	public void printBoard() {
