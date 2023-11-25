@@ -4,11 +4,16 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import card.Card;
+import card.Rank;
+import card.Suit;
 import main.GameManager;
+import stackManager.Foundation;
 
 public class TestGameManager {
 
@@ -115,7 +120,7 @@ public class TestGameManager {
     @Test
     public void testDealCommand1() {
     	gameManager.start();
-    	assertEquals(6,gameManager.commandExecute("D"));
+    	assertEquals(7,gameManager.commandExecute("D"));
     }
     
     
@@ -170,7 +175,8 @@ public class TestGameManager {
 //  public void testToTableauCommand5() {
 //  	assertEquals(4,gameManager.commandExecute("T"));
 //  }
-    
+  
+  //check waste to foundation
   @Test
   public void testToWasteCommand1() {
 	gameManager.start();
@@ -191,9 +197,51 @@ public class TestGameManager {
   	assertEquals(-10,gameManager.commandExecute("W 8"));
   }
     
+  @Test
+  public void testToWasteCommand4() {
+	gameManager.start();
+	gameManager.commandExecute("D");
+  	assertEquals(-11,gameManager.commandExecute("W 0"));
+  }
+  
+  @Test
+  public void testToWasteCommand5() {
+	gameManager.start();
+	gameManager.commandExecute("D");
+	gameManager.commandExecute("D");
+	
+	assertEquals(5,gameManager.commandExecute("W 0"));
+  }
+  
+  @Test
+  public void testToWasteCommand6() {
+	gameManager.start();
+	
+	for(int i =0; i <2; i++) {
+		gameManager.commandExecute("D");
+	}
+	gameManager.commandExecute("W 0");
+	for(int i =0; i <15; i++) {
+		gameManager.commandExecute("D");
+	}
+	assertEquals(5,gameManager.commandExecute("W 0"));
+  }
+  
+  //check waste to tableau
+  @Test
+  public void testToWasteCommand7() {
+	gameManager.start();
+	
+	for(int i =0; i <6; i++) {
+		gameManager.commandExecute("D");
+	}
+	
+	assertEquals(6,gameManager.commandExecute("W 7"));
+  }
+  
     @Test
     public void testPrintBoard1() {
-        //gameManager.commandExecute("S");
+        //gameManager.start();
         String expectedOutput = "Card Remaining: 24,  Waste: XX, Socre: 0, Move: 0\n"
         		+ "Foundations: [♠] [♥] [♣] [♦] \n"
         		+ "\n"
@@ -219,7 +267,7 @@ public class TestGameManager {
 //        	Assertions.assertTrue(tableau.peek().getShow());
 //        }
 //    }
-//    
+
 //	@Test
 //	public void T12() {
 //		assertEquals(0, gameManager.getMove());

@@ -246,7 +246,7 @@ public class GameManager {
 						//wasteToFoundation
 						//error checking
 						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
-						if(foundationIndex < 0 || foundationIndex > 3 || foundation.get(foundationIndex).isFull()) {
+						if(foundationIndex < 0) {
 							displayController.printInvalidMove();
 							return -11;
 						}
@@ -258,6 +258,7 @@ public class GameManager {
 						scoreController.checkCombo(previousAction);
 						move();
 						redoController.clearRedoList(commandHistory);
+						return 5;
 					}else {
 						//wasteToTableau
 						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo));
@@ -267,15 +268,15 @@ public class GameManager {
 							return -12;
 						}
 						//valid
-						moveToTableauController.execute(waste, tableaus.get(moveTo), 1);
+						moveToTableauController.execute(waste, tableaus.get(moveTo-1), 1);
 						displayController.printValidMove();
 						waste.peek(waste.getCardList()).flip();
 						undoController.addUndoCommand(commandHistory, cmd);
 						previousAction = cmd;	//index 2
 						redoController.clearRedoList(commandHistory);
 						move();
+						return 6;
 					}
-					return 5;
 				}catch(NumberFormatException e) {
 					System.out.printf("Invalid input.\n\n");
 					return -13;
@@ -288,7 +289,7 @@ public class GameManager {
 					displayController.printAddCardToWaste();
 					undoController.addUndoCommand(commandHistory, previousAction);
 					redoController.clearRedoList(commandHistory);
-					return 6;
+					return 7;
 				}else {
 					displayController.printNoCardDeal();
 					return -14;

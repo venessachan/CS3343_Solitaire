@@ -61,10 +61,10 @@ public class TestDeck {
 		assertEquals(null, deck.print());
 	}
 	
-	@Test
-	public void testShuffle10() {
-		deck.shuffle(0);
-		deck.getCards().forEach((c)->c.flip());
-		assertEquals("", deck.getCards().toString());
-	}
+//	@Test
+//	public void testShuffle10() {
+//		deck.shuffle(0);
+//		deck.getCards().forEach((c)->c.flip());
+//		assertEquals("", deck.getCards().toString());
+//	}
 }

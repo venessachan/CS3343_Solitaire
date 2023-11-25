@@ -266,6 +266,27 @@ public class TestFoundation {
 		assertEquals(true, foundation.checkValidAction(card));
 	}
 	
+	@Test
+	public void testValidCard7() {
+		Foundation foundation = new Foundation(Suit.HEARTS);
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank.A));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._2));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._3));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._4));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._5));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._6));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._7));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._8));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._9));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank._10));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank.J));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank.Q));
+		foundation.push(foundation.getCardList(), new Card(Suit.HEARTS, Rank.K));
+		
+		Card card = new Card(Suit.HEARTS, Rank._4);
+		assertEquals(false, foundation.checkValidAction(card));
+	}
+	
 	
 //	@Test
 //	public void testFoundationPopCard2() {

@@ -18,11 +18,14 @@ public class Foundation extends CardListAbstract{
 	}
 	
 	public boolean checkValidAction(Card card) {
-		if(isEmpty(cardList)) 
-			return checkValidAce(card);
-		else 
-			return checkValidNext(card);
-	}
+		if(isFull()) {
+			return false;
+		}
+        if(isEmpty(cardList)) {
+        	return checkValidAce(card);
+        }
+        return checkValidNext(card);
+    }
 	
 	public boolean checkValidAce(Card card){
 		if(getSuit() == card.getSuit()) {

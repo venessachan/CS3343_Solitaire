@@ -2,6 +2,7 @@ package controller;
 
 import java.util.List;
 
+import main.GameManager;
 import stackManager.Foundation;
 import stackManager.Stock;
 import stackManager.Tableau;
@@ -15,8 +16,15 @@ public class UndoController {
 	private UndoController() {}
 
 	public static UndoController getInstance() {
-		return instance;
-	}
+	  if (instance == null) {
+		  instance = new UndoController();
+	  }
+		  return instance;
+		}
+		
+	public static void resetInstance() {
+        instance = null;
+    }
 	
 	public void addUndoCommand(CommandHistory commandHistory, String previousCmd){
 		commandHistory.push(commandHistory.getUndoCommandList(), previousCmd);
