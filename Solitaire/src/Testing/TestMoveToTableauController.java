@@ -282,6 +282,18 @@ public class TestMoveToTableauController {
 		int moveCardCount = moveToTableauController.getMoveCardCount(moveFromList, target, 4);
 		assertEquals(1, moveCardCount);
 	}
+
+	@Test
+	public void testMoveToTableau21() {
+		Tableau target = new Tableau();
+
+		List<Card> moveFromList = new ArrayList<Card>();
+		
+		System.out.println(moveFromList.size());
+		
+		int moveCardCount = moveToTableauController.getMoveCardCount(moveFromList, target, 4);
+		assertEquals(-1, moveCardCount);
+	}
 	
 	@Test
 	public void testMoveToTableau15() {
