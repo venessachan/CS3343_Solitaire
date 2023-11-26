@@ -76,6 +76,7 @@ public class GameManager {
 		//long seed = System.currentTimeMillis();		//every games have different seed
 		previousAction = "";
 		setScore(0);			//chock bug-> not set 0 here
+		setCombo(0);
 		//setMove(0);
 		//scoreController.setComboCount(0);
 		
@@ -288,10 +289,12 @@ public class GameManager {
 
 			case "D":
 				if(dealController.deal(stock, waste) > 0) {
+					printBoard();
 					previousAction = cmd;
 					displayController.printAddCardToWaste();
 					undoController.addUndoCommand(commandHistory, previousAction);
 					redoController.clearRedoList(commandHistory);
+					move();
 					return 8;
 				}else {
 					displayController.printNoCardDeal();
@@ -382,6 +385,13 @@ public class GameManager {
 		return scoreController.getScore();
 	}
 	
+	public void setCombo(int combo) {
+		scoreController.setComboCount(combo);
+	}
+	
+	public int getCombo() {
+		return scoreController.getComboCount();
+	}
 	public void printBoard() {
 		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundation, tableaus);
 	}

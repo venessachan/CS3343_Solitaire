@@ -409,8 +409,10 @@ public class TestGameManager {
 	public void testIsWin6() {
 		gameManager.start();
 		gameManager.commandExecute("D");
+		
 		gameManager.commandExecute("D");
-		gameManager.commandExecute("W 0");
+		gameManager.commandExecute("W 0");	//place Ace to foundation
+		gameManager.commandExecute("D");
 		gameManager.commandExecute("W 0");
 		Foundation f1 = gameManager.getFoundation().get(0);
 		Foundation f2 = gameManager.getFoundation().get(1);
@@ -425,7 +427,19 @@ public class TestGameManager {
 			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
 		}
 		gameManager.isWin();
-		assertEquals(100,gameManager.getMove());
+		assertEquals(200100,gameManager.getScore());
+	}
+	
+	//check score without win
+	@Test
+	public void testIsWin7() {
+		gameManager.start();
+		gameManager.commandExecute("D");
+		gameManager.commandExecute("D");
+		gameManager.commandExecute("W 0");	//place Ace to foundation
+		gameManager.commandExecute("D");
+		gameManager.commandExecute("W 0");
+		gameManager.isWin();
 		assertEquals(100,gameManager.getScore());
 	}
 	

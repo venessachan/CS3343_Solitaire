@@ -12,7 +12,7 @@ public class ScoreController {
     
     private ScoreController() {
     	setScore(0);
-    	comboCount = 0;
+    	setComboCount(0);
     }
     
     public static ScoreController getInstance() {
@@ -30,14 +30,14 @@ public class ScoreController {
     	String[] previousActionParts = previousAction.split(" ");
     	if ((previousActionParts[0].equals("W") && previousActionParts[1].equals("0"))
     			|| (previousActionParts[0].equals("T") && previousActionParts[2].equals("0"))) {
-    		if (comboCount >= 20) {
+    		if (comboCount > 20) {
     			addScore(50*32);
     		}
-    		else if(comboCount >= 10) {
+    		else if(comboCount > 10) {
     			addScore(50*16);
-    		}else if(comboCount >= 7) {
+    		}else if(comboCount > 7) {
     			addScore(50*8);
-    		}else if(comboCount >= 3) {
+    		}else if(comboCount > 3) {
     			addScore(50*4);
     		}else {
     			addScore(50);
