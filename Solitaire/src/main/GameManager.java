@@ -152,20 +152,20 @@ public class GameManager {
 				}
 				
 				
-			case "R":
-				//case sensitive
-				if(redoController.isEmpty(commandHistory)) {
-					//error: no redo action
-					displayController.printInvalidRedo();
-					return -2;
-				}else {
-					redoController.execute();
-					undoController.addUndoCommand(commandHistory, redoController.popRedoCommand(commandHistory));
-					move();
-					//score?
-					previousAction = cmd;
-					return 3;
-				}
+//			case "R":
+//				//case sensitive
+//				if(redoController.isEmpty(commandHistory)) {
+//					//error: no redo action
+//					displayController.printInvalidRedo();
+//					return -2;
+//				}else {
+//					redoController.execute();
+//					undoController.addUndoCommand(commandHistory, redoController.popRedoCommand(commandHistory));
+//					move();
+//					//score?
+//					previousAction = cmd;
+//					return 3;
+//				}
 				
 			case "T":
 				try{
@@ -201,6 +201,7 @@ public class GameManager {
 						redoController.clearRedoList(commandHistory);
 						move();
 						tabAutoFlip();
+						printBoard();
 						return 4;
 					}else {
 						//move Tableau to Tableau
@@ -224,6 +225,7 @@ public class GameManager {
 						undoController.addUndoCommand(commandHistory, previousAction);
 						redoController.clearRedoList(commandHistory);
 						move();
+						printBoard();
 						return 5;
 					}
 						
@@ -262,6 +264,7 @@ public class GameManager {
 						scoreController.checkCombo(previousAction);
 						move();
 						redoController.clearRedoList(commandHistory);
+						printBoard();
 						return 6;
 					}else {
 						//wasteToTableau
@@ -279,6 +282,7 @@ public class GameManager {
 						previousAction = cmd;	//index 2
 						redoController.clearRedoList(commandHistory);
 						move();
+						printBoard();
 						return 7;
 					}
 				}catch(NumberFormatException e) {
@@ -289,12 +293,12 @@ public class GameManager {
 
 			case "D":
 				if(dealController.deal(stock, waste) > 0) {
-					printBoard();
 					previousAction = cmd;
 					displayController.printAddCardToWaste();
 					undoController.addUndoCommand(commandHistory, previousAction);
 					redoController.clearRedoList(commandHistory);
 					move();
+					printBoard();
 					return 8;
 				}else {
 					displayController.printNoCardDeal();

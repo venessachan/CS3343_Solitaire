@@ -25,9 +25,7 @@ public class Main {
 				System.out.println("(D)eal, (W)aste, (T)ableau, (Q)uit");
 				String cmd = sc.nextLine();
 				//-2 (Q)
-				if(controlHandler.execute(cmd) == -2) {
-					break;
-				}
+				
 				String[] cmdParts = cmd.split(" ");
 				if(cmdParts[0].equals("T")) {
 					displayController.printMoveFromQ();
@@ -39,6 +37,9 @@ public class Main {
 					displayController.printMoveToQ();
 					String moveTo = sc.nextLine();
 					controlHandler.execute("W" + " " + moveTo);
+				}
+				else if(controlHandler.execute(cmd) == -15) {
+					break;
 				}
 				controlHandler.tabAutoFlip();
 			}
