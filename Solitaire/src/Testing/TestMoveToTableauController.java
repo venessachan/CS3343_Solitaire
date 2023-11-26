@@ -289,7 +289,9 @@ public class TestMoveToTableauController {
 
 		List<Card> moveFromList = new ArrayList<Card>();
 		
-		System.out.println(moveFromList.size());
+		Card cardK = new Card(Suit.CLUBS, Rank.K);
+
+		moveFromList.add(cardK);
 		
 		int moveCardCount = moveToTableauController.getMoveCardCount(moveFromList, target, 4);
 		assertEquals(-1, moveCardCount);

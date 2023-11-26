@@ -16,7 +16,7 @@ public class UndoController {
 
 	public static UndoController getInstance() {
 		return instance;
-	}
+	} 
 	 
 	public void addUndoCommand(CommandHistory commandHistory, String previousCmd){
 		commandHistory.push(commandHistory.getUndoCommandList(), previousCmd);
@@ -38,7 +38,7 @@ public class UndoController {
 		
 		List<String> undoList = commandHistory.getUndoCommandList();
 		return undoList.get(undoList.size()-1);
-	}
+	} 
 	
 	public int execute(CommandHistory commandHistory, Stock stock, Waste waste, List<Tableau> tableaus, List<Foundation> foundation) {
 		String previousCmd = getPreviousCmdList(commandHistory);
@@ -56,11 +56,14 @@ public class UndoController {
 					}
 					waste.peek(waste.getCardList()).flip();	//show the top card
 				}
-			}else {
+			}
+			else {
 				//put 1 card from waste back to stock
 				waste.peek(waste.getCardList()).flip();	//hide the top card
 				stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
-				waste.peek(waste.getCardList()).flip();	//show the new top card
+				if(!waste.isEmpty(waste.getCardList())) {
+					waste.peek(waste.getCardList()).flip();	//show the new top card					
+				}
 			}
 		}else if(cmdParts[0].equals("T")) {
 			try {
@@ -85,7 +88,9 @@ public class UndoController {
 		}else if(cmdParts[0].equals("W")){
 			try {
 				int moveTo = Integer.parseInt(cmdParts[1]);
-				waste.peek(waste.getCardList()).flip();		//hide top card
+				if(!waste.isEmpty(waste.getCardList())) {
+					waste.peek(waste.getCardList()).flip();		//hide top card					
+				}
 				if(moveTo == 0 ) {		//From foundation to waste
 					int foundationIndex = Integer.parseInt(cmdParts[2]);
 					Foundation f = foundation.get(foundationIndex);

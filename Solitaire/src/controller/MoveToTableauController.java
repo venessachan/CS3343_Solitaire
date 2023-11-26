@@ -72,12 +72,11 @@ public class MoveToTableauController extends ControlHandler {
 		int moveCardCount = 1;
 		boolean validCardList = false;
 
-		if(moveFromList.size() <= 0) 
+		if(moveFromList.size() <= 0 || (moveFromList.size() == 1 && !moveFromList.get(0).getShow())) 
 			return -1;
 		
-		if(moveFromList.size() == 1) {
+		if(moveFromList.size() == 1 && moveFromList.get(0).getShow()) 
 			return 1;
-		}
 		
 		//check the count of moveFromList when a valid card exist
 		for (int i = moveFromList.size() - 1; i >= 0; i--) { 
@@ -85,7 +84,6 @@ public class MoveToTableauController extends ControlHandler {
 			if(!validCardList) {
 				validCardList = target.checkValidAction(moveFromList.get(i));
 			}
-			
 			
 			//if card list Top card not match suit/rank, break the loop
 			if(moveFromList.get(i).getSuit().getColor() == moveFromList.get(i - 1).getSuit().getColor()
