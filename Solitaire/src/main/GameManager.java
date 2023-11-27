@@ -9,7 +9,6 @@ import controller.DealController;
 import controller.DisplayController;
 import controller.MoveToFoundationController;
 import controller.MoveToTableauController;
-import controller.RedoController;
 import controller.ScoreController;
 import controller.UndoController;
 import stackManager.Deck;
@@ -37,7 +36,6 @@ public class GameManager {
 	static MoveToTableauController moveToTableauController;
 	static DealController dealController;
 	static UndoController undoController;
-	static RedoController redoController;
 	private CommandHistory commandHistory;
 	
 	private GameManager(){
@@ -65,13 +63,8 @@ public class GameManager {
 	    moveToTableauController = MoveToTableauController.getInstance();
 	    dealController = DealController.getInstance();
 	    undoController = UndoController.getInstance();
-	    redoController = RedoController.getInstance();
 	    commandHistory = new CommandHistory();
-		//int level = sc.nextInt();
-		//displayController.printboard(level);
-		commandHistory = new CommandHistory();
-		
-		
+
 		long seed = 0;// for testing
 		//long seed = System.currentTimeMillis();		//every games have different seed
 		previousAction = "";
@@ -117,15 +110,7 @@ public class GameManager {
 		for(int i = 0; i < 4; i++) {
 			foundationPrint = foundationPrint + foundation.get(i).print() + " ";
 		}
-//		String[] foundationsInfo = foundationPrint.split(" ");
-		
-//		String tableausPrint = "";
-//		for(int i = 0; i < 7; i++) {
-//			tableausPrint = tableausPrint + tableaus.get(i).print() + " ";
-//		}
-//		String[] tableausInfo = tableausPrint.split(" ");
 		printBoard();
-		//displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundationsInfo, tableausInfo);
 	}
 	
 	public int commandExecute(String cmd) {
@@ -137,35 +122,16 @@ public class GameManager {
 				previousAction = "";
 				return 1;
 			case "U":
-//				undoController = new UndoController();
-//				undoController.undoOneCommand();
 				if(undoController.execute(commandHistory, stock, waste, tableaus, foundation) < 0) {
 					displayController.printInvalidUndo();
 					return -1;
 				}else {
 					move();
 					scoreController.addScore(-50);
-					String undoAction = undoController.popUndoCommand(commandHistory);
 					previousAction = undoController.peekUndoCommand(commandHistory);
-					redoController.addRedoCommand(commandHistory, undoAction);
+					printBoard();
 					return 2;
 				}
-				
-				
-//			case "R":
-//				//case sensitive
-//				if(redoController.isEmpty(commandHistory)) {
-//					//error: no redo action
-//					displayController.printInvalidRedo();
-//					return -2;
-//				}else {
-//					redoController.execute();
-//					undoController.addUndoCommand(commandHistory, redoController.popRedoCommand(commandHistory));
-//					move();
-//					//score?
-//					previousAction = cmd;
-//					return 3;
-//				}
 				
 			case "T":
 				try{
@@ -175,11 +141,14 @@ public class GameManager {
 					//Error checking
 					if(moveFrom < 0 || moveFrom > 7 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
 						//put to displayController
+						printBoard();
+						displayController.printInvalidMove();
 						displayController.printInputReminder2();
 						return -3;
 					}
 						
 					if(tableaus.get(moveFrom-1).isEmpty(tableaus.get(moveFrom-1).getCardList())) {
+						printBoard();
 						displayController.printInvalidMove();
 						return -4;
 					}
@@ -189,6 +158,7 @@ public class GameManager {
 						//error checking
 						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
 						if(foundationIndex < 0) {
+							printBoard();
 							displayController.printInvalidMove();
 							return -5;
 						}
@@ -198,39 +168,41 @@ public class GameManager {
 						previousAction = cmd + " " + foundationIndex;	//index 3
 						scoreController.checkCombo(previousAction);
 						undoController.addUndoCommand(commandHistory, previousAction);
-						redoController.clearRedoList(commandHistory);
 						move();
 						tabAutoFlip();
 						printBoard();
+						displayController.printValidMove();
 						return 4;
 					}else {
 						//move Tableau to Tableau
 						//error checking
 						int showCardCount = moveToTableauController.getShowCard(tableaus.get(moveFrom -1).getCardList());
 						if(showCardCount <= 0) {
+							printBoard();
 							displayController.printInvalidMove();
 							return -6;
 						}
 						
 						validCard = moveToTableauController.getMoveCardCount(tableaus.get(moveFrom-1), tableaus.get(moveTo-1), showCardCount);
 						if(validCard <= 0) {
+							printBoard();
 							displayController.printInvalidMove();
 							return -7;
 						}
 						//valid
 						moveToTableauController.execute(tableaus.get(moveFrom-1), tableaus.get(moveTo-1), validCard);
-						displayController.printValidMove();
 						tabAutoFlip();
 						previousAction = cmd + " " + validCard;		//index 3
 						undoController.addUndoCommand(commandHistory, previousAction);
-						redoController.clearRedoList(commandHistory);
 						move();
 						printBoard();
+						displayController.printValidMove();
 						return 5;
 					}
 						
 				}catch(NumberFormatException e) {
-					System.out.printf("Invalid input.\n\n");
+					printBoard();
+					displayController.printInvalidMove();
 					return -8;
 				}
 			case "W":
@@ -239,11 +211,13 @@ public class GameManager {
 					
 					//error checking
 					if(waste.isEmpty(waste.getCardList())) {
+						printBoard();
 						displayController.printInvalidMove();
 						displayController.printInvalidWaste();
 						return -9;
 					}					
 					if(moveTo  < 0 || moveTo > 7) {
+						printBoard();
 						displayController.printInvalidMove();
 						return -10;
 					}
@@ -253,40 +227,41 @@ public class GameManager {
 						//error checking
 						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
 						if(foundationIndex < 0) {
+							printBoard();
 							displayController.printInvalidMove();
 							return -11;
 						}
 						//valid
 						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation.get(foundationIndex));
-						
 						undoController.addUndoCommand(commandHistory, cmd);
 						previousAction = cmd + " " + foundationIndex;	//index 2
 						scoreController.checkCombo(previousAction);
 						move();
-						redoController.clearRedoList(commandHistory);
 						printBoard();
+						displayController.printValidMove();
 						return 6;
 					}else {
 						//wasteToTableau
 						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo-1));	//chock bug get(moveTo)
 						//No card is valid
 						if(validCard <= 0) {
+							printBoard();
 							displayController.printInvalidMove();
 							return -12;
 						}
 						//valid
 						moveToTableauController.execute(waste, tableaus.get(moveTo-1), 1);
-						displayController.printValidMove();
 						waste.peek(waste.getCardList()).flip();
 						undoController.addUndoCommand(commandHistory, cmd);
 						previousAction = cmd;	//index 2
-						redoController.clearRedoList(commandHistory);
 						move();
 						printBoard();
+						displayController.printValidMove();
 						return 7;
 					}
 				}catch(NumberFormatException e) {
-					System.out.printf("Invalid input.\n\n");
+					printBoard();
+					displayController.printInputReminder1();
 					return -13;
 				}
 			
@@ -294,13 +269,13 @@ public class GameManager {
 			case "D":
 				if(dealController.deal(stock, waste) > 0) {
 					previousAction = cmd;
-					displayController.printAddCardToWaste();
 					undoController.addUndoCommand(commandHistory, previousAction);
-					redoController.clearRedoList(commandHistory);
 					move();
 					printBoard();
+					displayController.printAddCardToWaste();
 					return 8;
 				}else {
+					printBoard();
 					displayController.printNoCardDeal();
 					return -14;
 				}
@@ -314,6 +289,7 @@ public class GameManager {
 				return -15;
 			default:
 				//invalid command
+				printBoard();
 				displayController.printInputReminder1();
 				return 0;
 		}
@@ -408,7 +384,6 @@ public class GameManager {
 		stock = null;
 		waste = null;
 		undoController = null;
-		redoController = null;
 		displayController = null;
 		scoreController = null;
 		dealController = null;

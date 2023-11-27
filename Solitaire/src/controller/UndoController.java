@@ -31,6 +31,9 @@ public class UndoController {
     }
 
 	public String peekUndoCommand(CommandHistory commandHistory){
+		if(commandHistory.isEmpty(commandHistory.getUndoCommandList())){
+			return null;	// -> print "Nothing to undo\n."
+		}
 		return commandHistory.peek(commandHistory.getUndoCommandList());
     }
 	
@@ -38,18 +41,8 @@ public class UndoController {
 		return commandHistory.pop(commandHistory.getUndoCommandList());
     }
 	
-	public String getPreviousCmdList(CommandHistory commandHistory) {
-		
-		if(commandHistory.isEmpty(commandHistory.getUndoCommandList())){
-			return null;	// -> print "Nothing to undo\n."
-		}
-		
-		List<String> undoList = commandHistory.getUndoCommandList();
-		return undoList.get(undoList.size()-1);
-	}
-	
 	public int execute(CommandHistory commandHistory, Stock stock, Waste waste, List<Tableau> tableaus, List<Foundation> foundation) {
-		String previousCmd = getPreviousCmdList(commandHistory);
+		String previousCmd = peekUndoCommand(commandHistory);
 		String[] cmdParts = previousCmd.split(" ");
 		if(cmdParts[0].equals("D")) {
 			if(waste.isEmpty(waste.getCardList())) {
@@ -63,12 +56,14 @@ public class UndoController {
 						waste.push(waste.getCardList(), stock.pop(stock.getCardList()));
 					}
 					waste.peek(waste.getCardList()).flip();	//show the top card
+					return 1;
 				}
 			}else {
 				//put 1 card from waste back to stock
 				waste.peek(waste.getCardList()).flip();	//hide the top card
 				stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
 				waste.peek(waste.getCardList()).flip();	//show the new top card
+				return 2;
 			}
 		}else if(cmdParts[0].equals("T")) {
 			try {
@@ -79,11 +74,11 @@ public class UndoController {
 					Foundation f = foundation.get(foundationIndex);
 					Tableau t = tableaus.get(moveFrom-1);
 					moveToTableauController.execute(f, t, foundationIndex);
-					return 2;
-				}else{
+					return 3;
+				}else{		//from tableau to tableau
 					int validCard = Integer.parseInt(cmdParts[3]);
 					moveToTableauController.execute(tableaus.get(moveTo-1), tableaus.get(moveFrom-1), validCard);
-					return 3;
+					return 4;
 				}
 			}catch(NumberFormatException e) {
 				//return error message
@@ -93,16 +88,16 @@ public class UndoController {
 		}else if(cmdParts[0].equals("W")){
 			try {
 				int moveTo = Integer.parseInt(cmdParts[1]);
-				waste.peek(waste.getCardList()).flip();		//hide top card
+				waste.peek(waste.getCardList()).flip();		//hide top card		
 				if(moveTo == 0 ) {		//From foundation to waste
 					int foundationIndex = Integer.parseInt(cmdParts[2]);
 					Foundation f = foundation.get(foundationIndex);
 					waste.push(waste.getCardList(), f.pop(f.getCardList()));
-					return 4;
+					return 5;
 				}else{
 					Tableau t = tableaus.get(moveTo-1);
 					waste.push(waste.getCardList(), t.pop(t.getCardList()));
-					return 5;
+					return 6;
 				}
 				
 			}catch(NumberFormatException e) {

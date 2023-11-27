@@ -44,6 +44,4 @@ public class MoveToFoundationController extends ControlHandler{
 		else
 			return -1;
 	}
-
-
 }

@@ -5,9 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import card.Card;
-
-import card.Rank;
-import card.Suit;
 import stackManager.Foundation;
 import stackManager.Tableau;
 import stackManager.Waste;
@@ -69,53 +66,14 @@ public class MoveToTableauController extends ControlHandler {
 		}
 		return -1;
 	}
-
-	// Move >= 1 card from tableau to tableau
-//	public int getMoveCardCount(List<Card> moveFromList, Tableau target, int showCardListCount) {
-//        int moveCardCount = 1;
-//        boolean validCardList = false;
-//
-//        if(moveFromList.size() <= 0) 
-//            return -1;
-//
-//        if(moveFromList.size() == 1) {
-//            return 1;
-//        }
-//
-//        //check the count of moveFromList when a valid card exist
-//        for (int i = moveFromList.size() - 1; i >= 0; i--) { 
-//
-//            if(!validCardList) {
-//                validCardList = target.checkValidAction(moveFromList.get(i));
-//            }
-//
-//
-//            //if card list Top card not match suit/rank, break the loop
-//            if(moveFromList.get(i).getSuit().getColor() == moveFromList.get(i - 1).getSuit().getColor()
-//                    || (moveFromList.get(i).getRank().getNum() - moveFromList.get(i - 1).getRank().getNum() != 1)) {
-//                break;
-//            }
-//            moveCardCount++;
-//
-//
-//        }
-//
-//        if(validCardList)
-//            return moveCardCount;
-//
-//        return -1;
-//    }
 	
 	//Move more than 1 card
 	public int getMoveCardCount(Tableau moveFrom, Tableau target, int showCardCount) {
-		int moveCardCount = 1;
-		//int j = moveFromList.size()-1;
 		int j = moveFrom.count(moveFrom.getCardList()) -1;
 		for(int i = 0; i < showCardCount; i++) {
 			if(target.checkValidAction(moveFrom.getCardList().get(j))) {			//find the starting card in moveFrom tableau
 				return checkValidColumn(j, moveFrom);
 			}
-			moveCardCount++;
 			j--;
 		}
 		return -1;
@@ -124,7 +82,6 @@ public class MoveToTableauController extends ControlHandler {
 	//Check validation for moveFrom tableau
 	public int checkValidColumn(int start, Tableau moveFrom) {
 		int validCount = 1;
-		int j = moveFrom.count(moveFrom.getCardList())-1;
 		for(int i = moveFrom.count(moveFrom.getCardList())-1; i > start; i--) {		//check the card from last card of moveFrom tableau to starting card
 			if(moveFrom.checkValidCard(moveFrom.getCardList().get(i), moveFrom.getCardList().get(i-1))){
 				//valid
@@ -132,7 +89,6 @@ public class MoveToTableauController extends ControlHandler {
 			}else {
 				return -2;
 			}
-			j--;
 		}
 		return validCount;
 	}

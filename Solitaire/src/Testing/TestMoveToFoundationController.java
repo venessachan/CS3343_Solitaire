@@ -13,7 +13,7 @@ import card.Suit;
 import controller.MoveToFoundationController;
 import stackManager.Foundation;
 
-public class TestMoveToFoundation {
+public class TestMoveToFoundationController {
 	private MoveToFoundationController moveToFoundationController;
 	
 	@Test

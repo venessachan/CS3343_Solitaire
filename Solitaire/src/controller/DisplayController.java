@@ -30,13 +30,6 @@ public class DisplayController {
 		}
 		System.out.print("\n");
 	}
-
-//	public void printLevel() {
-//		System.out.println("Please input the number to select the level:");
-//		System.out.println("1-Level 1");
-//		System.out.println("2-Level 2");
-//		System.out.println("3-Level 3");
-//	}
 	
 	public void printMoveFromQ() {
 		System.out.print("Move From? ");
