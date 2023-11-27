@@ -59,6 +59,9 @@ public class DisplayController {
 		System.out.print("Invalid undo.\n\n");
 	}
 	
+	public void printValidUndo() {
+		System.out.print("Undo.\n\n");
+	}
 	public void printInvalidRedo() {
 		System.out.print("Nothing redo can execute.\n\n");
 	}

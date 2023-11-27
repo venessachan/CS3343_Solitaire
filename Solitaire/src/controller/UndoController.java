@@ -62,7 +62,9 @@ public class UndoController {
 				//put 1 card from waste back to stock
 				waste.peek(waste.getCardList()).flip();	//hide the top card
 				stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
-				waste.peek(waste.getCardList()).flip();	//show the new top card
+				if(!waste.isEmpty(waste.getCardList())) {
+					waste.peek(waste.getCardList()).flip();	//show the new top card
+				}
 				return 2;
 			}
 		}else if(cmdParts[0].equals("T")) {

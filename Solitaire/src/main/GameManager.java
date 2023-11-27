@@ -129,6 +129,7 @@ public class GameManager {
 					move();
 					scoreController.addScore(-50);
 					previousAction = undoController.peekUndoCommand(commandHistory);
+					displayController.printValidUndo();
 					printBoard();
 					return 2;
 				}
@@ -139,7 +140,7 @@ public class GameManager {
 					int moveTo = Integer.parseInt(cmdParts[2]);
 					int validCard = 0;
 					//Error checking
-					if(moveFrom < 0 || moveFrom > 7 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
+					if(moveFrom < 1 || moveFrom > 7 || moveTo  < 0 || moveTo > 7 || moveFrom == moveTo) {
 						//put to displayController
 						printBoard();
 						displayController.printInvalidMove();
@@ -194,7 +195,7 @@ public class GameManager {
 						tabAutoFlip();
 						previousAction = cmd + " " + validCard;		//index 3
 						undoController.addUndoCommand(commandHistory, previousAction);
-						move();
+						move();						
 						printBoard();
 						displayController.printValidMove();
 						return 5;
@@ -204,6 +205,10 @@ public class GameManager {
 					printBoard();
 					displayController.printInvalidMove();
 					return -8;
+				}catch(Exception e) {
+					printBoard();
+					displayController.printInvalidMove();
+					return -18;
 				}
 			case "W":
 				try{					
@@ -251,7 +256,9 @@ public class GameManager {
 						}
 						//valid
 						moveToTableauController.execute(waste, tableaus.get(moveTo-1), 1);
-						waste.peek(waste.getCardList()).flip();
+						if(!waste.isEmpty(waste.getCardList())) {
+							waste.peek(waste.getCardList()).flip();
+						}
 						undoController.addUndoCommand(commandHistory, cmd);
 						previousAction = cmd;	//index 2
 						move();
@@ -263,6 +270,10 @@ public class GameManager {
 					printBoard();
 					displayController.printInputReminder1();
 					return -13;
+				}catch(Exception e) {
+					printBoard();
+					displayController.printInvalidMove();
+					return -23;
 				}
 			
 

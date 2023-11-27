@@ -168,6 +168,25 @@ public class TestUndoController {
 		Waste waste = new Waste();
 		List<Tableau> tableaus = new ArrayList();
 		List<Foundation> foundation = new ArrayList();
+		
+		Card card2 = new Card(Suit.HEARTS, Rank._2);
+		card2.setShow(true);
+		waste.push(waste.getCardList(), card2);
+		
+		undoController.addUndoCommand(commandHistory, "D");
+		undoController.execute(commandHistory, stock, waste, tableaus, foundation);
+
+		assertEquals("XX", waste.print()); 
+		card2.setShow(true);
+		assertEquals("[♥2]", stock.getCardList().toString()); 
+	}
+	
+	@Test
+	public void testUndoController10() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		List<Tableau> tableaus = new ArrayList();
+		List<Foundation> foundation = new ArrayList();
 
 		Card card1 = new Card(Suit.SPADES, Rank.A);
 		Card card2 = new Card(Suit.HEARTS, Rank._2);
@@ -186,7 +205,7 @@ public class TestUndoController {
 	}
 	
 	@Test
-	public void testUndoController10() {
+	public void testUndoController11() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		List<Tableau> tableaus = new ArrayList();
@@ -211,7 +230,7 @@ public class TestUndoController {
 	}
 	
 	@Test
-	public void testUndoController11() {
+	public void testUndoController12() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		List<Tableau> tableaus = new ArrayList();
@@ -224,7 +243,7 @@ public class TestUndoController {
 	}
 	//test foundation back to waste
 	@Test
-	public void testUndoController12() {
+	public void testUndoController13() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		List<Tableau> tableaus = new ArrayList();
@@ -252,7 +271,7 @@ public class TestUndoController {
 
 	//test tableau back to waste
 	@Test
-	public void testUndoController13() {
+	public void testUndoController14() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		List<Tableau> tableaus = new ArrayList();
@@ -309,4 +328,7 @@ public class TestUndoController {
 
 		assertEquals(-1, result); 
 	}
+	
+	
+	
 }

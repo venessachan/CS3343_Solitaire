@@ -217,7 +217,7 @@ public class TestGameManager {
 	@Test
 	public void testToTableauCommand1() {
 		gameManager.start();
-		assertEquals(-3,gameManager.commandExecute("T -1 6"));
+		assertEquals(-3,gameManager.commandExecute("T 0 6"));
 	}
 	
 	@Test
@@ -441,6 +441,24 @@ public class TestGameManager {
 		gameManager.commandExecute("W 0");
 		gameManager.isWin();
 		assertEquals(100,gameManager.getScore());
+	}
+	
+	@Test
+	public void testInvalidCommand1() {
+		gameManager.start();
+		assertEquals(-23,gameManager.commandExecute("W" ));
+	}
+	
+	@Test
+	public void testInvalidCommand2() {
+		gameManager.start();
+		assertEquals(-18,gameManager.commandExecute("T"));
+	}
+	
+	@Test
+	public void testUndoCommand1() {
+		gameManager.start();
+		assertEquals(-1, gameManager.commandExecute("U"));
 	}
 	
     @Test
