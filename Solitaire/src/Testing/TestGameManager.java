@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
@@ -14,6 +15,7 @@ import card.Rank;
 import card.Suit;
 import main.GameManager;
 import stackManager.Foundation;
+import stackManager.Tableau;
 
 public class TestGameManager {
 
@@ -39,79 +41,9 @@ public class TestGameManager {
     public void setup() {
     	GameManager.resetInstance();
     	gameManager = GameManager.getInstance();
-//        scoreManager = scoreManager.getInstance();
-//        outputStream = new ByteArrayOutputStream();
         System.setOut(new PrintStream(outputStream));
     }
-//    
-//    @AfterEach
-//    public void tearDown() {
-//        System.setOut(System.out);
-//    }
-//
-//    
-//    public static void fillFoundate(Suit s, Foundation f) {
-//		for(Rank rank : Rank.values())
-//			f.push(new Card(s, rank));
-//    }
-//    
-//    public static void clearFoundate(Foundation f) {
-//    	f.getCardList().clear();
-//    }
-//    
-//    private String getConsoleOutput() {
-//        return outputStream.toString().trim();
-//    }
-//
-//    @Test
-//    public void T01() {
-//        Assertions.assertNotNull(gameManager.getDeck());
-//    }
-//    
-//    @Test
-//    public void T02() {
-//        Assertions.assertNotNull(gameManager.getTab());
-//    }
-//    
-//    @Test
-//    public void T03() {
-//        Assertions.assertNotNull(gameManager.getStock());
-//    }
-//    
-//    @Test
-//    public void T04() {
-//        Assertions.assertNotNull(gameManager.getWaste());
-//    }
-//    
-//    @Test
-//    public void T05() {
-//        Assertions.assertNotNull(gameManager.getFoundate());
-//    }
-//    
-//    @Test
-//    public void T06() {
-//    	assertEquals(7, gameManager.getTab().size());
-//    }
-//    
-//    @Test
-//    public void T07() {
-//    	assertEquals(4, gameManager.getFoundate().size());
-//    }
-//    
-//    @Test
-//    public void T08() {
-//    	for (Tableau tableau : gameManager.getTab()) {
-//            Assertions.assertFalse(tableau.empty());
-//        }
-//    }
-//    
-//    @Test
-//    public void T09() {
-//    	for (Foundation foundate : gameManager.getFoundate()) {
-//            Assertions.assertTrue(foundate.empty());
-//        }
-//    }
-//    ---------------------------------------------------------->
+
 	@Test
 	public void testStartCommand() {
 		assertEquals(1,gameManager.commandExecute("S"));
@@ -211,6 +143,17 @@ public class TestGameManager {
 		gameManager.commandExecute("D");
 		assertEquals(-13,gameManager.commandExecute("W W"));
 	}
+	
+	@Test
+	public void testToWasteCommand10() {
+		gameManager.start();
+		Tableau t1 = gameManager.getTableaus().get(0);
+		t1.push(t1.getCardList(), new Card(Suit.HEARTS, Rank._2));
+		gameManager.getWaste().push(gameManager.getWaste().getCardList(), new Card(Suit.CLUBS, Rank.A));
+		gameManager.commandExecute("W 1");
+		assertEquals("XX", gameManager.getWaste().print());
+	}
+	
 
 	//check tableau command
 	//check tableau to tableau
@@ -473,6 +416,118 @@ public class TestGameManager {
 		assertEquals(2, result);
 	}
 	
+	@Test
+	public void testScore1() {
+		gameManager.start();
+		Card card1 = new Card(Suit.SPADES, Rank._2);
+		Card card2 = new Card(Suit.SPADES, Rank.A);
+		card1.setShow(true);
+		card2.setShow(true);
+		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card1);
+		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card2);
+		gameManager.commandExecute("T 1 0");
+		gameManager.commandExecute("T 1 0");
+		assertEquals(2, gameManager.getMove());
+		assertEquals(2, gameManager.getCombo());
+		assertEquals(100, gameManager.getScore());
+	}
+	
+	@Test
+	public void testScore2() {
+		gameManager.start();
+		Card card1 = new Card(Suit.SPADES, Rank._3);
+		Card card2 = new Card(Suit.SPADES, Rank._2);
+		Card card3 = new Card(Suit.SPADES, Rank.A);
+		card1.setShow(true);
+		card2.setShow(true);
+		card3.setShow(true);
+		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card1);
+		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card2);
+		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card3);
+		gameManager.commandExecute("T 1 0");
+		gameManager.commandExecute("T 1 0");
+		gameManager.commandExecute("T 1 0");
+		assertEquals(3, gameManager.getMove());
+		assertEquals(3, gameManager.getCombo());
+		assertEquals(300, gameManager.getScore());
+	}
+	
+	@Test
+	public void testScore3() {
+		gameManager.start();
+		Tableau t1 = gameManager.getTableaus().get(0);
+		for(int i = 7; i > 0; i--) {
+			Rank rank = Rank.values()[i-1];
+			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
+			t1.peek(t1.getCardList()).setShow(true);
+		}
+		for(int i = 0; i < 7; i++) {
+			gameManager.commandExecute("T 1 0");
+		}
+		assertEquals(7, gameManager.getMove());
+		assertEquals(7, gameManager.getCombo());
+		assertEquals(1300, gameManager.getScore());
+	}
+	
+	@Test
+	public void testScore4() {
+		gameManager.start();
+		Tableau t1 = gameManager.getTableaus().get(0);
+		for(int i = 10; i > 0; i--) {
+			Rank rank = Rank.values()[i-1];
+			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
+			t1.peek(t1.getCardList()).setShow(true);
+		}
+		for(int i = 0; i < 10; i++) {
+			gameManager.commandExecute("T 1 0");
+		}
+		assertEquals(10, gameManager.getMove());
+		assertEquals(10, gameManager.getCombo());
+		assertEquals(2900, gameManager.getScore());
+	}
+	
+	@Test
+	public void testScore5() {
+		gameManager.start();
+		Tableau t1 = gameManager.getTableaus().get(0);
+		Tableau t2 = gameManager.getTableaus().get(1);
+		for(int i = 10; i > 0; i--) {
+			Rank rank = Rank.values()[i-1];
+			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
+			t1.peek(t1.getCardList()).setShow(true);
+			t2.push(t2.getCardList(), new Card(Suit.HEARTS, rank));
+			t2.peek(t2.getCardList()).setShow(true);
+		}
+		for(int i = 0; i < 10; i++) {
+			gameManager.commandExecute("T 1 0");
+		}
+		for(int i = 0; i < 10; i++) {
+			gameManager.commandExecute("T 2 0");
+		}
+		assertEquals(20, gameManager.getMove());
+		assertEquals(20, gameManager.getCombo());
+		assertEquals(11700, gameManager.getScore());
+	}
+	
+	@Test
+	public void testScore6() {
+		gameManager.start();
+		Tableau t1 = gameManager.getTableaus().get(0);
+		for(int i = 10; i > 0; i--) {
+			Rank rank = Rank.values()[i-1];
+			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
+			t1.peek(t1.getCardList()).setShow(true);
+		}
+		for(int i = 0; i < 9; i++) {
+			gameManager.commandExecute("T 1 0");
+		}
+		
+		gameManager.commandExecute("D");
+		gameManager.commandExecute("T 1 0");
+		assertEquals(11, gameManager.getMove());
+		assertEquals(1, gameManager.getCombo());
+		assertEquals(2150, gameManager.getScore());
+	}
 	
     @Test
     public void testPrintBoard1() {
@@ -489,128 +544,5 @@ public class TestGameManager {
         		+ "Tableau 7: [ ??  ??  ??  ??  ??  ??  ♥9 ]";
         
         assertEquals(expectedOutput, outputStream.toString().trim());
-    }
-    
-    
-//  @Test
-//  public void testUndoCommand1() {
-//  	assertEquals(-1,gameManager.commandExecute("U"));
-//  }
-//  
-//  @Test
-//  public void testUndoCommand2() {
-//  	assertEquals(2,gameManager.commandExecute("U"));
-//  }
-//  @Test
-//  public void testRedoCommand1() {
-//  	assertEquals(-1,gameManager.commandExecute("R"));
-//  }
-//  
-//  @Test
-//  public void testRedoCommand2() {
-//  	assertEquals(3,gameManager.commandExecute("R"));
-//  }
-  
-//@Test
-//public void testToTableauCommand1() {
-//	assertEquals(-1,gameManager.commandExecute("T"));
-//}
-  
-//@Test
-//public void testToTableauCommand2() {
-//	assertEquals(-1,gameManager.commandExecute("T"));
-//}
-  
-//@Test
-//public void testToTableauCommand3() {
-//	assertEquals(-1,gameManager.commandExecute("T"));
-//}
-  
-//@Test
-//public void testToTableauCommand4() {
-//	assertEquals(-1,gameManager.commandExecute("T"));
-//}
-  
-//@Test
-//public void testToTableauCommand5() {
-//	assertEquals(4,gameManager.commandExecute("T"));
-//}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//    
-//    
-//    @Test
-//    public void T11() {
-//    	gameManager.tabAutoFlip();
-//        for (Tableau tableau : gameManager.getTab()) {
-//        	Assertions.assertTrue(tableau.peek().getShow());
-//        }
-//    }
-
-//	@Test
-//	public void T12() {
-//		assertEquals(0, gameManager.getMove());
-//		gameManager.move();
-//		assertEquals(1, gameManager.getMove());
-//	}
-//    
-//    @Test
-//    public void T13() {
-//        assertEquals(false, gameManager.isWin());
-//    }
-//    
-//    @Test
-//    public void T14() {
-//    	fillFoundate(Suit.SPADES, gameManager.getFoundate().get(0));
-//        assertEquals(false, gameManager.isWin());
-//        clearFoundate(gameManager.getFoundate().get(0));
-//    }
-//    
-//    @Test
-//    public void T15() {
-//    	fillFoundate(Suit.SPADES, gameManager.getFoundate().get(0));
-//    	fillFoundate(Suit.HEARTS, gameManager.getFoundate().get(1));
-//    	fillFoundate(Suit.CLUBS, gameManager.getFoundate().get(2));
-//    	fillFoundate(Suit.DIAMONDS, gameManager.getFoundate().get(3));
-//        assertEquals(true, gameManager.isWin());
-//        clearFoundate(gameManager.getFoundate().get(0));
-//        clearFoundate(gameManager.getFoundate().get(1));
-//        clearFoundate(gameManager.getFoundate().get(2));
-//        clearFoundate(gameManager.getFoundate().get(3));
-//    }
-//    
-//    @Test
-//    public void T16() {
-//    	gameManager.setPreviousAction("T");
-//    	gameManager.setScore(0);
-//    	gameManager.checkCombo();
-//    	assertEquals(50, scoreManager.getScore());
-//    }
-//    
-//	@Test
-//    public void T17() {
-//		assertEquals(24, gameManager.getStock().getCardList().size());
-//    }
-//	
-//	@Test
-//    public void T18() {
-//		assertEquals(0, gameManager.getWaste().getCardList().size());
-//    }
-    
+    }    
 }

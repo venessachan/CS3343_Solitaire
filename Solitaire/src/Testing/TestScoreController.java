@@ -55,7 +55,7 @@ public class TestScoreController {
 		scoreController.setScore(1500);
 		scoreController.setComboCount(2);
 		scoreController.checkCombo("W 0");
-		assertEquals(1550, scoreController.getScore());
+		assertEquals(1700, scoreController.getScore());
 	}
 	
 	@Test

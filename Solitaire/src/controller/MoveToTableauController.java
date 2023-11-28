@@ -54,11 +54,6 @@ public class MoveToTableauController extends ControlHandler {
 		moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
 	}
 
-	// Tableau to Foundation
-	public void execute(Tableau moveFrom, Foundation moveTo, int cardMove) {
-		moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
-	}
-
 	// Move 1 card from waste to tableau
 	public int getMoveCardCount(Card moveFrom, Tableau target) {
 		if (target.checkValidAction(moveFrom)) {
@@ -67,7 +62,7 @@ public class MoveToTableauController extends ControlHandler {
 		return -1;
 	}
 	
-	//Move more than 1 card
+	//Find available card(s) can move from tableau to tableau
 	public int getMoveCardCount(Tableau moveFrom, Tableau target, int showCardCount) {
 		int j = moveFrom.count(moveFrom.getCardList()) -1;
 		for(int i = 0; i < showCardCount; i++) {

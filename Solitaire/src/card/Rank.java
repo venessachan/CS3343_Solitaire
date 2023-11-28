@@ -30,4 +30,5 @@ public enum Rank {
 	public String getSign() {
 		return sign;
 	}
+
 }

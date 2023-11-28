@@ -30,6 +30,7 @@ public class ScoreController {
     	String[] previousActionParts = previousAction.split(" ");
     	if ((previousActionParts[0].equals("W") && previousActionParts[1].equals("0"))
     			|| (previousActionParts[0].equals("T") && previousActionParts[2].equals("0"))) {
+    		comboCount++;
     		if (comboCount > 19) {
     			addScore(50*32);
     		}
@@ -42,7 +43,7 @@ public class ScoreController {
     		}else {
     			addScore(50);
     		}
-    		comboCount++;
+    		
     	}else {
     		setComboCount(0);
     	}

@@ -3,9 +3,7 @@ package controller;
 import java.util.List;
 
 import card.Card;
-import main.GameManager;
 import stackManager.Foundation;
-import stackManager.Waste;
 
 public class MoveToFoundationController extends ControlHandler{
 
