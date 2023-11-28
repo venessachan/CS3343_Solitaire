@@ -56,16 +56,13 @@ public class DisplayController {
 	}
 	
 	public void printInvalidUndo() {
-		System.out.print("Invalid undo.\n\n");
+		System.out.print("Nothing to undo.\\n\\n");
 	}
 	
 	public void printValidUndo() {
 		System.out.print("Undo.\n\n");
 	}
-	public void printInvalidRedo() {
-		System.out.print("Nothing redo can execute.\n\n");
-	}
-	
+
 	public void printInputReminder1() {
 		System.out.print("Please input a valid command.\n\n");
 	}

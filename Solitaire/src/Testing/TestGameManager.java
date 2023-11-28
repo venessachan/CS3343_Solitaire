@@ -19,7 +19,7 @@ public class TestGameManager {
 
     private GameManager gameManager;
     private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-//
+
     @Test
     public void testCardAllocation() {
     	gameManager = GameManager.getInstance();
@@ -461,6 +461,19 @@ public class TestGameManager {
 		assertEquals(-1, gameManager.commandExecute("U"));
 	}
 	
+	@Test
+	public void testUndoCommand2() {
+		gameManager.start();
+		gameManager.commandExecute("D");
+		gameManager.commandExecute("D");
+		gameManager.commandExecute("W 0");
+		int result = gameManager.commandExecute("U");
+		assertEquals(4, gameManager.getMove());
+		assertEquals(0, gameManager.getScore());
+		assertEquals(2, result);
+	}
+	
+	
     @Test
     public void testPrintBoard1() {
     	gameManager.start();
@@ -477,7 +490,7 @@ public class TestGameManager {
         
         assertEquals(expectedOutput, outputStream.toString().trim());
     }
-//    
+    
     
 //  @Test
 //  public void testUndoCommand1() {

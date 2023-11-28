@@ -14,8 +14,8 @@ import card.Suit;
 
 import org.junit.Before;
 
-import controller.CommandHistory;
 import controller.UndoController;
+import stackManager.CommandHistory;
 import stackManager.Foundation;
 import stackManager.Stock;
 import stackManager.Tableau;
@@ -329,6 +329,27 @@ public class TestUndoController {
 		assertEquals(-1, result); 
 	}
 	
+	//no previousCmd found
+	@Test
+	public void testUndoController17() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		List<Tableau> tableaus = new ArrayList();
+		List<Foundation> foundation = new ArrayList();
+		int result = undoController.execute(commandHistory, stock, waste, tableaus, foundation);
+
+		assertEquals(-5, result); 
+	}
 	
+	@Test
+	public void testUndoController18() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		List<Tableau> tableaus = new ArrayList();
+		List<Foundation> foundation = new ArrayList();
+		commandHistory.clear();
+
+		assertEquals(null, undoController.peekUndoCommand(commandHistory)); 
+	}
 	
 }

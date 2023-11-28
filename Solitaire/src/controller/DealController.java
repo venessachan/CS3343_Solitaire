@@ -21,20 +21,7 @@ public class DealController extends ControlHandler{
     }
 
 	public int deal(Stock stock, Waste waste) {
-		if(stock.isEmpty(stock.getCardList())) {
-			//Error Part chock bug
-//			for(Card wastedCard: waste.getCardList()) {
-//				stock.push(wastedCard);
-//				wastedCard.setShow(false);
-//			}
-			
-			//Revised
-//			Collections.reverse(waste.getCardList());
-//			for(Card wastedCard: waste.getCardList()) {
-//				wastedCard.setShow(false);
-//				stock.push(wastedCard);
-//			}
-			
+		if(stock.isEmpty(stock.getCardList())) {			
 			//push all the card back to stock from waste
 			if(!waste.isEmpty(waste.getCardList())) {
 				waste.peek(waste.getCardList()).flip();	//hide the top card

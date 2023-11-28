@@ -3,6 +3,7 @@ package controller;
 import java.util.List;
 
 import main.GameManager;
+import stackManager.CommandHistory;
 import stackManager.Foundation;
 import stackManager.Stock;
 import stackManager.Tableau;
@@ -27,22 +28,25 @@ public class UndoController {
     }
 	
 	public void addUndoCommand(CommandHistory commandHistory, String previousCmd){
-		commandHistory.push(commandHistory.getUndoCommandList(), previousCmd);
+		commandHistory.push(previousCmd);
     }
 
 	public String peekUndoCommand(CommandHistory commandHistory){
-		if(commandHistory.isEmpty(commandHistory.getUndoCommandList())){
+		if(commandHistory.isEmpty()){
 			return null;	// -> print "Nothing to undo\n."
 		}
-		return commandHistory.peek(commandHistory.getUndoCommandList());
+		return commandHistory.peek();
     }
 	
 	public String popUndoCommand(CommandHistory commandHistory){
-		return commandHistory.pop(commandHistory.getUndoCommandList());
+		return commandHistory.pop();
     }
 	
 	public int execute(CommandHistory commandHistory, Stock stock, Waste waste, List<Tableau> tableaus, List<Foundation> foundation) {
 		String previousCmd = peekUndoCommand(commandHistory);
+		if(previousCmd==null) {
+			return -5;
+		}
 		String[] cmdParts = previousCmd.split(" ");
 		if(cmdParts[0].equals("D")) {
 			if(waste.isEmpty(waste.getCardList())) {
