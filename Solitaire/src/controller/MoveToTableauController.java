@@ -88,6 +88,7 @@ public class MoveToTableauController extends ControlHandler {
 		return validCount;
 	}
 
+	//get how many cards are shown in the card list
 	public int getShowCard(List<Card> moveFromList) {
 		int showCardCount = 0;
 

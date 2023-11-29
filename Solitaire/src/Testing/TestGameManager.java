@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -59,7 +57,7 @@ public class TestGameManager {
     @Test
     public void testDealCommand2() {
     	gameManager.start();
-    	gameManager.getStock().clear(gameManager.getStock().getCardList());
+    	gameManager.getStock().clear();
     	assertEquals(-14,gameManager.commandExecute("D"));
     }
     
@@ -148,8 +146,8 @@ public class TestGameManager {
 	public void testToWasteCommand10() {
 		gameManager.start();
 		Tableau t1 = gameManager.getTableaus().get(0);
-		t1.push(t1.getCardList(), new Card(Suit.HEARTS, Rank._2));
-		gameManager.getWaste().push(gameManager.getWaste().getCardList(), new Card(Suit.CLUBS, Rank.A));
+		t1.push(new Card(Suit.HEARTS, Rank._2));
+		gameManager.getWaste().push(new Card(Suit.CLUBS, Rank.A));
 		gameManager.commandExecute("W 1");
 		assertEquals("XX", gameManager.getWaste().print());
 	}
@@ -201,7 +199,7 @@ public class TestGameManager {
 	@Test
 	public void testToTableauCommand7() {
 		gameManager.start();
-		gameManager.getTableaus().get(0).peek(gameManager.getTableaus().get(0).getCardList()).setShow(false);
+		gameManager.getTableaus().get(0).peek().setShow(false);
 		assertEquals(-6,gameManager.commandExecute("T 1 2"));
 	}
 	
@@ -209,7 +207,7 @@ public class TestGameManager {
 	@Test
 	public void testToTableauCommand8() {
 		gameManager.start();
-		gameManager.getTableaus().get(0).peek(gameManager.getTableaus().get(0).getCardList()).setShow(false);
+		gameManager.getTableaus().get(0).peek().setShow(false);
 		assertEquals(-7,gameManager.commandExecute("T 3 4"));
 	}
 	
@@ -261,10 +259,10 @@ public class TestGameManager {
 		
 		for(int i = 0; i < 13; i++) {
 			Rank rank = Rank.values()[i];
-			f1.push(f1.getCardList(), new Card(Suit.SPADES, rank));
-			f2.push(f2.getCardList(), new Card(Suit.HEARTS, rank));
-			f3.push(f3.getCardList(), new Card(Suit.CLUBS, rank));
-			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
+			f1.push(new Card(Suit.SPADES, rank));
+			f2.push(new Card(Suit.HEARTS, rank));
+			f3.push(new Card(Suit.CLUBS, rank));
+			f4.push(new Card(Suit.DIAMONDS, rank));
 		}
 		assertEquals(true,gameManager.isWin());
 	}
@@ -280,14 +278,14 @@ public class TestGameManager {
 		
 		for(int i = 0; i < 12; i++) {
 			Rank rank = Rank.values()[i];
-			f1.push(f1.getCardList(), new Card(Suit.SPADES, rank));
-			f2.push(f2.getCardList(), new Card(Suit.HEARTS, rank));
-			f3.push(f3.getCardList(), new Card(Suit.CLUBS, rank));
-			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
+			f1.push(new Card(Suit.SPADES, rank));
+			f2.push(new Card(Suit.HEARTS, rank));
+			f3.push(new Card(Suit.CLUBS, rank));
+			f4.push(new Card(Suit.DIAMONDS, rank));
 		}
-		f1.push(f1.getCardList(), new Card(Suit.SPADES, Rank.values()[12]));
-		f2.push(f2.getCardList(), new Card(Suit.HEARTS, Rank.values()[12]));
-		f3.push(f3.getCardList(), new Card(Suit.CLUBS, Rank.values()[12]));
+		f1.push(new Card(Suit.SPADES, Rank.values()[12]));
+		f2.push(new Card(Suit.HEARTS, Rank.values()[12]));
+		f3.push(new Card(Suit.CLUBS, Rank.values()[12]));
 		
 		assertEquals(false,gameManager.isWin());
 	}
@@ -302,14 +300,14 @@ public class TestGameManager {
 		
 		for(int i = 0; i < 12; i++) {
 			Rank rank = Rank.values()[i];
-			f1.push(f1.getCardList(), new Card(Suit.SPADES, rank));
-			f2.push(f2.getCardList(), new Card(Suit.HEARTS, rank));
-			f3.push(f3.getCardList(), new Card(Suit.CLUBS, rank));
-			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
+			f1.push(new Card(Suit.SPADES, rank));
+			f2.push(new Card(Suit.HEARTS, rank));
+			f3.push(new Card(Suit.CLUBS, rank));
+			f4.push(new Card(Suit.DIAMONDS, rank));
 		}
-		f1.push(f1.getCardList(), new Card(Suit.SPADES, Rank.values()[12]));
-		f2.push(f2.getCardList(), new Card(Suit.HEARTS, Rank.values()[12]));
-		f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, Rank.values()[12]));
+		f1.push(new Card(Suit.SPADES, Rank.values()[12]));
+		f2.push(new Card(Suit.HEARTS, Rank.values()[12]));
+		f4.push(new Card(Suit.DIAMONDS, Rank.values()[12]));
 		
 		assertEquals(false,gameManager.isWin());
 	}
@@ -323,9 +321,9 @@ public class TestGameManager {
 		
 		for(int i = 0; i < 13; i++) {
 			Rank rank = Rank.values()[i];
-			f1.push(f1.getCardList(), new Card(Suit.SPADES, rank));
-			f3.push(f3.getCardList(), new Card(Suit.CLUBS, rank));
-			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
+			f1.push(new Card(Suit.SPADES, rank));
+			f3.push(new Card(Suit.CLUBS, rank));
+			f4.push(new Card(Suit.DIAMONDS, rank));
 		}
 		
 		assertEquals(false,gameManager.isWin());
@@ -340,9 +338,9 @@ public class TestGameManager {
 		
 		for(int i = 0; i < 13; i++) {
 			Rank rank = Rank.values()[i];
-			f2.push(f2.getCardList(), new Card(Suit.HEARTS, rank));
-			f3.push(f3.getCardList(), new Card(Suit.CLUBS, rank));
-			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
+			f2.push(new Card(Suit.HEARTS, rank));
+			f3.push(new Card(Suit.CLUBS, rank));
+			f4.push(new Card(Suit.DIAMONDS, rank));
 		}
 		assertEquals(false,gameManager.isWin());
 	}
@@ -364,10 +362,10 @@ public class TestGameManager {
 		
 		for(int i = 0; i < 13; i++) {
 			Rank rank = Rank.values()[i];
-			f1.push(f1.getCardList(), new Card(Suit.SPADES, rank));
-			f2.push(f2.getCardList(), new Card(Suit.HEARTS, rank));
-			f3.push(f3.getCardList(), new Card(Suit.CLUBS, rank));
-			f4.push(f4.getCardList(), new Card(Suit.DIAMONDS, rank));
+			f1.push(new Card(Suit.SPADES, rank));
+			f2.push(new Card(Suit.HEARTS, rank));
+			f3.push(new Card(Suit.CLUBS, rank));
+			f4.push(new Card(Suit.DIAMONDS, rank));
 		}
 		gameManager.isWin();
 		assertEquals(200100,gameManager.getScore());
@@ -423,8 +421,8 @@ public class TestGameManager {
 		Card card2 = new Card(Suit.SPADES, Rank.A);
 		card1.setShow(true);
 		card2.setShow(true);
-		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card1);
-		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card2);
+		gameManager.getTableaus().get(0).push(card1);
+		gameManager.getTableaus().get(0).push(card2);
 		gameManager.commandExecute("T 1 0");
 		gameManager.commandExecute("T 1 0");
 		assertEquals(2, gameManager.getMove());
@@ -441,9 +439,9 @@ public class TestGameManager {
 		card1.setShow(true);
 		card2.setShow(true);
 		card3.setShow(true);
-		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card1);
-		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card2);
-		gameManager.getTableaus().get(0).push(gameManager.getTableaus().get(0).getCardList(), card3);
+		gameManager.getTableaus().get(0).push(card1);
+		gameManager.getTableaus().get(0).push(card2);
+		gameManager.getTableaus().get(0).push(card3);
 		gameManager.commandExecute("T 1 0");
 		gameManager.commandExecute("T 1 0");
 		gameManager.commandExecute("T 1 0");
@@ -458,8 +456,8 @@ public class TestGameManager {
 		Tableau t1 = gameManager.getTableaus().get(0);
 		for(int i = 7; i > 0; i--) {
 			Rank rank = Rank.values()[i-1];
-			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
-			t1.peek(t1.getCardList()).setShow(true);
+			t1.push(new Card(Suit.SPADES, rank));
+			t1.peek().setShow(true);
 		}
 		for(int i = 0; i < 7; i++) {
 			gameManager.commandExecute("T 1 0");
@@ -475,8 +473,8 @@ public class TestGameManager {
 		Tableau t1 = gameManager.getTableaus().get(0);
 		for(int i = 10; i > 0; i--) {
 			Rank rank = Rank.values()[i-1];
-			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
-			t1.peek(t1.getCardList()).setShow(true);
+			t1.push(new Card(Suit.SPADES, rank));
+			t1.peek().setShow(true);
 		}
 		for(int i = 0; i < 10; i++) {
 			gameManager.commandExecute("T 1 0");
@@ -493,10 +491,10 @@ public class TestGameManager {
 		Tableau t2 = gameManager.getTableaus().get(1);
 		for(int i = 10; i > 0; i--) {
 			Rank rank = Rank.values()[i-1];
-			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
-			t1.peek(t1.getCardList()).setShow(true);
-			t2.push(t2.getCardList(), new Card(Suit.HEARTS, rank));
-			t2.peek(t2.getCardList()).setShow(true);
+			t1.push(new Card(Suit.SPADES, rank));
+			t1.peek().setShow(true);
+			t2.push(new Card(Suit.HEARTS, rank));
+			t2.peek().setShow(true);
 		}
 		for(int i = 0; i < 10; i++) {
 			gameManager.commandExecute("T 1 0");
@@ -515,8 +513,8 @@ public class TestGameManager {
 		Tableau t1 = gameManager.getTableaus().get(0);
 		for(int i = 10; i > 0; i--) {
 			Rank rank = Rank.values()[i-1];
-			t1.push(t1.getCardList(), new Card(Suit.SPADES, rank));
-			t1.peek(t1.getCardList()).setShow(true);
+			t1.push(new Card(Suit.SPADES, rank));
+			t1.peek().setShow(true);
 		}
 		for(int i = 0; i < 9; i++) {
 			gameManager.commandExecute("T 1 0");
