@@ -20,18 +20,12 @@ public class TestDealController {
 		dealController = DealController.getInstance();
 		Stock stock = new Stock();
 		Waste waste = new Waste();
-		Card card1 = new Card(Suit.SPADES, Rank._4);
-		Card card2 = new Card(Suit.HEARTS, Rank.K);
-		Card card3 = new Card(Suit.CLUBS, Rank.A);
-		Card card4 = new Card(Suit.SPADES, Rank._10);
-		Card card5 = new Card(Suit.DIAMONDS, Rank._5);
-		Card card6 = new Card(Suit.CLUBS, Rank.Q);
-		waste.push(waste.getCardList(), card1);
-		waste.push(waste.getCardList(), card2);
-		waste.push(waste.getCardList(), card3);
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
+		waste.push(new Card(Suit.SPADES, Rank._4));
+		waste.push(new Card(Suit.HEARTS, Rank.K));
+		waste.push(new Card(Suit.CLUBS, Rank.A));
+		waste.push(new Card(Suit.SPADES, Rank._10));
+		waste.push(new Card(Suit.DIAMONDS, Rank._5));
+		waste.push(new Card(Suit.CLUBS, Rank.Q));
 		dealController.deal(stock, waste);
 		assertEquals("[]",waste.getCardList().toString());
 	}
@@ -47,18 +41,12 @@ public class TestDealController {
 	public void testDeal2() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
-		Card card1 = new Card(Suit.SPADES, Rank._4);
-		Card card2 = new Card(Suit.HEARTS, Rank.K);
-		Card card3 = new Card(Suit.CLUBS, Rank.A);
-		Card card4 = new Card(Suit.SPADES, Rank._10);
-		Card card5 = new Card(Suit.DIAMONDS, Rank._5);
-		Card card6 = new Card(Suit.CLUBS, Rank.Q);
-		waste.push(waste.getCardList(), card1);
-		waste.push(waste.getCardList(), card2);
-		waste.push(waste.getCardList(), card3);
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
+		waste.push(new Card(Suit.SPADES, Rank._4));
+		waste.push(new Card(Suit.HEARTS, Rank.K));
+		waste.push(new Card(Suit.CLUBS, Rank.A));
+		waste.push(new Card(Suit.SPADES, Rank._10));
+		waste.push(new Card(Suit.DIAMONDS, Rank._5));
+		waste.push(new Card(Suit.CLUBS, Rank.Q));
 		dealController.deal(stock, waste);
 		stock.getCardList().forEach((c)->c.setShow(true));
 		assertEquals("[♣Q, ♦5, ♠10, ♣A, ♥K, ♠4]",stock.getCardList().toString());
@@ -69,19 +57,13 @@ public class TestDealController {
 	public void testDeal3() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
-		Card card1 = new Card(Suit.SPADES, Rank._4);
-		Card card2 = new Card(Suit.HEARTS, Rank.K);
-		Card card3 = new Card(Suit.CLUBS, Rank.A);
-		Card card4 = new Card(Suit.SPADES, Rank._10);
-		Card card5 = new Card(Suit.DIAMONDS, Rank._5);
-		Card card6 = new Card(Suit.CLUBS, Rank.Q);
-		waste.push(waste.getCardList(), card1);
-		waste.push(waste.getCardList(), card2);
-		waste.push(waste.getCardList(), card3);
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
-		waste.peek(waste.getCardList()).setShow(true);
+		waste.push(new Card(Suit.SPADES, Rank._4));
+		waste.push(new Card(Suit.HEARTS, Rank.K));
+		waste.push(new Card(Suit.CLUBS, Rank.A));
+		waste.push(new Card(Suit.SPADES, Rank._10));
+		waste.push(new Card(Suit.DIAMONDS, Rank._5));
+		waste.push(new Card(Suit.CLUBS, Rank.Q));
+		waste.peek().setShow(true);
 		
 		dealController.deal(stock, waste);
 		assertEquals("[]",waste.getCardList().toString());
@@ -100,21 +82,14 @@ public class TestDealController {
 	public void testDeal5() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
+
+		stock.push(new Card(Suit.HEARTS, Rank.A));
+		stock.push(new Card(Suit.CLUBS, Rank._10));
+		stock.push(new Card(Suit.DIAMONDS, Rank._2));
 		
-		Card card1 = new Card(Suit.HEARTS, Rank.A);
-		Card card2 = new Card(Suit.CLUBS, Rank._10);
-		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
-		Card card4 = new Card(Suit.DIAMONDS, Rank._8);
-		Card card5 = new Card(Suit.SPADES, Rank.J);
-		Card card6 = new Card(Suit.CLUBS, Rank._6);
-		
-		stock.push(stock.getCardList(), card1);
-		stock.push(stock.getCardList(), card2);
-		stock.push(stock.getCardList(), card3);
-		
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
+		waste.push(new Card(Suit.DIAMONDS, Rank._8));
+		waste.push(new Card(Suit.SPADES, Rank.J));
+		waste.push(new Card(Suit.CLUBS, Rank._6));
 		
 		
 		dealController.deal(stock, waste);
@@ -128,20 +103,13 @@ public class TestDealController {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		
-		Card card1 = new Card(Suit.HEARTS, Rank.A);
-		Card card2 = new Card(Suit.CLUBS, Rank._10);
-		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
-		Card card4 = new Card(Suit.DIAMONDS, Rank._8);
-		Card card5 = new Card(Suit.SPADES, Rank.J);
-		Card card6 = new Card(Suit.CLUBS, Rank._6);
+		stock.push(new Card(Suit.HEARTS, Rank.A));
+		stock.push(new Card(Suit.CLUBS, Rank._10));
+		stock.push(new Card(Suit.DIAMONDS, Rank._2));
 		
-		stock.push(stock.getCardList(), card1);
-		stock.push(stock.getCardList(), card2);
-		stock.push(stock.getCardList(), card3);
-		
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
+		waste.push(new Card(Suit.DIAMONDS, Rank._8));
+		waste.push(new Card(Suit.SPADES, Rank.J));
+		waste.push(new Card(Suit.CLUBS, Rank._6));
 		
 		
 		dealController.deal(stock, waste);
@@ -156,22 +124,14 @@ public class TestDealController {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		
-		Card card1 = new Card(Suit.HEARTS, Rank.A);
-		Card card2 = new Card(Suit.CLUBS, Rank._10);
-		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
-		Card card4 = new Card(Suit.DIAMONDS, Rank._8);
-		Card card5 = new Card(Suit.SPADES, Rank.J);
-		Card card6 = new Card(Suit.CLUBS, Rank._6);
-		card6.setShow(true);
+		stock.push(new Card(Suit.HEARTS, Rank.A));
+		stock.push(new Card(Suit.CLUBS, Rank._10));
+		stock.push(new Card(Suit.DIAMONDS, Rank._2));
 		
-		stock.push(stock.getCardList(), card1);
-		stock.push(stock.getCardList(), card2);
-		stock.push(stock.getCardList(), card3);
-		
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
-		
+		waste.push(new Card(Suit.DIAMONDS, Rank._8));
+		waste.push(new Card(Suit.SPADES, Rank.J));
+		waste.push(new Card(Suit.CLUBS, Rank._6));
+		waste.peek().setShow(true);
 		
 		dealController.deal(stock, waste);
 		assertEquals("[??, ??, ??, ♦2]",waste.getCardList().toString());
@@ -184,13 +144,9 @@ public class TestDealController {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		
-		Card card1 = new Card(Suit.HEARTS, Rank.A);
-		Card card2 = new Card(Suit.CLUBS, Rank._10);
-		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
-
-		stock.push(stock.getCardList(), card1);
-		stock.push(stock.getCardList(), card2);
-		stock.push(stock.getCardList(), card3);
+		stock.push(new Card(Suit.HEARTS, Rank.A));
+		stock.push(new Card(Suit.CLUBS, Rank._10));
+		stock.push(new Card(Suit.DIAMONDS, Rank._2));
 		
 		dealController.deal(stock, waste);
 		assertEquals("[♦2]",waste.getCardList().toString());
@@ -202,13 +158,9 @@ public class TestDealController {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
 		
-		Card card1 = new Card(Suit.HEARTS, Rank.A);
-		Card card2 = new Card(Suit.CLUBS, Rank._10);
-		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
-		
-		stock.push(stock.getCardList(), card1);
-		stock.push(stock.getCardList(), card2);
-		stock.push(stock.getCardList(), card3);
+		stock.push(new Card(Suit.HEARTS, Rank.A));
+		stock.push(new Card(Suit.CLUBS, Rank._10));
+		stock.push(new Card(Suit.DIAMONDS, Rank._2));
 		
 		
 		dealController.deal(stock, waste);
@@ -222,23 +174,15 @@ public class TestDealController {
 	public void testDeal10() {
 		Stock stock = new Stock();
 		Waste waste = new Waste();
+
+		stock.push(new Card(Suit.HEARTS, Rank.A));
+		stock.push(new Card(Suit.CLUBS, Rank._10));
+		stock.push(new Card(Suit.DIAMONDS, Rank._2));
 		
-		Card card1 = new Card(Suit.HEARTS, Rank.A);
-		Card card2 = new Card(Suit.CLUBS, Rank._10);
-		Card card3 = new Card(Suit.DIAMONDS, Rank._2);
-		Card card4 = new Card(Suit.DIAMONDS, Rank._8);
-		Card card5 = new Card(Suit.SPADES, Rank.J);
-		Card card6 = new Card(Suit.CLUBS, Rank._6);
-		
-		
-		stock.push(stock.getCardList(), card1);
-		stock.push(stock.getCardList(), card2);
-		stock.push(stock.getCardList(), card3);
-		
-		waste.push(waste.getCardList(), card4);
-		waste.push(waste.getCardList(), card5);
-		waste.push(waste.getCardList(), card6);
-		card6.setShow(true);
+		waste.push(new Card(Suit.DIAMONDS, Rank._8));
+		waste.push(new Card(Suit.SPADES, Rank.J));
+		waste.push(new Card(Suit.CLUBS, Rank._6));
+		waste.peek().setShow(true);
 		
 		dealController.deal(stock, waste);
 		assertEquals("[??, ??, ??, ♦2]",waste.getCardList().toString());

@@ -1,30 +1,29 @@
 package stackManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import card.Card;
 
 public class Waste extends CardListAbstract{
 	
-	private static List<Card> cardList  = new ArrayList<Card>();
+	//private static List<Card> cardList  = new ArrayList<Card>();
 	
 	public Waste() {
 		super();
-		cardList.clear();
+		clear();
 	}
 	
 	public List<Card> getCardList(){
-		return cardList;
+		return super.getCardList();
 	}
 	
 	@Override
 	public String print(){
-		if(!isEmpty(cardList)){
-			if(!peek(cardList).getShow()) {
-				peek(cardList).flip();
+		if(!isEmpty()){
+			if(!peek().getShow()) {
+				peek().flip();
 			}
-			return peek(cardList).toString();
+			return peek().toString();
 		}else {
 			return "XX";
 		}	

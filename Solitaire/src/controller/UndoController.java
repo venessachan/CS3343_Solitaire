@@ -2,7 +2,6 @@ package controller;
 
 import java.util.List;
 
-import main.GameManager;
 import stackManager.CommandHistory;
 import stackManager.Foundation;
 import stackManager.Stock;
@@ -49,26 +48,26 @@ public class UndoController {
 		}
 		String[] cmdParts = previousCmd.split(" ");
 		if(cmdParts[0].equals("D")) {
-			if(waste.isEmpty(waste.getCardList())) {
-				if(stock.isEmpty(stock.getCardList())) {
+			if(waste.isEmpty()) {
+				if(stock.isEmpty()) {
 					//error
 					//no card can back from waste
 					return -2;
 				}else {
 					//put all cards from stock back to waste
-					while(!stock.isEmpty(stock.getCardList())) {
-						waste.push(waste.getCardList(), stock.pop(stock.getCardList()));
+					while(!stock.isEmpty()) {
+						waste.push(stock.pop());
 					}
-					waste.peek(waste.getCardList()).flip();	//show the top card
+					waste.peek().flip();	//show the top card
 					commandHistory.pop();
 					return 1;
 				}
 			}else {
 				//put 1 card from waste back to stock
-				waste.peek(waste.getCardList()).flip();	//hide the top card
-				stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
-				if(!waste.isEmpty(waste.getCardList())) {
-					waste.peek(waste.getCardList()).flip();	//show the new top card
+				waste.peek().flip();	//hide the top card
+				stock.push(waste.pop());
+				if(!waste.isEmpty()) {
+					waste.peek().flip();	//show the new top card
 				}
 				commandHistory.pop();
 				return 2;
@@ -77,8 +76,8 @@ public class UndoController {
 			try {
 				int moveFrom = Integer.parseInt(cmdParts[1]);
 				int moveTo = Integer.parseInt(cmdParts[2]);
-				if(!tableaus.get(moveFrom-1).isEmpty(tableaus.get(moveFrom-1).getCardList())) {
-					tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()).flip();
+				if(!tableaus.get(moveFrom-1).isEmpty()) {
+					tableaus.get(moveFrom-1).peek().flip();
 				}
 				if(moveTo == 0 ) {		//From foundation to Tableau
 					int foundationIndex = Integer.parseInt(cmdParts[3]);
@@ -101,19 +100,19 @@ public class UndoController {
 		}else if(cmdParts[0].equals("W")){
 			try {
 				int moveTo = Integer.parseInt(cmdParts[1]);
-				waste.peek(waste.getCardList()).flip();		//hide top card		
+				waste.peek().flip();		//hide top card		
 				if(moveTo == 0 ) {		//From foundation to waste
 					int foundationIndex = Integer.parseInt(cmdParts[2]);
 					Foundation f = foundation.get(foundationIndex);
-					if(!f.isEmpty(f.getCardList())) {
-						waste.push(waste.getCardList(), f.pop(f.getCardList()));
+					if(!f.isEmpty()) {
+						waste.push(f.pop());
 						commandHistory.pop();
 					}	
 					return 5;
 				}else{
 					Tableau t = tableaus.get(moveTo-1);
-					if(!t.isEmpty(t.getCardList())) {
-						waste.push(waste.getCardList(), t.pop(t.getCardList()));
+					if(!t.isEmpty()) {
+						waste.push(t.pop());
 						commandHistory.pop();
 					}
 					return 6;

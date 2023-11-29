@@ -1,8 +1,5 @@
 package controller;
 
-import java.util.List;
-
-import card.Card;
 import main.GameManager;
 
 public class ControlHandler {

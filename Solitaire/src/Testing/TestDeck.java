@@ -2,12 +2,9 @@ package Testing;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import card.Card;
 import stackManager.Deck;
 
 public class TestDeck {
@@ -19,13 +16,11 @@ public class TestDeck {
 	
 	@Test
 	public void testInitCardList1(){
-		deck.setCard(deck.getCards());
 		assertEquals(52, deck.getCards().size());
 	}
 	
 	@Test
 	public void testInitCardList2(){
-		deck.setCard(deck.getCards());
 		String expectedResult = "[♠A, ♠2, ♠3, ♠4, ♠5, ♠6, ♠7, ♠8, ♠9, ♠10, ♠J, ♠Q, ♠K, "
 									+ "♥A, ♥2, ♥3, ♥4, ♥5, ♥6, ♥7, ♥8, ♥9, ♥10, ♥J, ♥Q, ♥K, "
 									+ "♣A, ♣2, ♣3, ♣4, ♣5, ♣6, ♣7, ♣8, ♣9, ♣10, ♣J, ♣Q, ♣K, "
@@ -61,11 +56,4 @@ public class TestDeck {
 		assertEquals(null, deck.print());
 	}
 	
-	
-//	@Test
-//	public void testShuffle10() {
-//		deck.shuffle(0);
-//		deck.getCards().forEach((c)->c.flip());
-//		assertEquals("", deck.getCards().toString());
-//	}
 }

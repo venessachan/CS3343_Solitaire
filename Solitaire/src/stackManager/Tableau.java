@@ -1,26 +1,25 @@
 package stackManager;
-import java.util.ArrayList;
 import java.util.List;
 
 import card.Card;
 
 public class Tableau extends CardListAbstract{
-	private List<Card> cardList  = new ArrayList<Card>();
+	//private List<Card> cardList  = new ArrayList<Card>();
 	
 	public Tableau() {
 		super();
-		cardList.clear();
+		clear();
 	}
 	
 	public boolean checkValidAction(Card card) {	//check if the card fulfil the requirement to push into tableau
-		if(isEmpty(cardList)) {			//if tableau is empty, only 'K' rank can put
+		if(isEmpty()) {			//if tableau is empty, only 'K' rank can put
 			if(card.getRank().getNum() == 13)
 				return true;
 			else
 				return false;	
 		}
 		else {					//if tableau is not empty, check whether the rank of (the last card - put card = 1) and have different color
-			return checkValidCard(card, peek(cardList));
+			return checkValidCard(card, peek());
 		}
 	}
 	
@@ -35,17 +34,17 @@ public class Tableau extends CardListAbstract{
 	}
 	
 	public List<Card> getCardList(){
-		return cardList;
+		return super.getCardList();
 	}
 	
 	public void addAll(List<Card> cardList) {
-		this.cardList.addAll(cardList);
+		super.getCardList().addAll(cardList);
 	}
 	
 	@Override
 	public String print() {
 		String results = "";
-		for(Card c: cardList) {
+		for(Card c: getCardList()) {
 			results += " "+ c.toString() +" ";
 		}
 		return results;

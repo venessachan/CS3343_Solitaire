@@ -91,14 +91,14 @@ public class GameManager {
 		 
 		for(int i=1;i<=7;i++) {
 			for(int j=1; j<=i;j++) {
-				tableaus.get(i-1).push(tableaus.get(i-1).getCardList(), deck.pop(deck.getCards()));		//chock bug: i have not -1
+				tableaus.get(i-1).push(deck.pop());		//chock bug: i have not -1
 			}
 		}
 		
 		//Stock
 		stock = new Stock();
-		while(!deck.isEmpty(deck.getCards())) {
-			stock.push(stock.getCardList(), deck.pop(deck.getCards()));
+		while(!deck.isEmpty()) {
+			stock.push(deck.pop());
 		}
 				
 		//Waste
@@ -149,7 +149,7 @@ public class GameManager {
 						return -3;
 					}
 						
-					if(tableaus.get(moveFrom-1).isEmpty(tableaus.get(moveFrom-1).getCardList())) {
+					if(tableaus.get(moveFrom-1).isEmpty()) {
 						printBoard();
 						displayController.printInvalidMove();
 						return -4;
@@ -158,7 +158,7 @@ public class GameManager {
 					//tableau to foundation
 					if(moveTo == 0) {
 						//error checking
-						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()), foundation);
+						int foundationIndex = moveToFoundationController.getListIndex(tableaus.get(moveFrom-1).peek(), foundation);
 						if(foundationIndex < 0) {
 							printBoard();
 							displayController.printInvalidMove();
@@ -166,7 +166,7 @@ public class GameManager {
 						}
 							
 						//valid
-						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation.get(foundationIndex));	
+						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(), foundation.get(foundationIndex));	
 						setPreviousAction(cmd + " " + foundationIndex);	//index 3
 						scoreController.checkCombo(getPreviousAction());
 						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
@@ -217,7 +217,7 @@ public class GameManager {
 					int moveTo = Integer.parseInt(cmdParts[1]);
 					
 					//error checking
-					if(waste.isEmpty(waste.getCardList())) {
+					if(waste.isEmpty()) {
 						printBoard();
 						displayController.printInvalidMove();
 						displayController.printInvalidWaste();
@@ -232,14 +232,14 @@ public class GameManager {
 					if(moveTo == 0) {
 						//wasteToFoundation
 						//error checking
-						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(waste.getCardList()), foundation);
+						int foundationIndex = moveToFoundationController.getListIndex(waste.peek(), foundation);
 						if(foundationIndex < 0) {
 							printBoard();
 							displayController.printInvalidMove();
 							return -11;
 						}
 						//valid
-						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation.get(foundationIndex));
+						moveToFoundationController.execute(waste.pop(), foundation.get(foundationIndex));
 						setPreviousAction(cmd + " " + foundationIndex);	//index 2
 						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
 						scoreController.checkCombo(getPreviousAction());
@@ -249,7 +249,7 @@ public class GameManager {
 						return 6;
 					}else {
 						//wasteToTableau
-						int validCard = moveToTableauController.getMoveCardCount(waste.peek(waste.getCardList()), tableaus.get(moveTo-1));	//chock bug get(moveTo)
+						int validCard = moveToTableauController.getMoveCardCount(waste.peek(), tableaus.get(moveTo-1));	//chock bug get(moveTo)
 						//No card is valid
 						if(validCard <= 0) {
 							printBoard();
@@ -258,8 +258,8 @@ public class GameManager {
 						}
 						//valid
 						moveToTableauController.execute(waste, tableaus.get(moveTo-1), 1);
-						if(!waste.isEmpty(waste.getCardList())) {
-							waste.peek(waste.getCardList()).flip();
+						if(!waste.isEmpty()) {
+							waste.peek().flip();
 						}
 						setPreviousAction(cmd);	//index 2
 						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
@@ -314,8 +314,8 @@ public class GameManager {
 	//may be need to refactor
 	public void tabAutoFlip(){
 		for(Tableau t: tableaus) {
-			if(!t.isEmpty(t.getCardList()) && !(t.peek(t.getCardList()).getShow())) 
-				t.peek(t.getCardList()).setShow(true);
+			if(!t.isEmpty() && !(t.peek().getShow())) 
+				t.peek().setShow(true);
 		}
 	}
 	
@@ -392,7 +392,7 @@ public class GameManager {
 		return scoreController.getComboCount();
 	}
 	public void printBoard() {
-		displayController.printboard(stock.count(stock.getCardList()), waste.print(), scoreController.getScore(), move, foundation, tableaus);
+		displayController.printboard(stock.count(), waste.print(), scoreController.getScore(), move, foundation, tableaus);
 	}
 	
 	public void reset() {

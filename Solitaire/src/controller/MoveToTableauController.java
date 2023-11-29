@@ -34,24 +34,24 @@ public class MoveToTableauController extends ControlHandler {
 			List<Card> temp = new ArrayList<Card>();
 			temp.clear();
 			for (int i = 0; i < cardMove; i++) {
-				temp.add(moveFrom.pop(moveFrom.getCardList()));
+				temp.add(moveFrom.pop());
 			}
 			Collections.reverse(temp);
 			moveTo.addAll(temp);
 		} else if (cardMove == 1) {
-			moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
+			moveTo.push(moveFrom.pop());
 		}
 		// else invalid move
 	}
 
 	// Waste to tableau
 	public void execute(Waste moveFrom, Tableau moveTo, int cardMove) {
-		moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
+		moveTo.push(moveFrom.pop());
 	}
 
 	// Foundation to tableau
 	public void execute(Foundation moveFrom, Tableau moveTo, int cardMove) {
-		moveTo.push(moveTo.getCardList(), moveFrom.pop(moveFrom.getCardList()));
+		moveTo.push(moveFrom.pop());
 	}
 
 	// Move 1 card from waste to tableau
@@ -64,7 +64,7 @@ public class MoveToTableauController extends ControlHandler {
 	
 	//Find available card(s) can move from tableau to tableau
 	public int getMoveCardCount(Tableau moveFrom, Tableau target, int showCardCount) {
-		int j = moveFrom.count(moveFrom.getCardList()) -1;
+		int j = moveFrom.count() -1;
 		for(int i = 0; i < showCardCount; i++) {
 			if(target.checkValidAction(moveFrom.getCardList().get(j))) {			//find the starting card in moveFrom tableau
 				return checkValidColumn(j, moveFrom);
@@ -77,7 +77,7 @@ public class MoveToTableauController extends ControlHandler {
 	//Check validation for moveFrom tableau
 	public int checkValidColumn(int start, Tableau moveFrom) {
 		int validCount = 1;
-		for(int i = moveFrom.count(moveFrom.getCardList())-1; i > start; i--) {		//check the card from last card of moveFrom tableau to starting card
+		for(int i = moveFrom.count()-1; i > start; i--) {		//check the card from last card of moveFrom tableau to starting card
 			if(moveFrom.checkValidCard(moveFrom.getCardList().get(i), moveFrom.getCardList().get(i-1))){
 				//valid
 				validCount++;

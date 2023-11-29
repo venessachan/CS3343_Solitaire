@@ -1,6 +1,5 @@
 package controller;
 
-import card.Card;
 import stackManager.Stock;
 import stackManager.Waste;
 
@@ -21,12 +20,12 @@ public class DealController extends ControlHandler{
     }
 
 	public int deal(Stock stock, Waste waste) {
-		if(stock.isEmpty(stock.getCardList())) {			
+		if(stock.isEmpty()) {			
 			//push all the card back to stock from waste
-			if(!waste.isEmpty(waste.getCardList())) {
-				waste.peek(waste.getCardList()).flip();	//hide the top card
-				while(!waste.isEmpty(waste.getCardList())) {
-					stock.push(stock.getCardList(), waste.pop(waste.getCardList()));
+			if(!waste.isEmpty()) {
+				waste.peek().flip();	//hide the top card
+				while(!waste.isEmpty()) {
+					stock.push(waste.pop());
 				}
 				return 1;
 			}
@@ -34,11 +33,11 @@ public class DealController extends ControlHandler{
 			
 		}else {
 			//deal 1 card from stock to waste
-			if(!waste.isEmpty(waste.getCardList())) {
-				waste.peek(waste.getCardList()).flip();	//hide the top card	
+			if(!waste.isEmpty()) {
+				waste.peek().flip();	//hide the top card	
 			}
-			waste.push(waste.getCardList(), stock.pop(stock.getCardList()));
-			waste.peek(waste.getCardList()).flip();	//show the new top card
+			waste.push(stock.pop());
+			waste.peek().flip();	//show the new top card
 			return 2;
 			
 		}

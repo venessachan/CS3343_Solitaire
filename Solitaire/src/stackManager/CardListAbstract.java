@@ -1,42 +1,46 @@
 package stackManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import card.Card;
 
 public abstract class CardListAbstract implements CardList{
 	public abstract String print();
-	
+	private List<Card> cardList  = new ArrayList<Card>();
 	public CardListAbstract() {}
 
-	public Card pop(List<Card> cardList) {
+	public Card pop() {
 		if(!cardList.isEmpty()) {
 			return cardList.remove(cardList.size()-1);
 		}
     	return null;
     }
 
-    public void push(List<Card> cardList, Card card) {
+    public void push(Card card) {
     	cardList.add(card);
     }
 
-    public Card peek(List<Card> cardList) {
-    	if(!isEmpty(cardList)) {
+    public Card peek() {
+    	if(!isEmpty()) {
 			return cardList.get(cardList.size()-1);
 		}
 		return null;
     }
 	
-	public boolean isEmpty(List<Card> cardList) {
+	public boolean isEmpty() {
     	return cardList.isEmpty();
 	}
 	
-	public void clear(List<Card> cardList) {
+	public void clear() {
 		cardList.clear();
 	}
 	
-	public int count(List<Card> cardList) {
+	public int count() {
 		return cardList.size();
 	}
 
+	public List<Card> getCardList(){
+		return cardList;
+	}
 }

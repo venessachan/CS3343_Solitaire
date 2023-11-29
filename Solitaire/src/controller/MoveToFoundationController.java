@@ -23,7 +23,7 @@ public class MoveToFoundationController extends ControlHandler{
     }
 
 	public void execute(Card moveFromCard, Foundation foundation) {
-		foundation.push(foundation.getCardList(), moveFromCard);
+		foundation.push(moveFromCard);
 	}
 	
 	public int getListIndex(Card moveFromCard, List<Foundation> foundation) {
