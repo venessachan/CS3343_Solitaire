@@ -200,7 +200,7 @@ public class TestUndoController {
 		
 		undoController.addUndoCommand(commandHistory, "T 1 0 0");
 		undoController.execute(commandHistory, stock, waste, tableaus, foundation);
-		assertEquals("[♥2, ♠A]", tableaus.get(0).getCardList().toString());
+		assertEquals("[??, ♠A]", tableaus.get(0).getCardList().toString());
 		assertEquals("[]", foundation.get(0).getCardList().toString());
 	}
 	
@@ -226,7 +226,7 @@ public class TestUndoController {
 		undoController.execute(commandHistory, stock, waste, tableaus, foundation);
 
 		assertEquals("[♥5]", tableaus.get(0).getCardList().toString());
-		assertEquals("[♥J, ♠4, ♦3, ♠2]", tableaus.get(1).getCardList().toString()); 
+		assertEquals("[??, ♠4, ♦3, ♠2]", tableaus.get(1).getCardList().toString()); 
 	}
 	
 	@Test

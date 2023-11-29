@@ -60,6 +60,7 @@ public class UndoController {
 						waste.push(waste.getCardList(), stock.pop(stock.getCardList()));
 					}
 					waste.peek(waste.getCardList()).flip();	//show the top card
+					commandHistory.pop();
 					return 1;
 				}
 			}else {
@@ -69,21 +70,27 @@ public class UndoController {
 				if(!waste.isEmpty(waste.getCardList())) {
 					waste.peek(waste.getCardList()).flip();	//show the new top card
 				}
+				commandHistory.pop();
 				return 2;
 			}
 		}else if(cmdParts[0].equals("T")) {
 			try {
 				int moveFrom = Integer.parseInt(cmdParts[1]);
 				int moveTo = Integer.parseInt(cmdParts[2]);
+				if(!tableaus.get(moveFrom-1).isEmpty(tableaus.get(moveFrom-1).getCardList())) {
+					tableaus.get(moveFrom-1).peek(tableaus.get(moveFrom-1).getCardList()).flip();
+				}
 				if(moveTo == 0 ) {		//From foundation to Tableau
 					int foundationIndex = Integer.parseInt(cmdParts[3]);
 					Foundation f = foundation.get(foundationIndex);
 					Tableau t = tableaus.get(moveFrom-1);
 					moveToTableauController.execute(f, t, foundationIndex);
+					commandHistory.pop();
 					return 3;
 				}else{		//from tableau to tableau
 					int validCard = Integer.parseInt(cmdParts[3]);
 					moveToTableauController.execute(tableaus.get(moveTo-1), tableaus.get(moveFrom-1), validCard);
+					commandHistory.pop();
 					return 4;
 				}
 			}catch(NumberFormatException e) {
@@ -98,11 +105,17 @@ public class UndoController {
 				if(moveTo == 0 ) {		//From foundation to waste
 					int foundationIndex = Integer.parseInt(cmdParts[2]);
 					Foundation f = foundation.get(foundationIndex);
-					waste.push(waste.getCardList(), f.pop(f.getCardList()));
+					if(!f.isEmpty(f.getCardList())) {
+						waste.push(waste.getCardList(), f.pop(f.getCardList()));
+						commandHistory.pop();
+					}	
 					return 5;
 				}else{
 					Tableau t = tableaus.get(moveTo-1);
-					waste.push(waste.getCardList(), t.pop(t.getCardList()));
+					if(!t.isEmpty(t.getCardList())) {
+						waste.push(waste.getCardList(), t.pop(t.getCardList()));
+						commandHistory.pop();
+					}
 					return 6;
 				}
 				

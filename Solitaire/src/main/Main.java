@@ -5,12 +5,13 @@ import java.util.Scanner;
 import controller.ControlHandler;
 import controller.DisplayController;
 
+
 public class Main {
 	
 	public static void main(String[] args) {
 		ControlHandler controlHandler = ControlHandler.getInstance();
 		DisplayController displayController = DisplayController.getInstance();
-		
+
 		while(true) {
 			System.out.println("Start Game?");
 			System.out.println("(Y)es, (N)o, (Q)uit");
@@ -44,7 +45,6 @@ public class Main {
 						break;
 					}
 					controlHandler.tabAutoFlip();
-
 				}
 			}else if(isStart.equals("Q")) {
 				System.exit(0);

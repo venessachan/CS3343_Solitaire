@@ -122,12 +122,12 @@ public class GameManager {
 				setPreviousAction("");
 				return 1;
 			case "U":
-				if(undoController.execute(commandHistory, stock, waste, tableaus, foundation) < 0) {
+				if(undoController.execute(getCommandHistory(), stock, waste, tableaus, foundation) < 0) {
 					printBoard();
 					displayController.printInvalidUndo();
 					return -1;
 				}else{
-					setPreviousAction(undoController.peekUndoCommand(commandHistory));
+					setPreviousAction(undoController.peekUndoCommand(getCommandHistory()));
 					move();
 					scoreController.addScore(-50);
 					printBoard();
@@ -169,7 +169,7 @@ public class GameManager {
 						moveToFoundationController.execute(tableaus.get(moveFrom-1).pop(tableaus.get(moveFrom-1).getCardList()), foundation.get(foundationIndex));	
 						setPreviousAction(cmd + " " + foundationIndex);	//index 3
 						scoreController.checkCombo(getPreviousAction());
-						undoController.addUndoCommand(commandHistory, getPreviousAction());
+						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
 						move();
 						tabAutoFlip();
 						printBoard();
@@ -195,7 +195,7 @@ public class GameManager {
 						moveToTableauController.execute(tableaus.get(moveFrom-1), tableaus.get(moveTo-1), validCard);
 						tabAutoFlip();
 						setPreviousAction(cmd + " " + validCard);		//index 3
-						undoController.addUndoCommand(commandHistory, getPreviousAction());
+						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
 						scoreController.checkCombo(getPreviousAction());
 						move();						
 						printBoard();
@@ -241,7 +241,7 @@ public class GameManager {
 						//valid
 						moveToFoundationController.execute(waste.pop(waste.getCardList()), foundation.get(foundationIndex));
 						setPreviousAction(cmd + " " + foundationIndex);	//index 2
-						undoController.addUndoCommand(commandHistory, getPreviousAction());
+						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
 						scoreController.checkCombo(getPreviousAction());
 						move();
 						printBoard();
@@ -262,7 +262,7 @@ public class GameManager {
 							waste.peek(waste.getCardList()).flip();
 						}
 						setPreviousAction(cmd);	//index 2
-						undoController.addUndoCommand(commandHistory, getPreviousAction());
+						undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
 						scoreController.checkCombo(getPreviousAction());
 						move();
 						printBoard();
@@ -283,7 +283,7 @@ public class GameManager {
 			case "D":
 				if(dealController.deal(stock, waste) > 0) {
 					setPreviousAction(cmd);
-					undoController.addUndoCommand(commandHistory, getPreviousAction());
+					undoController.addUndoCommand(getCommandHistory(), getPreviousAction());
 					scoreController.checkCombo(getPreviousAction());
 					move();
 					printBoard();
@@ -339,6 +339,10 @@ public class GameManager {
 		return waste;
 	}
 
+	public CommandHistory getCommandHistory() {
+		return commandHistory;
+	}
+	
 	public void move() {
 		move += 1;
 	}

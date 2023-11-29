@@ -10,16 +10,13 @@ public abstract class CardListAbstract implements CardList{
 	public CardListAbstract() {}
 
 	public Card pop(List<Card> cardList) {
-    	return cardList.remove(cardList.size()-1);
+		if(!cardList.isEmpty()) {
+			return cardList.remove(cardList.size()-1);
+		}
+    	return null;
     }
 
     public void push(List<Card> cardList, Card card) {
-    	//not check isFull -> chock bug
-//    	if(isFoundation && isFull(cardList)) {
-//    		//cannot add message
-//    	}else {
-//    		cardList.add(card);
-//    	}
     	cardList.add(card);
     }
 
