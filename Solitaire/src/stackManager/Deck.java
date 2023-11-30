@@ -10,7 +10,6 @@ import card.Rank;
 import card.Suit;
 
 public class Deck extends CardListAbstract{
-	
 	private List<Card> cards = new ArrayList<Card>();
 	private int totalNum = 52;
 
