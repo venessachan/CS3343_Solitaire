@@ -11,17 +11,18 @@ import card.Suit;
 public class Deck extends CardListAbstract{
 	
 	//private List<Card> cards = new ArrayList<Card>();
-	private int totalNum = 52;
+	//private int totalNum = 52;
 
-	
-	public Deck() {		//create and place the 52 different cards into cards[]
+	//create and place the 52 different cards into cards[]
+	public Deck() {		
 		super();
 		setCard();	
 	}
 	
-	public void shuffle(long seed) {	//shuffle the cards
+	//shuffle the cards
+	public void shuffle(long seed) {	
         Random random = new Random(seed);
-        for (int i = 0; i < totalNum; i++) {
+        for (int i = 0; i < 52; i++) {
             int randNum = random.nextInt(52);
             Collections.swap(super.getCardList(),randNum,i);
         }

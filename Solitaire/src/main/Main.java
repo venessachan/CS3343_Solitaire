@@ -21,14 +21,10 @@ public class Main {
 			if(isStart.equals("Y")) {
 				controlHandler.execute("S");
 				while(true) {
-					//displayController.printLevel();
-					//print start? if-else
 					System.out.println("Please input a letter for your action:");
 					System.out.println("(D)eal, (W)aste, (T)ableau, (U)ndo, (Q)uit");
 					String cmd = sc.nextLine();
 					System.out.println();
-					//-2 (Q)
-					
 					String[] cmdParts = cmd.split(" ");
 					if(cmdParts[0].equals("T")) {
 						displayController.printMoveFromQ();
@@ -41,7 +37,7 @@ public class Main {
 						String moveTo = sc.nextLine();
 						controlHandler.execute("W" + " " + moveTo);
 					}
-					else if(controlHandler.execute(cmd) == -15) {
+					else if(controlHandler.execute(cmd) == -15) {	//Q -15
 						break;
 					}
 					controlHandler.tabAutoFlip();
