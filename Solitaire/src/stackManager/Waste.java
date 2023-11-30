@@ -29,5 +29,4 @@ public class Waste extends CardListAbstract{
 			return "XX";
 		}	
 	}
-	
 }
