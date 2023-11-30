@@ -170,19 +170,19 @@ public class TestGameManager {
 	@Test
 	public void testToTableauCommand3() {
 		gameManager.start();
-		assertEquals(-3,gameManager.commandExecute("T 5 5"));
+		assertEquals(-3,gameManager.commandExecute("T 7 7"));
 	}
 	
 	@Test
 	public void testToTableauCommand4() {
 		gameManager.start();
-		assertEquals(-3,gameManager.commandExecute("T 4 8"));
+		assertEquals(-3,gameManager.commandExecute("T 1 8"));
 	}
 	
 	@Test
 	public void testToTableauCommand5() {
 		gameManager.start();
-		assertEquals(-3,gameManager.commandExecute("T 4 -1"));
+		assertEquals(-3,gameManager.commandExecute("T 1 -1"));
 	}
 
 	
@@ -202,7 +202,7 @@ public class TestGameManager {
 		gameManager.getTableaus().get(0).peek().setShow(false);
 		assertEquals(-6,gameManager.commandExecute("T 1 2"));
 	}
-	
+		
 	//No Valid card
 	@Test
 	public void testToTableauCommand8() {

@@ -82,7 +82,7 @@ public class TestUndoController {
 		List<Foundation> foundation = new ArrayList();
 		undoController.addUndoCommand(commandHistory, "D");
 		int result = undoController.execute(commandHistory, stock, waste, tableaus, foundation);
-		assertEquals(-2, result);
+		assertEquals(-3, result);
 	}
 	
 	@Test
@@ -194,7 +194,7 @@ public class TestUndoController {
 		
 		int result = undoController.execute(commandHistory, stock, waste, tableaus, foundation);
 
-		assertEquals(-3, result); 
+		assertEquals(-4, result); 
 	}
 	//test foundation back to waste
 	@Test
@@ -221,6 +221,26 @@ public class TestUndoController {
 		assertEquals("[♦Q, ♣6, ♥A]", waste.getCardList().toString());
 		assertEquals("[]", foundation.get(1).getCardList().toString());
 	}
+	
+	//invalid foundation back to waste, no card in foundation
+	@Test
+	public void testUndoController33() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		List<Tableau> tableaus = new ArrayList();
+		List<Foundation> foundation = new ArrayList();
+
+		foundation.add(new Foundation(Suit.SPADES));
+		foundation.add(new Foundation(Suit.HEARTS));
+		waste.push(new Card(Suit.DIAMONDS, Rank.Q));
+		waste.push(new Card(Suit.CLUBS, Rank._6));
+		waste.peek().setShow(true);
+				
+		undoController.addUndoCommand(commandHistory, "W 0 1");
+		assertEquals(-5, undoController.execute(commandHistory, stock, waste, tableaus, foundation));
+	}
+		
+		
 
 	//test tableau back to waste
 	@Test
@@ -250,6 +270,24 @@ public class TestUndoController {
 		assertEquals("[♠3, ♠7]", tableaus.get(0).getCardList().toString());
 	}
 	
+	//Invalid tableau back to waste, no cards in tableau
+	@Test
+	public void testUndoController44() {
+		Stock stock = new Stock();
+		Waste waste = new Waste();
+		List<Tableau> tableaus = new ArrayList();
+		List<Foundation> foundation = new ArrayList();
+		
+		waste.push(new Card(Suit.DIAMONDS, Rank.Q));
+		waste.push(new Card(Suit.CLUBS, Rank._6));
+		waste.peek().setShow(true);
+		
+		tableaus.add(new Tableau());
+		undoController.addUndoCommand(commandHistory, "W 1");
+
+		assertEquals(-6, undoController.execute(commandHistory, stock, waste, tableaus, foundation));
+	}
+	
 	//Invalid instruction
 	@Test
 	public void testUndoController15() {
@@ -262,7 +300,7 @@ public class TestUndoController {
 		
 		int result = undoController.execute(commandHistory, stock, waste, tableaus, foundation);
 
-		assertEquals(-4, result); 
+		assertEquals(-7, result); 
 	}
 	
 	@Test
@@ -286,7 +324,7 @@ public class TestUndoController {
 		List<Foundation> foundation = new ArrayList();
 		int result = undoController.execute(commandHistory, stock, waste, tableaus, foundation);
 
-		assertEquals(-5, result); 
+		assertEquals(-2, result); 
 	}
 	
 	@Test

@@ -44,7 +44,7 @@ public class UndoController {
 	public int execute(CommandHistory commandHistory, Stock stock, Waste waste, List<Tableau> tableaus, List<Foundation> foundation) {
 		String previousCmd = peekUndoCommand(commandHistory);
 		if(previousCmd==null) {
-			return -5;
+			return -2;
 		}
 		String[] cmdParts = previousCmd.split(" ");
 		if(cmdParts[0].equals("D")) {
@@ -52,7 +52,7 @@ public class UndoController {
 				if(stock.isEmpty()) {
 					//error
 					//no card can back from waste
-					return -2;
+					return -3;
 				}else {
 					//put all cards from stock back to waste
 					while(!stock.isEmpty()) {
@@ -94,7 +94,7 @@ public class UndoController {
 				}
 			}catch(NumberFormatException e) {
 				//return error message
-				return -3;
+				return -4;
 			}
 			
 		}else if(cmdParts[0].equals("W")){
@@ -107,20 +107,24 @@ public class UndoController {
 					if(!f.isEmpty()) {
 						waste.push(f.pop());
 						commandHistory.pop();
-					}	
-					return 5;
+						return 5;
+					}
+					return -5;
+					
 				}else{
 					Tableau t = tableaus.get(moveTo-1);
 					if(!t.isEmpty()) {
 						waste.push(t.pop());
 						commandHistory.pop();
+						return 6;
 					}
-					return 6;
+					return -6;
+					
 				}
 				
 			}catch(NumberFormatException e) {
 				//return error message
-				return -4;
+				return -7;
 			}
 		}
 		return -1;
