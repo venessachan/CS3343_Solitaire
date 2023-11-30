@@ -5,9 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import card.Card;
-import stackManager.Foundation;
 import stackManager.Tableau;
-import stackManager.Waste;
+
 
 public class MoveToTableauController extends ControlHandler {
 
@@ -28,31 +27,73 @@ public class MoveToTableauController extends ControlHandler {
 		instance = null;
 	}
 
-	// Tableau to tableau
-	public void execute(Tableau moveFrom, Tableau moveTo, int cardMove) {
-		if (cardMove > 1) { // more than 1 card to move
-			List<Card> temp = new ArrayList<Card>();
-			temp.clear();
-			for (int i = 0; i < cardMove; i++) {
-				temp.add(moveFrom.pop());
+	@Override
+	public int execute(String cmd) {
+			try{
+				String[] cmdParts = cmd.split(" ");
+				
+				int moveFromIdx = Integer.parseInt(cmdParts[1]);
+				int moveToIdx = Integer.parseInt(cmdParts[2]);
+				int validCard = Integer.parseInt(cmdParts[3]);
+				
+				if(cmdParts[0].equals("T")) {
+					// Tableau to tableau
+					Tableau moveFromT = tableaus.get(moveFromIdx-1);
+					Tableau moveToT = tableaus.get(moveToIdx-1);
+					if (validCard > 1) { // more than 1 card to move
+						List<Card> temp = new ArrayList<Card>();
+						temp.clear();
+						for (int i = 0; i < validCard; i++) {
+							temp.add(moveFromT.pop());
+						}
+						Collections.reverse(temp);
+						moveToT.addAll(temp);
+					} else if (validCard == 1) {
+						moveToT.push(moveFromT.pop());
+					}		
+										
+				}else if(cmdParts[0].equals("W")) {
+					// Waste to tableau
+					tableaus.get(moveToIdx-1).push(waste.pop());
+					
+				}else if(cmdParts[0].equals("U")) {
+					// Foundation to tableau
+					tableaus.get(moveToIdx-1).push(foundation.get(validCard).pop());
+				}
+				return 1;
+			}catch(NumberFormatException e)
+			{
+				return -1;
+			}catch(Exception e) {
+				return -2;
 			}
-			Collections.reverse(temp);
-			moveTo.addAll(temp);
-		} else if (cardMove == 1) {
-			moveTo.push(moveFrom.pop());
-		}
-		// else invalid move
 	}
+//	// Tableau to tableau
+//	public void execute(Tableau moveFrom, Tableau moveTo, int cardMove) {
+//		if (cardMove > 1) { // more than 1 card to move
+//			List<Card> temp = new ArrayList<Card>();
+//			temp.clear();
+//			for (int i = 0; i < cardMove; i++) {
+//				temp.add(moveFrom.pop());
+//			}
+//			Collections.reverse(temp);
+//			moveTo.addAll(temp);
+//		} else if (cardMove == 1) {
+//			moveTo.push(moveFrom.pop());
+//		}
+//		// else invalid move
+//	}
 
-	// Waste to tableau
-	public void execute(Waste moveFrom, Tableau moveTo, int cardMove) {
-		moveTo.push(moveFrom.pop());
-	}
+//	// Waste to tableau
+//	public void execute(Waste moveFrom, Tableau moveTo, int cardMove) {
+//		moveTo.push(moveFrom.pop());
+//	}
 
-	// Foundation to tableau
-	public void execute(Foundation moveFrom, Tableau moveTo, int cardMove) {
-		moveTo.push(moveFrom.pop());
-	}
+//	// Foundation to tableau
+//	public void execute(Foundation moveFrom, Tableau moveTo, int cardMove) {
+//		moveTo.push(moveFrom.pop());
+//	}
+	
 
 	// Move 1 card from waste to tableau
 	public int getMoveCardCount(Card moveFrom, Tableau target) {

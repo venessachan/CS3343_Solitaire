@@ -1,11 +1,8 @@
 package controller;
 
-import stackManager.Stock;
-import stackManager.Waste;
-
 public class DealController extends ControlHandler{
 	private static DealController instance = new DealController();
-	
+
 	private DealController() {}
 	
 	public static DealController getInstance() {
@@ -19,7 +16,8 @@ public class DealController extends ControlHandler{
         instance = null;
     }
 
-	public int deal(Stock stock, Waste waste) {
+	@Override
+	public int execute(String cmd) {
 		if(stock.isEmpty()) {			
 			//push all the card back to stock from waste
 			if(!waste.isEmpty()) {
