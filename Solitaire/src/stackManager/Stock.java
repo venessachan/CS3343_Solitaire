@@ -12,16 +12,6 @@ public class Stock extends CardListAbstract{
 		cardList.clear();
 	}
 	
-//	public Card deal() {
-//		return pop();
-//		
-//	}
-	
-//	public void setStock(List<Card> cards) {
-//		if(isEmpty()) 
-//			cardList.addAll(cards);
-//	}
-
 	public List<Card> getCardList() {
 		return cardList;
 	}
