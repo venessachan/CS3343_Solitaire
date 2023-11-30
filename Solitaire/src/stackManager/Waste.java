@@ -6,9 +6,7 @@ import java.util.List;
 import card.Card;
 
 public class Waste extends CardListAbstract{
-	
 	private static List<Card> cardList  = new ArrayList<Card>();
-	
 	public Waste() {
 		super();
 		cardList.clear();
