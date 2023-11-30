@@ -7,7 +7,6 @@ import card.Rank;
 import card.Suit;
 
 public class Foundation extends CardListAbstract{
-	
 	private List<Card> cardList  = new ArrayList<Card>();
 	private Suit foundationSuit;
 	
