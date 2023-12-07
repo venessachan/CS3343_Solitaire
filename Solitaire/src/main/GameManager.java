@@ -65,8 +65,8 @@ public class GameManager {
 	    undoController = UndoController.getInstance();
 	    commandHistory = new CommandHistory();
 
-		long seed = 0;// for testing
-		//long seed = System.currentTimeMillis();		//every games have different seed
+		//long seed = 0;// for testing
+		long seed = System.currentTimeMillis();		//every games have different seed
 		setPreviousAction("");
 		setScore(0);			//chock bug-> not set 0 here
 		setCombo(0);

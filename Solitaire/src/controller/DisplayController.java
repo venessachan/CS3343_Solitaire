@@ -56,7 +56,7 @@ public class DisplayController {
 	}
 	
 	public void printInvalidUndo() {
-		System.out.print("Nothing to undo.\\n\\n");
+		System.out.print("Nothing to undo.\n\n");
 	}
 	
 	public void printValidUndo() {
