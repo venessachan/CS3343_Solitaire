@@ -59,7 +59,7 @@ public class UndoController {
 						waste.push(stock.pop());
 					}
 					waste.peek().flip();	//show the top card
-					commandHistory.pop();
+					//commandHistory.pop();
 					return 1;
 				}
 			}else {
@@ -69,7 +69,7 @@ public class UndoController {
 				if(!waste.isEmpty()) {
 					waste.peek().flip();	//show the new top card
 				}
-				commandHistory.pop();
+				//commandHistory.pop();
 				return 2;
 			}
 		}else if(cmdParts[0].equals("T")) {
@@ -84,12 +84,12 @@ public class UndoController {
 					Foundation f = foundation.get(foundationIndex);
 					Tableau t = tableaus.get(moveFrom-1);
 					moveToTableauController.execute(f, t, foundationIndex);
-					commandHistory.pop();
+					//commandHistory.pop();
 					return 3;
 				}else{		//from tableau to tableau
 					int validCard = Integer.parseInt(cmdParts[3]);
 					moveToTableauController.execute(tableaus.get(moveTo-1), tableaus.get(moveFrom-1), validCard);
-					commandHistory.pop();
+					//commandHistory.pop();
 					return 4;
 				}
 			}catch(NumberFormatException e) {
@@ -106,7 +106,7 @@ public class UndoController {
 					Foundation f = foundation.get(foundationIndex);
 					if(!f.isEmpty()) {
 						waste.push(f.pop());
-						commandHistory.pop();
+						//commandHistory.pop();
 						return 5;
 					}
 					return -5;
@@ -115,7 +115,7 @@ public class UndoController {
 					Tableau t = tableaus.get(moveTo-1);
 					if(!t.isEmpty()) {
 						waste.push(t.pop());
-						commandHistory.pop();
+						//commandHistory.pop();
 						return 6;
 					}
 					return -6;

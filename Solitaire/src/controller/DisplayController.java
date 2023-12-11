@@ -56,7 +56,7 @@ public class DisplayController {
 	}
 	
 	public void printInvalidUndo() {
-		System.out.print("Nothing to undo.\\n\\n");
+		System.out.print("Nothing to undo.\n\n");
 	}
 	
 	public void printValidUndo() {
@@ -77,5 +77,15 @@ public class DisplayController {
 	
 	public void printNoCardDeal() {
 		System.out.print("There is no card can be deal. \n\n");
+	}
+	
+	public void printStartGame() {
+		System.out.println("Start Game?");
+		System.out.println("(Y)es, (N)o, (Q)uit");
+	}
+	
+	public void printInstruction() {
+		System.out.println("Please input a letter for your action:");
+		System.out.println("(D)eal, (W)aste, (T)ableau, (U)ndo, (Q)uit");
 	}
 }

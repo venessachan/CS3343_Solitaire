@@ -68,7 +68,7 @@ public class GameManager {
 		long seed = 0;// for testing
 		//long seed = System.currentTimeMillis();		//every games have different seed
 		setPreviousAction("");
-		setScore(0);			//chock bug-> not set 0 here
+		setScore(0);
 		setCombo(0);
 		setMove(0);
 		//scoreController.setComboCount(0);
@@ -91,7 +91,7 @@ public class GameManager {
 		 
 		for(int i=1;i<=7;i++) {
 			for(int j=1; j<=i;j++) {
-				tableaus.get(i-1).push(deck.pop());		//chock bug: i have not -1
+				tableaus.get(i-1).push(deck.pop());
 			}
 		}
 		
@@ -116,7 +116,6 @@ public class GameManager {
 	public int commandExecute(String cmd) {
 		String[] cmdParts = cmd.split(" ");
 		switch(cmdParts[0]) {
-		//case sensitive need to change -> chock bug
 			case "S":
 				start();
 				setPreviousAction("");
@@ -127,6 +126,7 @@ public class GameManager {
 					displayController.printInvalidUndo();
 					return -1;
 				}else{
+					undoController.popUndoCommand(commandHistory);
 					setPreviousAction(undoController.peekUndoCommand(getCommandHistory()));
 					move();
 					scoreController.addScore(-50);
@@ -249,7 +249,7 @@ public class GameManager {
 						return 6;
 					}else {
 						//wasteToTableau
-						int validCard = moveToTableauController.getMoveCardCount(waste.peek(), tableaus.get(moveTo-1));	//chock bug get(moveTo)
+						int validCard = moveToTableauController.getMoveCardCount(waste.peek(), tableaus.get(moveTo-1));
 						//No card is valid
 						if(validCard <= 0) {
 							printBoard();

@@ -13,16 +13,14 @@ public class Main {
 		DisplayController displayController = DisplayController.getInstance();
 
 		while(true) {
-			System.out.println("Start Game?");
-			System.out.println("(Y)es, (N)o, (Q)uit");
+			displayController.printStartGame();
 			Scanner sc = new Scanner(System.in);
 			String isStart = sc.nextLine();
 			isStart.split(" ");
 			if(isStart.equals("Y")) {
 				controlHandler.execute("S");
 				while(true) {
-					System.out.println("Please input a letter for your action:");
-					System.out.println("(D)eal, (W)aste, (T)ableau, (U)ndo, (Q)uit");
+					displayController.printInstruction();
 					String cmd = sc.nextLine();
 					System.out.println();
 					String[] cmdParts = cmd.split(" ");
